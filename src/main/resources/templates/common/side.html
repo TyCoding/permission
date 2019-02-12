@@ -1,0 +1,43 @@
+<div class="page-loader" ref="loader">
+    <div class="page-loader__spinner">
+        <svg viewBox="25 25 50 50">
+            <circle cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+        </svg>
+    </div>
+</div>
+<div @click="drawerClick" v-if="sidebarStatus == true && mobileStatus == true" class="drawer-bg"></div>
+<div class="sidebar-container el-scrollbar">
+    <div class="scrollbar-wrapper el-scrollbar__wrap">
+        <div class="el-scrollbar__view" style="background-color: rgb(48, 65, 86);">
+            <el-aside style="background-color: rgb(48, 65, 86);width: auto !important;" show-timeout="200">
+                <el-menu unique-opened :default-active="defaultActive" :collapse="!sidebarStatus"
+                         background-color="rgb(48, 65, 86)" text-color="#fff">
+                    <a href="/">
+                        <el-menu-item index="首页">
+                            <i class="fa fa-home fa-fw"></i>
+                            <span slot="title">首页</span>
+                        </el-menu-item>
+                    </a>
+                    <el-submenu v-for="(parent, topIndex) in tree" :key="topIndex + 1" :index="'' + topIndex + 1">
+                        <template slot="title">
+                            <i :class="parent.icon + ' fa-fw'"></i>
+                            <span>{{parent.name}}</span>
+                        </template>
+                        <el-menu-item-group v-for="(child, index) in parent.children" :key="index + 1">
+                            <a :href="child.url">
+                                <el-menu-item :index="child.name">{{child.name}}</el-menu-item>
+                            </a>
+                        </el-menu-item-group>
+                    </el-submenu>
+                </el-menu>
+            </el-aside>
+        </div>
+    </div>
+    <div class="el-scrollbar__bar is-horizontal">
+        <div class="el-scrollbar__thumb" style="transform: translateX(0%);"></div>
+    </div>
+    <div class="el-scrollbar__bar is-vertical">
+        <div class="el-scrollbar__thumb" style="transform: translateY(0%);"></div>
+    </div>
+</div>
+

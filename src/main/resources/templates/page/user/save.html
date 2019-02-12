@@ -1,0 +1,57 @@
+<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%" :before-close="handleClose" :close-on-press-escape="false" :close-on-click-modal="false">
+    <el-form ref="form" :model="form">
+        <el-form-item prop="username" label="用户名" label-width="120px" :rules="[{ required: true, message: '请输入用户名', trigger: 'blur' }]">
+            <el-input v-model="form.username"></el-input>
+        </el-form-item>
+        <el-form-item prop="password" v-if="dialogTitle == '新增用户'" label="密码" label-width="120px" :rules="[{ required: true, message: '请输入密码', trigger: 'blur' }]">
+            <el-input v-model="form.password" type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="手机" label-width="120px">
+            <el-input v-model="form.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="性别" label-width="120px">
+            <el-radio v-model="form.sex" label="0">男</el-radio>
+            <el-radio v-model="form.sex" label="1">女</el-radio>
+        </el-form-item>
+        <el-form-item label="状态" label-width="120px">
+            <el-switch active-color="#13ce66" inactive-color="#ff4949"
+                       v-model="form.status">
+            </el-switch>
+            <span class="switch-span" v-if="form.status">可用</span>
+            <span class="switch-span-un" v-if="!form.status">禁用</span>
+        </el-form-item>
+        <el-form-item prop="roleIds" v-model="form.roleIds" label="角色" label-width="120px" :rules="[{ required: true, message: '请选择角色', trigger: 'change' }]">
+            <el-select v-model="form.roleIds" multiple placeholder="请选择角色">
+                <el-option
+                        v-for="item in roleList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
+                </el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item prop="deptId" v-model="form.deptId" label="部门" label-width="120px" :rules="[{ required: true, message: '请选择部门', trigger: 'change' }]">
+            <el-tree :data="deptTree" ref="tree" highlight-current show-checkbox check-strictly
+                     :default-checked-keys="form.deptId"
+                     :default-expanded-keys="form.deptId"
+                     node-key="id"
+                     @check-change="checkChange"
+                     :props="treeProps"></el-tree>
+        </el-form-item>
+        <el-form-item label="描述" label-width="120px">
+            <el-input v-model="form.description"></el-input>
+        </el-form-item>
+        <el-form-item v-model="form.avatar" label="头像" label-width="120px">
+            <div class="avatar-uploader">
+                <div @click="handleEditAvatar" class="el-upload">
+                    <img v-if="form.avatar" :src="form.avatar" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </div>
+            </div>
+        </el-form-item>
+    </el-form>
+    <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="save">确 定</el-button>
+    </span>
+</el-dialog>

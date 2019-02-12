@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>登录</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/ico">
+    <link rel="stylesheet" th:href="@{/lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/font/icon/iconfont.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+<div id="app">
+    <div class="page-loader" ref="loader">
+        <div class="page-loader__spinner">
+            <svg viewBox="25 25 50 50">
+                <circle cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <div v-if="true" id="login">
+        <el-main id="main">
+            <el-row type="flex" class="row-bg" justify="center">
+                <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="5">
+                    <el-card class="login-card">
+                        <div slot="header" class="header">
+                            <span class="item">登录系统</span>
+                        </div>
+                        <div id="form">
+                            <!-- 登录表单 -->
+                            <el-form :model="entity" status-icon>
+                                <el-form-item prop="username" :rules="[{ required: true, message: '用户名不能为空'}]">
+                                    <el-input prefix-icon="el-icon-ump-yonghu" v-model="entity.username" placeholder="账号" auto-complete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item prop="password" :rules="[{ required: true, message: '密码不能为空'}]">
+                                    <el-input prefix-icon="el-icon-ump-mima" type="password" @keyup.enter.native="login"
+                                              v-model="entity.password" placeholder="密码" auto-complete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item prop="code" :rules="[{ required: true, message: '验证码不能为空'}]">
+                                    <el-input prefix-icon="el-icon-ump-anquan" type="code" style="width: 45%;float: left;" @keyup.enter.native="login"
+                                              v-model="entity.code" placeholder="验证码" auto-complete="off"></el-input>
+                                    <img th:src="@{/img/gifCode.gif}" style="display: inline-block;float: right;">
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-checkbox class="check" v-model="entity.remember">记住我</el-checkbox>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button class="btn" type="primary" @click="login">登录</el-button>
+                                </el-form-item>
+                            </el-form>
+                        </div>
+                    </el-card>
+                </el-col>
+            </el-row>
+        </el-main>
+    </div>
+</div>
+<div th:replace="common/js"></div>
+<script type="text/javascript" th:src="@{/js/login.js}"></script>
+</body>
+</html>

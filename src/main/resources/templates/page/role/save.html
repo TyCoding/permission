@@ -1,0 +1,22 @@
+<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%" :before-close="handleClose" :close-on-press-escape="false" :close-on-click-modal="false">
+    <el-form ref="form" :model="form">
+        <el-form-item prop="name" label="角色名称" label-width="120px" :rules="[{ required: true, message: '请输入用户名', trigger: 'blur' }]">
+            <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item prop="description" label="角色描述" label-width="120px">
+            <el-input v-model="form.description"></el-input>
+        </el-form-item>
+        <el-form-item prop="menuId" v-model="form.menuIds" label="菜单权限" label-width="120px" :rules="[{ required: true, message: '请选择菜单权限', trigger: 'change' }]">
+            <el-tree :data="menuButtonTree" ref="tree" highlight-current show-checkbox check-strictly
+                     :default-checked-keys="form.menuIds"
+                     :default-expanded-keys="form.menuIds"
+                     node-key="id"
+                     @check-change="checkChange"
+                     :props="treeProps"></el-tree>
+        </el-form-item>
+    </el-form>
+    <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="save">确 定</el-button>
+    </span>
+</el-dialog>

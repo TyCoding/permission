@@ -1,0 +1,37 @@
+<el-dialog :visible.sync="formDialog" title="修改资料" width="30%" :before-close="handleClose" :close-on-press-escape="false" :close-on-click-modal="false">
+    <el-form ref="form" :model="form">
+        <el-form-item prop="username" label="用户名" label-width="120px" :rules="[{ required: true, message: '请输入用户名', trigger: 'blur' }]">
+            <el-input v-model="form.username"></el-input>
+        </el-form-item>
+        <el-form-item prop="phone" label="手机" label-width="120px">
+            <el-input v-model="form.phone"></el-input>
+        </el-form-item>
+        <el-form-item prop="sex" label="性别" label-width="120px">
+            <el-radio v-model="form.sex" label="0">男</el-radio>
+            <el-radio v-model="form.sex" label="1">女</el-radio>
+        </el-form-item>
+        <el-form-item prop="deptId" v-model="form.deptId" label="部门" label-width="120px" :rules="[{ required: true, message: '请选择部门', trigger: 'change' }]">
+            <el-tree :data="deptTree" ref="tree" highlight-current show-checkbox check-strictly
+                     :default-checked-keys="form.deptId"
+                     :default-expanded-keys="form.deptId"
+                     node-key="id"
+                     @check-change="checkChange"
+                     :props="treeProps"></el-tree>
+        </el-form-item>
+        <el-form-item prop="description" label="描述" label-width="120px">
+            <el-input v-model="form.description"></el-input>
+        </el-form-item>
+        <el-form-item prop="avatar" v-model="form.avatar" label="头像" label-width="120px">
+            <div class="avatar-uploader">
+                <div @click="handleEditAvatar" class="el-upload">
+                    <img v-if="form.avatar" :src="form.avatar" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </div>
+            </div>
+        </el-form-item>
+    </el-form>
+    <span slot="footer" class="dialog-footer">
+            <el-button @click="formDialog = false">取 消</el-button>
+            <el-button type="primary" @click="save">确 定</el-button>
+        </span>
+</el-dialog>

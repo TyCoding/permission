@@ -1,0 +1,22 @@
+<el-dialog title="更换头像" :visible.sync="avatarDialog" width="40%" :before-close="handleClose" :close-on-press-escape="false" :close-on-click-modal="false">
+    <div class="modal-body">
+        <form>
+            <div class="row default_avatars_list">
+                <img v-for="item in avatarList" :src="item.url" @click="changeAvatar(item.url)" title="点击更换！">
+            </div>
+        </form>
+        <el-upload class="avatar-uploader"
+                   :action="localUpload"
+                   :show-file-list="false"
+                   :on-success="handleAvatarSuccess"
+                   :before-upload="beforeAvatarUpload">
+            <img v-if="form.avatar" :src="form.avatar" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <div v-if="!form.avatar" class="el-upload__text">点我上传本地头像</div>
+        </el-upload>
+    </div>
+    <span slot="footer" class="dialog-footer">
+        <el-button type="primary">确 定</el-button>
+        <el-button @click="avatarDialog = false">取 消</el-button>
+    </span>
+</el-dialog>

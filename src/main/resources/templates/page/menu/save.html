@@ -1,0 +1,32 @@
+<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%" :before-close="handleClose" :close-on-press-escape="false" :close-on-click-modal="false">
+    <el-form ref="form" :model="form">
+        <el-form-item prop="name" :label="form.type == 'menu' ? '菜单名称':'按钮名称'" label-width="120px" :rules="[{ required: true, message: '请输入名称', trigger: 'blur' }]">
+            <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item prop="type" label="类型选择" label-width="120px">
+            <el-radio v-model="form.type" label="menu">菜单</el-radio>
+            <el-radio v-model="form.type" label="button">按钮</el-radio>
+        </el-form-item>
+        <el-form-item prop="perms" label="权限标识" label-width="120px" :rules="[{ required: true, message: '请输入权限标识', trigger: 'blur' }]">
+            <el-input v-model="form.perms"></el-input>
+        </el-form-item>
+        <el-form-item v-if="form.type == 'menu'" prop="url" label="URL" label-width="120px">
+            <el-input v-model="form.url"></el-input>
+        </el-form-item>
+        <el-form-item v-if="form.type == 'menu'" prop="icon" label="菜单图标" label-width="120px">
+            <el-input v-model="form.icon"></el-input> 请到<a target="_blank" href="http://fontawesome.dashgame.com/">http://fontawesome.dashgame.com/</a>官网查询
+        </el-form-item>
+        <el-form-item prop="menuId" v-model="form.menuIds" label="上级菜单" label-width="120px">
+            <el-tree :data="menuButtonTree" ref="tree" highlight-current show-checkbox check-strictly
+                     :default-checked-keys="form.parentId"
+                     :default-expanded-keys="form.menuIds"
+                     node-key="id"
+                     @check-change="checkChange"
+                     :props="treeProps"></el-tree>
+        </el-form-item>
+    </el-form>
+    <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="save">确 定</el-button>
+    </span>
+</el-dialog>
