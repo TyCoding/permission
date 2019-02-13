@@ -27,6 +27,8 @@ public interface MenuService extends BaseService<Menu> {
 
     void add(Menu menu);
 
+    boolean checkName(String name);
+
     void update(Menu menu);
 
     void delete(List<Long> ids);

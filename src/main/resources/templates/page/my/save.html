@@ -10,7 +10,7 @@
             <el-radio v-model="form.sex" label="0">男</el-radio>
             <el-radio v-model="form.sex" label="1">女</el-radio>
         </el-form-item>
-        <el-form-item prop="deptId" v-model="form.deptId" label="部门" label-width="120px" :rules="[{ required: true, message: '请选择部门', trigger: 'change' }]">
+        <el-form-item prop="deptId" v-model="form.deptId" label="部门" label-width="120px">
             <el-tree :data="deptTree" ref="tree" highlight-current show-checkbox check-strictly
                      :default-checked-keys="form.deptId"
                      :default-expanded-keys="form.deptId"

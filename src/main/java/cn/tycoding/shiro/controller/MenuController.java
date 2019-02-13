@@ -6,10 +6,7 @@ import cn.tycoding.shiro.entity.Menu;
 import cn.tycoding.shiro.enums.StatusEnums;
 import cn.tycoding.shiro.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +24,11 @@ public class MenuController extends BaseController {
     @PostMapping("/list")
     public ResponseCode queryList(QueryPage queryPage, Menu menu) {
         return new ResponseCode(StatusEnums.SUCCESS, super.selectByPageNumSize(queryPage, () -> menuService.queryList(menu)));
+    }
+
+    @GetMapping("/urlList")
+    public ResponseCode getAllUrl() {
+        return new ResponseCode(StatusEnums.SUCCESS, menuService.queryList(new Menu()));
     }
 
     @GetMapping("/menuButtonTree")
@@ -60,7 +62,7 @@ public class MenuController extends BaseController {
     }
 
     @PostMapping("/add")
-    public ResponseCode add(Menu menu) {
+    public ResponseCode add(@RequestBody Menu menu) {
         try {
             menuService.add(menu);
             return new ResponseCode(StatusEnums.SUCCESS);
@@ -70,8 +72,19 @@ public class MenuController extends BaseController {
         }
     }
 
+    @GetMapping("/checkName")
+    public ResponseCode checkName(String name) {
+        if (name.isEmpty()) {
+            return new ResponseCode(StatusEnums.PARAM_ERROR);
+        }
+        if (!menuService.checkName(name)) {
+            return new ResponseCode(StatusEnums.PARAM_REPEAT);
+        }
+        return new ResponseCode(StatusEnums.SUCCESS);
+    }
+
     @PostMapping("/update")
-    public ResponseCode update(Menu menu) {
+    public ResponseCode update(@RequestBody Menu menu) {
         try {
             menuService.update(menu);
             return new ResponseCode(StatusEnums.SUCCESS);
@@ -82,7 +95,7 @@ public class MenuController extends BaseController {
     }
 
     @PostMapping("/delete")
-    public ResponseCode delete(List<Long> ids) {
+    public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
             menuService.delete(ids);
             return new ResponseCode(StatusEnums.SUCCESS);

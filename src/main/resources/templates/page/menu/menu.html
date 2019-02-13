@@ -73,11 +73,8 @@
                     <br/>
                     <label>------菜单树形结构预览------</label>
                     <br/>
-                    <el-tree :data="menuButtonTree" ref="tree" highlight-current show-checkbox check-strictly
-                             :default-checked-keys="form.menuIds"
-                             :default-expanded-keys="form.menuIds"
+                    <el-tree :data="menuButtonTree" highlight-current show-checkbox check-strictly
                              node-key="id"
-                             @check-change="checkChange"
                              :props="treeProps">
                     </el-tree>
                 </el-card>

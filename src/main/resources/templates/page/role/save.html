@@ -6,7 +6,7 @@
         <el-form-item prop="description" label="角色描述" label-width="120px">
             <el-input v-model="form.description"></el-input>
         </el-form-item>
-        <el-form-item prop="menuId" v-model="form.menuIds" label="菜单权限" label-width="120px" :rules="[{ required: true, message: '请选择菜单权限', trigger: 'change' }]">
+        <el-form-item prop="menuId" v-model="form.menuIds" label="菜单权限" label-width="120px">
             <el-tree :data="menuButtonTree" ref="tree" highlight-current show-checkbox check-strictly
                      :default-checked-keys="form.menuIds"
                      :default-expanded-keys="form.menuIds"

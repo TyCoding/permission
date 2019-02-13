@@ -64,10 +64,10 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
         try {
             Example example = new Example(Menu.class);
             if (StringUtils.isNotBlank(menu.getName())) {
-                example.createCriteria().andCondition("name", menu.getName());
+                example.createCriteria().andCondition("name=", menu.getName());
             }
             if (StringUtils.isNotBlank(menu.getType())) {
-                example.createCriteria().andCondition("type", menu.getType());
+                example.createCriteria().andCondition("type=", menu.getType());
             }
             example.setOrderByClause("id");
             return this.selectByExample(example);
@@ -121,6 +121,20 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
             menu.setIcon(null);
         }
         this.save(menu);
+    }
+
+    @Override
+    public boolean checkName(String name) {
+        if (name.isEmpty()) {
+            return false;
+        }
+        Example example = new Example(Menu.class);
+        example.createCriteria().andCondition("name=", name);
+        List<Menu> menus = this.selectByExample(example);
+        if (menus.size() > 0) {
+            return false;
+        }
+        return true;
     }
 
     @Override

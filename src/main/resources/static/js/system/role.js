@@ -190,8 +190,8 @@ let app = new Vue({
 
         //Tree控件节点选中状态改变触发的事件
         checkChange(data, node, self) {
+            this.form.menuIds = this.$refs.tree.getCheckedKeys();
             if (node == true) {
-                this.form.menuIds = this.$refs.tree.getCheckedKeys();
             }
         },
 

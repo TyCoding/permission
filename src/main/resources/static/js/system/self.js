@@ -176,9 +176,11 @@ let app = new Vue({
 
         //Tree控件节点选中状态改变触发的事件
         checkChange(data, node, self) {
-            if (node == true) {
+            if (node) {
                 this.form.deptId = [data.id];
                 this.$refs.tree.setCheckedKeys(this.form.deptId)
+            } else {
+                this.form.deptId = [];
             }
         },
 
