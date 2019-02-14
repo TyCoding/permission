@@ -17,6 +17,9 @@ let api = {
     update: '/menu/update',
     add: '/menu/add',
     getAllUrl: '/menu/urlList',
+    checkName(name, id) {
+        return "/menu/checkName?name=" + name + '&id=' + id;
+    }
 };
 
 // Vue实例
@@ -27,7 +30,7 @@ let app = new Vue({
             if (!value) {
                 return callback(new Error('名称不能为空'))
             }
-            this.$http.get(api.checkName(value)).then(response => {
+            this.$http.get(api.checkName(value, this.form.id)).then(response => {
                 if (response.body.code != 200) {
                     callback(new Error(response.body.msg))
                 } else {
@@ -56,11 +59,11 @@ let app = new Vue({
                 id: '',
                 name: '',
                 type: 'menu',
-                perms: [],
+                perms: "",
                 url: '',
                 parentId: [],
+                pid: [],
                 icon: '',
-                menuIds: [],
             },
             menuTree: [], //菜单Tree
             menuButtonTree: [], //菜单按钮Tree
@@ -72,7 +75,6 @@ let app = new Vue({
 
             defaultActive: '菜单管理',
 
-            checkName: [{name: '测试菜单'}, {name: '测试'}],
             checkForm: {
                 name: [{ validator: validateName, trigger: 'blur' }]
             },
@@ -165,11 +167,8 @@ let app = new Vue({
             } else {
                 this.dialogTitle = '修改菜单/按钮'
                 this.$http.get(api.findById(id)).then(response => {
-                    let $this = response.body;
-                    this.form = $this.data;
-                    if ($this.data.menuIds.length == 0 || $this.data.menuIds[0] == null) {
-                        this.form.menuIds = [];
-                    }
+                    this.form = response.body.data;
+                    this.form.pid = [response.body.data.parentId]
                 })
             }
             this.dialogVisible = true;
@@ -180,57 +179,56 @@ let app = new Vue({
             }
             this.form.id = ''
             this.form.name = ''
+            this.form.icon = ''
+            this.form.url = ''
             this.form.description = ''
-            this.form.menuId = ''
-            this.form.menuIds = []
+            this.form.parentId = []
         },
         //保存
-        save() {
-            if (this.form.name == null || this.form.name == '') {
-                this._notify('请输入菜单/按钮名称', 'warning')
-                return;
-            }
-            this.$http.get(api.checkName(this.form.name)).then(response => {
-                if (response.body.code != 200) {
-                    this._notify(response.body.msg, 'warning')
-                    return;
+        save(form) {
+            this.$refs[form].validate((valid) => {
+                if (valid) {
+                    this.dialogVisible = false;
+                    this.form.parentId = this.form.pid[0];
+                    if (this.form.id == null || this.form.id == 0) {
+                        //添加
+                        this.$http.post(api.add, JSON.stringify(this.form)).then(response => {
+                            if (response.body.code == 200) {
+                                this._notify(response.body.msg, 'success')
+                            } else {
+                                this._notify(response.body.msg, 'error')
+                            }
+                            this.clearForm();
+                            this.init();
+                            this.search(this.pageConf.pageCode, this.pageConf.pageSize)
+                        })
+                    } else {
+                        //修改
+                        this.$http.post(api.update, JSON.stringify(this.form)).then(response => {
+                            if (response.body.code == 200) {
+                                this._notify(response.body.msg, 'success')
+                            } else {
+                                this._notify(response.body.msg, 'error')
+                            }
+                            this.clearForm();
+                            this.init();
+                            this.search(this.pageConf.pageCode, this.pageConf.pageSize)
+                        })
+                    }
+                } else {
+                    return false;
                 }
             })
-            this.dialogVisible = false;
-            this.form.parentId = this.form.parentId[0];
-            this.form.perms = this.form.perms[0];
-            if (this.form.id == null || this.form.id == 0) {
-                //添加
-                this.$http.post(api.add, JSON.stringify(this.form)).then(response => {
-                    if (response.body.code == 200) {
-                        this._notify(response.body.msg, 'success')
-                    } else {
-                        this._notify(response.body.msg, 'error')
-                    }
-                    this.clearForm();
-                })
-            } else {
-                //修改
-                this.$http.post(api.update, JSON.stringify(this.form)).then(response => {
-                    if (response.body.code == 200) {
-                        this._notify(response.body.msg, 'success')
-                    } else {
-                        this._notify(response.body.msg, 'error')
-                    }
-                    this.clearForm();
-                })
-            }
-            this.init();
-            this.search(this.pageConf.pageCode, this.pageConf.pageSize)
+
         },
 
         //Tree控件节点选中状态改变触发的事件
         checkChange(data, node, self) {
             if (node) {
-                this.form.parentId = [data.id];
-                this.$refs.tree.setCheckedKeys(this.form.parentId)
+                this.form.pid = [data.id];
+                this.$refs.tree.setCheckedKeys(this.form.pid)
             } else {
-                this.form.parentId = [];
+                this.form.pid = [];
             }
         },
 
@@ -258,6 +256,7 @@ let app = new Vue({
                     } else {
                         this._notify(response.body.msg, 'error')
                     }
+                    this.init();
                     this.$refs.table.clearSelection();
                     this.selectIds = [];
                     this.search(this.pageConf.pageCode, this.pageConf.pageSize)
@@ -297,7 +296,6 @@ let app = new Vue({
             if (this.sidebarStatus) {
                 this.sidebarFlag = ' hideSidebar ';
                 this.sidebarStatus = false;
-
             } else {
                 this.sidebarFlag = ' openSidebar ';
                 this.sidebarStatus = true;

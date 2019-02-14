@@ -104,6 +104,24 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         saveUserRole(user);
     }
 
+    @Override
+    public boolean checkName(String name, String id) {
+        if (name.isEmpty()) {
+            return false;
+        }
+        Example example = new Example(Menu.class);
+        if (!id.isEmpty()) {
+            example.createCriteria().andCondition("lower(username)=", name.toLowerCase()).andNotEqualTo("id", id);
+        } else {
+            example.createCriteria().andCondition("lower(username)=", name.toLowerCase());
+        }
+        List<User> users = this.selectByExample(example);
+        if (users.size() > 0) {
+            return false;
+        }
+        return true;
+    }
+
     private void saveUserRole(UserWithRole user) {
         user.getRoleIds().forEach(roleId -> {
             UserRole userRole = new UserRole();

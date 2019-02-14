@@ -6,17 +6,17 @@ let api = {
         return '/user/getMenus?username=' + name;
     },
     list(pageCode, pageSize) {
-        return '/role/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
+        return '/dept/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
     },
-    menuButtonTree: '/menu/menuButtonTree',
+    roleTree: '/dept/tree',
     findById(id) {
-        return '/role/findById?id=' + id;
+        return '/dept/findById?id=' + id;
     },
-    delete: '/role/delete',
-    update: '/role/update',
-    add: '/role/add',
+    delete: '/dept/delete',
+    update: '/dept/update',
+    add: '/dept/add',
     checkName(name, id) {
-        return "/role/checkName?name=" + name + '&id=' + id;
+        return "/dept/checkName?name=" + name + '&id=' + id;
     }
 };
 
@@ -56,18 +56,17 @@ let app = new Vue({
             form: {
                 id: '',
                 name: '',
-                description: '',
-                menuId: '',
-                menuIds: [],
+                parentId: '',
+                pid: [],
             },
-            menuButtonTree: [], //菜单按钮Tree
+            roleTree: [], //部门Tree
             treeProps: {
                 children: 'children',
                 label: 'name'
             },
             selectIds: [], //Table选中行ID
 
-            defaultActive: '角色管理',
+            defaultActive: '部门管理',
 
             checkForm: {
                 name: [{ validator: validateName, trigger: 'blur' }]
@@ -111,9 +110,13 @@ let app = new Vue({
                     this.tree = $this.data;
                 }
             })
+            //获取Dept列表
+            this.$http.get(api.roleTree).then(response => {
+                this.roleTree = response.body.data;
+            })
         },
 
-        //获取角色列表
+        //获取部门列表
         search(pageCode, pageSize) {
             this.$http.post(api.list(pageCode, pageSize), this.searchEntity).then(response => {
                 let $this = response.body;
@@ -142,20 +145,13 @@ let app = new Vue({
         //触发保存按钮：添加、更新
         handleSave(id) {
             this.clearForm();
-            //获取Menu列表
-            this.$http.get(api.menuButtonTree).then(response => {
-                this.menuButtonTree = response.body.data;
-            })
             if (id == null) {
-                this.dialogTitle = '新增角色'
+                this.dialogTitle = '新增部门'
             } else {
-                this.dialogTitle = '修改角色'
+                this.dialogTitle = '修改部门'
                 this.$http.get(api.findById(id)).then(response => {
-                    let $this = response.body;
-                    this.form = $this.data;
-                    if ($this.data.menuIds.length == 0 || $this.data.menuIds[0] == null) {
-                        this.form.menuIds = [];
-                    }
+                    this.form = response.body.data;
+                    this.form.pid = [response.body.data.parentId]
                 })
             }
             this.dialogVisible = true;
@@ -166,15 +162,15 @@ let app = new Vue({
             }
             this.form.id = ''
             this.form.name = ''
-            this.form.description = ''
-            this.form.menuId = ''
-            this.form.menuIds = []
+            this.form.parentId = ''
+            this.form.pid = []
         },
         //保存
         save(form) {
             this.$refs[form].validate((valid) => {
                 if (valid) {
                     this.dialogVisible = false;
+                    this.form.parentId = this.form.pid[0]
                     if (this.form.id == null || this.form.id == 0) {
                         //添加
                         this.$http.post(api.add, JSON.stringify(this.form)).then(response => {
@@ -184,6 +180,7 @@ let app = new Vue({
                                 this._notify(response.body.msg, 'error')
                             }
                             this.clearForm();
+                            this.init()
                             this.search(this.pageConf.pageCode, this.pageConf.pageSize)
                         })
                     } else {
@@ -195,6 +192,7 @@ let app = new Vue({
                                 this._notify(response.body.msg, 'error')
                             }
                             this.clearForm();
+                            this.init()
                             this.search(this.pageConf.pageCode, this.pageConf.pageSize)
                         })
                     }
@@ -206,7 +204,7 @@ let app = new Vue({
 
         //Tree控件节点选中状态改变触发的事件
         checkChange(data, node, self) {
-            this.form.menuIds = this.$refs.tree.getCheckedKeys();
+            this.form.pid = this.$refs.tree.getCheckedKeys();
         },
 
         //Table选中触发事件
@@ -223,10 +221,10 @@ let app = new Vue({
                 this.selectIds = [id];
             }
             if (this.selectIds.length < 1) {
-                this._notify('请至少选择一个角色', 'warning')
+                this._notify('请至少选择一个部门', 'warning')
                 return;
             }
-            this.$confirm('你确定永久删除此角色？, 是否继续?', '提示', {
+            this.$confirm('你确定永久删除此部门？, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -237,6 +235,7 @@ let app = new Vue({
                     } else {
                         this._notify(response.body.msg, 'error')
                     }
+                    this.init();
                     this.$refs.table.clearSelection();
                     this.selectIds = [];
                     this.search(this.pageConf.pageCode, this.pageConf.pageSize)

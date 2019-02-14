@@ -7,6 +7,7 @@ import cn.tycoding.shiro.entity.RoleWithMenu;
 import cn.tycoding.shiro.enums.StatusEnums;
 import cn.tycoding.shiro.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +44,17 @@ public class RoleController extends BaseController {
             e.printStackTrace();
             return new ResponseCode(StatusEnums.SYSTEM_ERROR);
         }
+    }
+
+    @GetMapping("/checkName")
+    public ResponseCode checkName(String name, String id) {
+        if (name.isEmpty()) {
+            return new ResponseCode(StatusEnums.PARAM_ERROR);
+        }
+        if (!roleService.checkName(name, id)) {
+            return new ResponseCode(StatusEnums.PARAM_REPEAT);
+        }
+        return new ResponseCode(StatusEnums.SUCCESS);
     }
 
     @RequestMapping("update")

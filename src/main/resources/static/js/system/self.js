@@ -15,44 +15,61 @@ let api = {
     avatar: '/file/avatar.json',
     changeAvatar(url) {
         return "/user/changeAvatar?url=" + url;
+    },
+    checkName(name, id) {
+        return "/role/checkName?name=" + name + '&id=' + id;
     }
 };
 
 // Vue实例
 let app = new Vue({
     el: '#app',
-    data: {
-        info: JSON.parse(window.localStorage.getItem("info")), //从localStorage中获取登录用户数据
-        tree: '', //菜单Tree
-        //form表单对象
-        form: {
-            username: '',
-            password: '',
-            deptId: [],
-            createTime: '',
-            avatar: '',
-            status: null,
-            phone: '',
-            sex: '',
-            description: '',
-            roleIds: [],
-        },
-        localUpload: api.localUpload,
-        deptTree: [], //部门Tree数据
-        treeProps: {
-            children: 'children',
-            label: 'name'
-        },
-        //模态框状态标识
-        formDialog: false,
-        avatarDialog: false,
-        avatarList: [],
+    data() {
+        var validateName = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('名称不能为空'))
+            }
+            this.$http.get(api.checkName(value, this.form.id)).then(response => {
+                if (response.body.code != 200) {
+                    callback(new Error(response.body.msg))
+                } else {
+                    callback();
+                }
+            })
+        }
+        return {
+            info: JSON.parse(window.localStorage.getItem("info")), //从localStorage中获取登录用户数据
+            tree: '', //菜单Tree
+            //form表单对象
+            form: {
+                username: '',
+                password: '',
+                deptId: [],
+                createTime: '',
+                avatar: '',
+                status: null,
+                phone: '',
+                sex: '',
+                description: '',
+                roleIds: [],
+            },
+            localUpload: api.localUpload,
+            deptTree: [], //部门Tree数据
+            treeProps: {
+                children: 'children',
+                label: 'name'
+            },
+            //模态框状态标识
+            formDialog: false,
+            avatarDialog: false,
+            avatarList: [],
 
-        defaultActive: '首页',
+            defaultActive: '首页',
 
-        mobileStatus: false, //是否是移动端
-        sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
-        sidebarFlag: ' openSidebar ', //侧边栏标志
+            mobileStatus: false, //是否是移动端
+            sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
+            sidebarFlag: ' openSidebar ', //侧边栏标志
+        }
     },
     created() {
         window.onload = function () {
@@ -152,25 +169,23 @@ let app = new Vue({
             this.form.roleId = null;
         },
         //保存、更新
-        save() {
-            if (this.form.deptId.length < 1) {
-                this._notify('请选择部门', 'warning')
-                return;
-            }
-            if (this.form.username == null) {
-                this._notify('请输入用户名', 'warning')
-                return;
-            }
-            this.form.deptId = this.form.deptId[0];
-            this.formDialog = false;
-            //修改
-            this.$http.post(api.update, JSON.stringify(this.form)).then(response => {
-                if (response.body.code == 200) {
-                    this._notify(response.body.msg, 'success')
+        save(form) {
+            this.$refs[form].validate((valid) => {
+                if (valid) {
+                    this.form.deptId = this.form.deptId[0];
+                    this.formDialog = false;
+                    //修改
+                    this.$http.post(api.update, JSON.stringify(this.form)).then(response => {
+                        if (response.body.code == 200) {
+                            this._notify(response.body.msg, 'success')
+                        } else {
+                            this._notify(response.body.msg, 'error')
+                        }
+                        window.location.href = "/logout"
+                    })
                 } else {
-                    this._notify(response.body.msg, 'error')
+                    return false;
                 }
-                window.location.href = "/logout"
             })
         },
 

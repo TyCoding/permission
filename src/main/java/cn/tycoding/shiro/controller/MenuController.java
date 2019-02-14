@@ -73,11 +73,11 @@ public class MenuController extends BaseController {
     }
 
     @GetMapping("/checkName")
-    public ResponseCode checkName(String name) {
+    public ResponseCode checkName(String name, String id) {
         if (name.isEmpty()) {
             return new ResponseCode(StatusEnums.PARAM_ERROR);
         }
-        if (!menuService.checkName(name)) {
+        if (!menuService.checkName(name, id)) {
             return new ResponseCode(StatusEnums.PARAM_REPEAT);
         }
         return new ResponseCode(StatusEnums.SUCCESS);

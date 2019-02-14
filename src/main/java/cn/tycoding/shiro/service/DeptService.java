@@ -16,4 +16,12 @@ public interface DeptService extends BaseService<Dept> {
     List<Dept> queryList(Dept dept);
 
     Dept findById(Long id);
+
+    void add(Dept dept);
+
+    boolean checkName(String name, String id);
+
+    void update(Dept dept);
+
+    void delete(List<Long> ids);
 }

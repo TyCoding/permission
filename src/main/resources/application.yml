@@ -62,7 +62,7 @@ mybatis:
 
 #mybaatis分页插件pagehelper设置
 pagehelper:
-  pagehelperDialect: mysql
+  helperDialect: mysql
   reasonable: true
   support-methods-arguments: true
 

@@ -32,4 +32,8 @@ public class Dept implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "create_time")
     private Date createTime;
+
+    public void setName(String name) {
+        this.name = name == null ? "" : name.trim();
+    }
 }

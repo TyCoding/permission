@@ -52,4 +52,9 @@ public class RouterController {
     public String self() {
         return "page/my/self";
     }
+
+    @GetMapping("/dept")
+    public String dept() {
+        return "page/dept/dept";
+    }
 }

@@ -95,6 +95,17 @@ public class UserController extends BaseController {
         }
     }
 
+    @GetMapping("/checkName")
+    public ResponseCode checkName(String name, String id) {
+        if (name.isEmpty()) {
+            return new ResponseCode(StatusEnums.PARAM_ERROR);
+        }
+        if (!userService.checkName(name, id)) {
+            return new ResponseCode(StatusEnums.PARAM_REPEAT);
+        }
+        return new ResponseCode(StatusEnums.SUCCESS);
+    }
+
     @PostMapping("/update")
     public ResponseCode update(@RequestBody UserWithRole user) {
         try {

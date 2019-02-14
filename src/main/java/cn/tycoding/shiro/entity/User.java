@@ -58,4 +58,11 @@ public class User implements Serializable {
 
     private Boolean status;
 
+    public void setUsername(String username) {
+        this.username = username == null ? "" : username.trim();
+    }
+
+    public void setPassword(String password) {
+        this.password = password == null ? "" : password.trim();
+    }
 }

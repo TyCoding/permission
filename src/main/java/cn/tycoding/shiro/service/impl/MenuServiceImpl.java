@@ -119,17 +119,22 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
         }
         if (Menu.TYPE_BUTTON.equals(menu.getType())) {
             menu.setIcon(null);
+            menu.setUrl(null);
         }
         this.save(menu);
     }
 
     @Override
-    public boolean checkName(String name) {
+    public boolean checkName(String name, String id) {
         if (name.isEmpty()) {
             return false;
         }
         Example example = new Example(Menu.class);
-        example.createCriteria().andCondition("name=", name);
+        if (!id.isEmpty()) {
+            example.createCriteria().andCondition("lower(name)=", name.toLowerCase()).andNotEqualTo("id", id);
+        } else {
+            example.createCriteria().andCondition("lower(name)=", name.toLowerCase());
+        }
         List<Menu> menus = this.selectByExample(example);
         if (menus.size() > 0) {
             return false;
@@ -145,6 +150,7 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
         }
         if (Menu.TYPE_BUTTON.equals(menu.getType())) {
             menu.setIcon(null);
+            menu.setUrl(null);
         }
         this.updateNotNull(menu);
     }

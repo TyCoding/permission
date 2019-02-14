@@ -23,6 +23,8 @@ public interface UserService extends BaseService<User> {
 
     void add(UserWithRole user);
 
+    boolean checkName(String name, String id);
+
     void update(UserWithRole user);
 
     void delete(List<Long> keys);

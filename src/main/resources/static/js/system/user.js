@@ -20,56 +20,77 @@ let api = {
     deptTree: '/dept/tree',
     add: '/user/add',
     update: '/user/update',
-    delete: '/user/delete'
+    delete: '/user/delete',
+    checkName(name, id) {
+        return "/user/checkName?name=" + name + '&id=' + id;
+    }
 };
 
 // Vue实例
 let app = new Vue({
     el: '#app',
-    data: {
-        defaultActive: '用户管理',
-        info: JSON.parse(window.localStorage.getItem("info")), //从localStorage中获取登录用户数据
-        tree: '', //菜单Tree
-        list: [], //用户列表数据
-        searchEntity: {}, //查询实体类
-        //分页选项
-        pageConf: {
-            //设置一些初始值(会被覆盖)
-            pageCode: 1, //当前页
-            pageSize: 6, //每页显示的记录数
-            totalPage: 12, //总记录数
-            pageOption: [6, 10, 20], //分页选项
-        },
-        //模态框状态标识
-        dialogVisible: false,
-        dialogTitle: '',
-        avatarDialog: false,
-        avatarList: [],
-        //form表单对象
-        form: {
-            username: '',
-            password: '',
-            deptId: [],
-            createTime: '',
-            avatar: '',
-            status: null,
-            phone: '',
-            sex: '',
-            description: '',
-            roleIds: [],
-        },
-        localUpload: api.localUpload,
-        roleList: [], //角色列表数据
-        deptTree: [], //部门Tree数据
-        treeProps: {
-            children: 'children',
-            label: 'name'
-        },
-        selectIds: [], //Table选中行ID
+    data() {
+        var validateName = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('名称不能为空'))
+            }
+            this.$http.get(api.checkName(value, this.form.id)).then(response => {
+                if (response.body.code != 200) {
+                    callback(new Error(response.body.msg))
+                } else {
+                    callback();
+                }
+            })
+        }
+        return {
+            defaultActive: '用户管理',
+            info: JSON.parse(window.localStorage.getItem("info")), //从localStorage中获取登录用户数据
+            tree: '', //菜单Tree
+            list: [], //用户列表数据
+            searchEntity: {}, //查询实体类
+            //分页选项
+            pageConf: {
+                //设置一些初始值(会被覆盖)
+                pageCode: 1, //当前页
+                pageSize: 6, //每页显示的记录数
+                totalPage: 12, //总记录数
+                pageOption: [6, 10, 20], //分页选项
+            },
+            //模态框状态标识
+            dialogVisible: false,
+            dialogTitle: '',
+            avatarDialog: false,
+            avatarList: [],
+            //form表单对象
+            form: {
+                username: '',
+                password: '',
+                deptId: [],
+                createTime: '',
+                avatar: '',
+                status: null,
+                phone: '',
+                sex: '',
+                description: '',
+                roleIds: [],
+            },
+            localUpload: api.localUpload,
+            roleList: [], //角色列表数据
+            deptTree: [], //部门Tree数据
+            treeProps: {
+                children: 'children',
+                label: 'name'
+            },
+            selectIds: [], //Table选中行ID
 
-        mobileStatus: false, //是否是移动端
-        sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
-        sidebarFlag: ' openSidebar ', //侧边栏标志
+            checkForm: {
+                username: [{ validator: validateName, trigger: 'blur' }]
+            },
+
+            mobileStatus: false, //是否是移动端
+            sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
+            sidebarFlag: ' openSidebar ', //侧边栏标志
+        }
     },
     created() {
         window.onload = function () {
@@ -188,52 +209,41 @@ let app = new Vue({
             this.form.roleId = null;
         },
         //保存、更新
-        save() {
-            if (this.form.deptId.length < 1) {
-                this._notify('请选择部门', 'warning')
-                return;
-            }
-            if (this.form.roleIds.length < 1) {
-                this._notify('请选择角色', 'warning')
-                return;
-            }
-            if (this.form.username == null) {
-                this._notify('请输入用户名', 'warning')
-                return;
-            }
-            this.form.deptId = this.form.deptId[0];
-            this.dialogVisible = false;
-            if (this.form.id == null || this.form.id == 0) {
-                //添加
-                if (this.form.password == null) {
-                    this._notify('请输入密码', 'warning')
-                    return;
+        save(form) {
+            this.$refs[form].validate((valid) => {
+                if (valid) {
+                    this.form.deptId = this.form.deptId[0];
+                    this.dialogVisible = false;
+                    if (this.form.id == null || this.form.id == 0) {
+                        this.$http.post(api.add, JSON.stringify(this.form)).then(response => {
+                            if (response.body.code == 200) {
+                                this._notify(response.body.msg, 'success')
+                            } else {
+                                this._notify(response.body.msg, 'error')
+                            }
+                            this.clearForm();
+                            this.search(this.pageConf.pageCode, this.pageConf.pageSize)
+                        })
+                    } else {
+                        //修改
+                        this.$http.post(api.update, JSON.stringify(this.form)).then(response => {
+                            if (response.body.code == 200) {
+                                if (this.form.id == this.info.id) {
+                                    window.location.href = "/logout"
+                                }
+                                this._notify(response.body.msg, 'success')
+                            } else {
+                                this._notify(response.body.msg, 'error')
+                            }
+                            this.clearForm();
+                            this.search(this.pageConf.pageCode, this.pageConf.pageSize)
+                        })
+                    }
+                    this.form.deptId = [];
+                } else {
+                    return false;
                 }
-                this.$http.post(api.add, JSON.stringify(this.form)).then(response => {
-                    if (response.body.code == 200) {
-                        this._notify(response.body.msg, 'success')
-                    } else {
-                        this._notify(response.body.msg, 'error')
-                    }
-                    this.clearForm();
-                    this.search(this.pageConf.pageCode, this.pageConf.pageSize)
-                })
-            } else {
-                //修改
-                this.$http.post(api.update, JSON.stringify(this.form)).then(response => {
-                    if (response.body.code == 200) {
-                        if (this.form.id == this.info.id) {
-                            window.location.href = "/logout"
-                        }
-                        this._notify(response.body.msg, 'success')
-                    } else {
-                        this._notify(response.body.msg, 'error')
-                    }
-                    this.clearForm();
-                    this.search(this.pageConf.pageCode, this.pageConf.pageSize)
-                })
-            }
-            this.form.deptId = [];
+            })
         },
 
         //Tree控件节点选中状态改变触发的事件

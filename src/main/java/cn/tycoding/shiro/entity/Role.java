@@ -33,4 +33,8 @@ public class Role implements Serializable {
     private String description;
 
     private Boolean status;
+
+    public void setName(String name) {
+        this.name = name == null ? "" : name.trim();
+    }
 }

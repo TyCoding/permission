@@ -21,6 +21,8 @@ public interface RoleService extends BaseService<Role> {
 
     void add(RoleWithMenu role);
 
+    boolean checkName(String name, String id);
+
     void update(RoleWithMenu role);
 
     void delete(List<Long> keys);

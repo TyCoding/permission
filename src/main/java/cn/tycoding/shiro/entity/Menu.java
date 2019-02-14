@@ -47,4 +47,20 @@ public class Menu implements Serializable {
     private Date createTime;
 
     private Boolean status;
+
+    public void setName(String name) {
+        this.name = name == null ? "" : name.trim();
+    }
+
+    public void setUrl(String url) {
+        this.url = url == null ? "" : url.trim();
+    }
+
+    public void setPerms(String perms) {
+        this.perms = perms == null ? "" : perms.trim();
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon == null ? "" : icon.trim();
+    }
 }

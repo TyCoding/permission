@@ -1,5 +1,6 @@
 package cn.tycoding.shiro.service.impl;
 
+import cn.tycoding.shiro.entity.Menu;
 import cn.tycoding.shiro.entity.Role;
 import cn.tycoding.shiro.entity.RoleMenu;
 import cn.tycoding.shiro.entity.RoleWithMenu;
@@ -81,6 +82,24 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         role.setCreateTime(new Date());
         this.save(role);
         saveRoleMenu(role);
+    }
+
+    @Override
+    public boolean checkName(String name, String id) {
+        if (name.isEmpty()) {
+            return false;
+        }
+        Example example = new Example(Menu.class);
+        if (!id.isEmpty()) {
+            example.createCriteria().andCondition("lower(name)=", name.toLowerCase()).andNotEqualTo("id", id);
+        } else {
+            example.createCriteria().andCondition("lower(name)=", name.toLowerCase());
+        }
+        List<Role> roles = this.selectByExample(example);
+        if (roles.size() > 0) {
+            return false;
+        }
+        return true;
     }
 
     private void saveRoleMenu(RoleWithMenu role) {

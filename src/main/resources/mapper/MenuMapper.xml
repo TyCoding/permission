@@ -36,7 +36,7 @@
         set parent_id = 0
         where id in (select a.id
         from (select id from tb_menu where parent_id in
-        <foreach collection="List" item="id" index="index" open="(" close=")" separator=",">
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
         ) a);

@@ -1,6 +1,6 @@
 <el-dialog :visible.sync="formDialog" title="修改资料" width="30%" :before-close="handleClose" :close-on-press-escape="false" :close-on-click-modal="false">
-    <el-form ref="form" :model="form">
-        <el-form-item prop="username" label="用户名" label-width="120px" :rules="[{ required: true, message: '请输入用户名', trigger: 'blur' }]">
+    <el-form ref="form" :model="form" :rules="checkForm">
+        <el-form-item prop="username" label="用户名" label-width="120px" required>
             <el-input v-model="form.username"></el-input>
         </el-form-item>
         <el-form-item prop="phone" label="手机" label-width="120px">
@@ -10,7 +10,7 @@
             <el-radio v-model="form.sex" label="0">男</el-radio>
             <el-radio v-model="form.sex" label="1">女</el-radio>
         </el-form-item>
-        <el-form-item prop="deptId" v-model="form.deptId" label="部门" label-width="120px">
+        <el-form-item prop="deptId" v-model="form.deptId" label="部门" label-width="120px" :rules="[{ required: true, message: '请选对所属部门', trigger: 'blur' }]">
             <el-tree :data="deptTree" ref="tree" highlight-current show-checkbox check-strictly
                      :default-checked-keys="form.deptId"
                      :default-expanded-keys="form.deptId"

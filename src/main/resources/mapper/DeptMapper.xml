@@ -3,6 +3,15 @@
 
 <mapper namespace="cn.tycoding.shiro.mapper.DeptMapper">
 
-
+    <update id="changeTopNode">
+        update tb_dept
+        set parent_id = 0
+        where id in (select a.id
+        from (select id from tb_dept where parent_id in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        ) a);
+    </update>
 
 </mapper>
