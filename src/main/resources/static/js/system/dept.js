@@ -1,25 +1,3 @@
-//设置全局表单提交格式
-Vue.http.options.emulateJSON = true;
-
-let api = {
-    tree(name) {
-        return '/user/getMenus?username=' + name;
-    },
-    list(pageCode, pageSize) {
-        return '/dept/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
-    },
-    roleTree: '/dept/tree',
-    findById(id) {
-        return '/dept/findById?id=' + id;
-    },
-    delete: '/dept/delete',
-    update: '/dept/update',
-    add: '/dept/add',
-    checkName(name, id) {
-        return "/dept/checkName?name=" + name + '&id=' + id;
-    }
-};
-
 // Vue实例
 let app = new Vue({
     el: '#app',
@@ -28,7 +6,7 @@ let app = new Vue({
             if (!value) {
                 return callback(new Error('名称不能为空'))
             }
-            this.$http.get(api.checkName(value, this.form.id)).then(response => {
+            this.$http.get(api.system.dept.checkName(value, this.form.id)).then(response => {
                 if (response.body.code != 200) {
                     callback(new Error(response.body.msg))
                 } else {
@@ -39,7 +17,7 @@ let app = new Vue({
         return {
             info: JSON.parse(window.localStorage.getItem("info")), //从localStorage中获取登录用户数据
             tree: '', //菜单Tree
-            list: [], //用户列表数据
+            list: [], //部门列表数据
             searchEntity: {}, //查询实体类
             //分页选项
             pageConf: {
@@ -56,8 +34,7 @@ let app = new Vue({
             form: {
                 id: '',
                 name: '',
-                parentId: '',
-                pid: [],
+                parentId: [],
             },
             roleTree: [], //部门Tree
             treeProps: {
@@ -79,12 +56,10 @@ let app = new Vue({
     },
     created() {
         window.onload = function() {
-            let $this = app;
-            $this.changeDiv();
+            app.changeDiv();
         }
         window.onresize = function() {
-            let $this = app;
-            $this.changeDiv();
+            app.changeDiv();
         }
         this.init(); //初始化
         this.search(this.pageConf.pageCode, this.pageConf.pageSize);
@@ -104,21 +79,21 @@ let app = new Vue({
          */
         init() {
             //获取Tree
-            this.$http.get(api.tree(this.info.username)).then(response => {
+            this.$http.get(api.common.tree(this.info.username)).then(response => {
                 let $this = response.body;
                 if ($this.code == 200) {
                     this.tree = $this.data;
                 }
             })
             //获取Dept列表
-            this.$http.get(api.roleTree).then(response => {
+            this.$http.get(api.system.dept.roleTree).then(response => {
                 this.roleTree = response.body.data;
             })
         },
 
         //获取部门列表
         search(pageCode, pageSize) {
-            this.$http.post(api.list(pageCode, pageSize), this.searchEntity).then(response => {
+            this.$http.post(api.system.dept.list(pageCode, pageSize), this.searchEntity).then(response => {
                 let $this = response.body;
                 if ($this.code == 200) {
                     this.list = $this.data.rows;
@@ -149,9 +124,13 @@ let app = new Vue({
                 this.dialogTitle = '新增部门'
             } else {
                 this.dialogTitle = '修改部门'
-                this.$http.get(api.findById(id)).then(response => {
+                this.$http.get(api.system.dept.findById(id)).then(response => {
                     this.form = response.body.data;
-                    this.form.pid = [response.body.data.parentId]
+                    if (response.body.data.parentId == null) {
+                        this.form.parentId = []
+                    } else {
+                        this.form.parentId = [response.body.data.parentId]
+                    }
                 })
             }
             this.dialogVisible = true;
@@ -162,18 +141,17 @@ let app = new Vue({
             }
             this.form.id = ''
             this.form.name = ''
-            this.form.parentId = ''
-            this.form.pid = []
+            this.form.parentId = []
         },
         //保存
         save(form) {
             this.$refs[form].validate((valid) => {
                 if (valid) {
                     this.dialogVisible = false;
-                    this.form.parentId = this.form.pid[0]
+                    this.form.parentId = this.form.parentId[0]
                     if (this.form.id == null || this.form.id == 0) {
                         //添加
-                        this.$http.post(api.add, JSON.stringify(this.form)).then(response => {
+                        this.$http.post(api.system.dept.add, JSON.stringify(this.form)).then(response => {
                             if (response.body.code == 200) {
                                 this._notify(response.body.msg, 'success')
                             } else {
@@ -185,7 +163,7 @@ let app = new Vue({
                         })
                     } else {
                         //修改
-                        this.$http.post(api.update, JSON.stringify(this.form)).then(response => {
+                        this.$http.post(api.system.dept.update, JSON.stringify(this.form)).then(response => {
                             if (response.body.code == 200) {
                                 this._notify(response.body.msg, 'success')
                             } else {
@@ -204,7 +182,14 @@ let app = new Vue({
 
         //Tree控件节点选中状态改变触发的事件
         checkChange(data, node, self) {
-            this.form.pid = this.$refs.tree.getCheckedKeys();
+            if (node) {
+                this.form.parentId = [data.id];
+                this.$refs.tree.setCheckedNodes([data.id])
+            } else {
+                if (this.$refs.tree.getCheckedKeys().length == 0) {
+                    this.form.parentId = [];
+                }
+            }
         },
 
         //Table选中触发事件
@@ -229,7 +214,7 @@ let app = new Vue({
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                this.$http.post(api.delete, JSON.stringify(this.selectIds)).then(response => {
+                this.$http.post(api.system.dept.delete, JSON.stringify(this.selectIds)).then(response => {
                     if (response.body.code == 200) {
                         this._notify('删除成功', 'success')
                     } else {
@@ -294,7 +279,3 @@ let app = new Vue({
 
     },
 });
-
-let {body} = document;
-let WIDTH = 1024;
-let RATIO = 3;

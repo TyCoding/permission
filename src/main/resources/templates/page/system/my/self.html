@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>个人信息</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/self.css}">
+    <div th:replace="common/css"></div>
+</head>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <div :class="'app-wrapper' + sidebarFlag">
+
+        <!-- aside -->
+        <div th:replace="common/side"></div>
+
+        <!-- container -->
+        <el-container class="main-container">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="common/header"></div>
+
+            <!-- main -->
+            <el-main class="app-main">
+                <el-card>
+                    <label>用户信息</label>
+                    <br/>
+                    <div class="card profile" style="padding: 1.2rem">
+                        <div class="profile__img">
+                            <img alt="" :src="info.avatar">
+                            <a @click="handleEditAvatar" href="javascript:void(0)" class="fa fa-pencil profile__img__edit" title="更换头像"></a>
+                        </div>
+                        <div class="actions" style="margin-right: 1rem">
+                            <a @click="handleEditInfo" href="javascript:void(0)" style="color: #707070 !important">编辑资料</a>
+                        </div>
+                        <div class="profile__info">
+                            <ul class="icon-list">
+                                <li><i class="fa fa-user fa-fw"></i> {{info.username}} -- {{info.roles}}</li>
+                                <li><i class="fa fa-female fa-fw"></i> 性别：{{info.sex == 0 ? '男':'女'}}</li>
+                                <li><i class="fa fa-suitcase fa-fw"></i> {{info.dept}}</li>
+                                <li><i class="fa fa-phone fa-fw"></i> {{info.phone}}</li>
+                                <li><i class="fa fa-comments fa-fw"></i> <span>{{info.description}}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+
+    <!-- 头像-模态框 -->
+    <div th:replace="page/system/my/avatar"></div>
+
+    <!-- 信息修改模态框 -->
+    <div th:replace="page/system/my/save"></div>
+
+</div>
+<div th:replace="common/js"></div>
+<script type="text/javascript" th:src="@{/js/system/self.js}"></script>
+</body>
+</html>

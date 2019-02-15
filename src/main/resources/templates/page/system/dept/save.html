@@ -1,0 +1,19 @@
+<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%" :before-close="handleClose" :close-on-press-escape="false" :close-on-click-modal="false">
+    <el-form ref="form" :model="form" :rules="checkForm">
+        <el-form-item prop="name" label="部门名称" label-width="120px" required>
+            <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item prop="pid" v-model="form.parentId" label="上级部门" label-width="120px">
+            <el-tree :data="roleTree" ref="tree" highlight-current show-checkbox check-strictly
+                     :default-checked-keys="form.parentId"
+                     :default-expanded-keys="form.parentId"
+                     node-key="id"
+                     @check-change="checkChange"
+                     :props="treeProps"></el-tree>
+        </el-form-item>
+    </el-form>
+    <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="save('form')">确 定</el-button>
+    </span>
+</el-dialog>

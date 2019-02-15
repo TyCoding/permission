@@ -1,12 +1,3 @@
-//设置全局表单提交格式
-Vue.http.options.emulateJSON = true;
-
-let api = {
-    tree(name) {
-        return '/user/getMenus?username=' + name;
-    }
-};
-
 // Vue实例
 let app = new Vue({
     el: '#app',
@@ -22,12 +13,10 @@ let app = new Vue({
     },
     created() {
         window.onload = function() {
-            let $this = app;
-            $this.changeDiv();
+            app.changeDiv();
         }
         window.onresize = function() {
-            let $this = app;
-            $this.changeDiv();
+            app.changeDiv();
         }
         this.init(); //初始化
     },
@@ -40,7 +29,7 @@ let app = new Vue({
          */
         init() {
             //获取Tree
-            this.$http.get(api.tree(this.info.username)).then(response => {
+            this.$http.get(api.common.tree(this.info.username)).then(response => {
                 let $this = response.body;
                 if ($this.code == 200) {
                     this.tree = $this.data;
@@ -91,7 +80,3 @@ let app = new Vue({
 
     },
 });
-
-let {body} = document;
-let WIDTH = 1024;
-let RATIO = 3;

@@ -60,6 +60,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- commons -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -71,6 +72,7 @@
             <version>1.3.3</version>
         </dependency>
 
+        <!-- shiro -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
@@ -121,6 +123,14 @@
             <artifactId>qiniu-java-sdk</artifactId>
             <version>7.2.17</version>
         </dependency>
+
+        <!-- ip -->
+        <dependency>
+            <groupId>org.lionsoul</groupId>
+            <artifactId>ip2region</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>

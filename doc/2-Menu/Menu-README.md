@@ -204,6 +204,20 @@ But，这并不是一个前后端分离的项目，半分离而已。因此前�
 
 经过上面的步骤，前端已经渲染了Tree菜单，因为每个页面都需要左侧的这个Tree菜单导航，所以，我们也可以将tree数据储存到浏览器的`localStorage`中，这样进入其他页面，直接调用`JSON.parse(window.localStorage.getItem("tree"))`就能获取到Tree树结构。
 
+但是这种方式可能并不好，因为项目中可能涉及修改菜单的名称、图标的修改等，那么在修改的时候就必须考虑更新localStorage中的tree数据。所以呢，我们也可以单独在页面渲染时就请求这个tree列表数据。弊端就是每个页面都要定义这个请求。代码如下：
+
+```javascript
+created() {
+    //获取Tree
+    this.$http.get(api.common.tree(this.info.username)).then(response => {
+        let $this = response.body;
+        if ($this.code == 200) {
+            this.tree = $this.data;
+        }
+    })
+}
+```
+
 **注**
 
 前面说了浏览器的`localStorage`数据生命周期是永久的，那就造成当前用户退出系统后，换另一个用户名登录，`localStorage`中还是原先用户的信息，所以我们可以在登录页先清空浏览器的`localStorage`再登录系统。

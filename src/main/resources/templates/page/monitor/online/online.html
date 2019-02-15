@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>在线用户</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <div th:replace="common/css"></div>
+</head>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <div :class="'app-wrapper' + sidebarFlag">
+
+        <!-- aside -->
+        <div th:replace="common/side"></div>
+
+        <!-- container -->
+        <el-container class="main-container">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="common/header"></div>
+
+            <!-- main -->
+            <el-main class="app-main">
+                <el-card>
+                    <!-- 列表 -->
+                    <el-table :data="list" ref="table" stripe size="mini" border tooltip-effect="dark" style="width: 100%">
+                        <el-table-column prop="username" label="用户名" width="130"></el-table-column>
+                        <el-table-column prop="id" label="SessionID" width="230" show-overflow-tooltip></el-table-column>
+                        <el-table-column prop="startTime" label="登录时间" width="230"></el-table-column>
+                        <el-table-column prop="endTime" label="最后访问时间" width="230"></el-table-column>
+                        <el-table-column prop="host" label="IP地址" width="230"></el-table-column>
+                        <el-table-column prop="address" label="地理位置" width="230" show-overflow-tooltip></el-table-column>
+                        <el-table-column prop="status" label="状态" width="130">
+                            <template slot-scope="scope">
+                                <el-tag v-if="scope.row.status == '0'" type="warning">超时</el-tag>
+                                <el-tag v-else type="success">在线</el-tag>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button @click="forceLogout(scope.row.id)" size="mini" type="danger">下线</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+</div>
+<div th:replace="common/js"></div>
+<script type="text/javascript" th:src="@{/js/monitor/online.js}"></script>
+</body>
+</html>

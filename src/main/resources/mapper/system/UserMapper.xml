@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tycoding.system.mapper.UserMapper">
+
+    <select id="queryList" resultType="cn.tycoding.system.entity.User">
+        select u.id, u.username, u.create_time, u.avatar, u.phone, u.sex, u.status, d.name dept_name
+        from tb_user u
+        left join tb_dept d on (u.dept_id = d.id)
+        where 1=1
+        <if test="username != null and username != ''">
+          and username = #{username}
+        </if>
+        <if test="sex != null and sex != ''">
+            and sex = #{sex}
+        </if>
+        <if test="status != null and status != ''">
+            and status = #{status}
+        </if>
+        order by u.id
+    </select>
+
+    <select id="findById" resultType="cn.tycoding.system.entity.UserWithRole">
+        select u.id, u.username, u.create_time, u.avatar, u.description, u.status, u.phone, u.sex, u.dept_id, ur.role_id roleId
+        from tb_user u
+               left join tb_user_role ur on (u.id = ur.user_id)
+        where u.id = #{id}
+    </select>
+</mapper>

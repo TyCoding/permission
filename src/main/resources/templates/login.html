@@ -28,24 +28,25 @@
                         </div>
                         <div id="form">
                             <!-- 登录表单 -->
-                            <el-form :model="entity" status-icon>
+                            <el-form :model="form" ref="form" status-icon>
                                 <el-form-item prop="username" :rules="[{ required: true, message: '用户名不能为空'}]">
-                                    <el-input prefix-icon="el-icon-ump-yonghu" v-model="entity.username" placeholder="账号" auto-complete="off"></el-input>
+                                    <el-input prefix-icon="el-icon-ump-yonghu" v-model="form.username" placeholder="账号" auto-complete="off"></el-input>
                                 </el-form-item>
                                 <el-form-item prop="password" :rules="[{ required: true, message: '密码不能为空'}]">
-                                    <el-input prefix-icon="el-icon-ump-mima" type="password" @keyup.enter.native="login"
-                                              v-model="entity.password" placeholder="密码" auto-complete="off"></el-input>
+                                    <el-input prefix-icon="el-icon-ump-mima" type="password" @keyup.enter.native="login('form')"
+                                              v-model="form.password" placeholder="密码" auto-complete="off"></el-input>
                                 </el-form-item>
-                                <el-form-item prop="code" :rules="[{ required: true, message: '验证码不能为空'}]">
-                                    <el-input prefix-icon="el-icon-ump-anquan" type="code" style="width: 45%;float: left;" @keyup.enter.native="login"
-                                              v-model="entity.code" placeholder="验证码" auto-complete="off"></el-input>
+                                <!--<el-form-item prop="code" :rules="[{ required: true, message: '验证码不能为空'}]">-->
+                                <el-form-item prop="code">
+                                    <el-input prefix-icon="el-icon-ump-anquan" type="code" style="width: 45%;float: left;" @keyup.enter.native="login('form')"
+                                              v-model="form.code" placeholder="验证码" auto-complete="off"></el-input>
                                     <img th:src="@{/img/gifCode.gif}" style="display: inline-block;float: right;">
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-checkbox class="check" v-model="entity.remember">记住我</el-checkbox>
+                                    <el-checkbox class="check" v-model="form.remember">记住我</el-checkbox>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button class="btn" type="primary" @click="login">登录</el-button>
+                                    <el-button class="btn" type="primary" @click="login('form')">登录</el-button>
                                 </el-form-item>
                             </el-form>
                         </div>

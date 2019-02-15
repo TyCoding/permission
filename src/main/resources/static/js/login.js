@@ -1,15 +1,7 @@
-//设置全局表单提交格式
-Vue.http.options.emulateJSON = true;
-
-let api = {
-    login: '/login',
-    info: '/user/info',
-};
-
 let app = new Vue({
     el: '#app',
     data: {
-        entity: {
+        form: {
             username: '',
             password: '',
             remember: false,
@@ -32,51 +24,31 @@ let app = new Vue({
                 type: type
             })
         },
-        check() {
-            if (this.entity.username == '' || this.entity.username == null) {
-                this._notify('用户名不能为空', 'warning');
-                return false;
-            }
-            if (this.entity.password == '' || this.entity.password == null) {
-                this._notify('密码不能为空', 'warning');
-                return false;
-            }
-            return true;
-        },
 
         //登录
-        login() {
-            let flag = this.check();
-            if (flag) {
-                let form = {
-                    username: this.entity.username,
-                    password: this.entity.password,
-                    remember: this.entity.remember
+        login(form) {
+            this.$refs[form].validate(valid => {
+                if (valid) {
+                    this.$http.post(api.login, this.form).then(response => {
+                        if (response.body.code == 200) {
+                            //获取UserInfo
+                            this.$http.get(api.info).then(result => {
+                                //将UserInfo数据存储到浏览器的localStorage中
+                                window.localStorage.setItem("info", JSON.stringify(result.body.data));
+                                if (result.body.code == 200 && window.localStorage.getItem("info") != null) {
+                                    window.location.href = "/";
+                                } else {
+                                    this._notify('获取用户信息失败', "error")
+                                }
+                            });
+                        } else {
+                            this._notify(response.body.msg, 'error');
+                        }
+                    })
+                } else {
+                    return false;
                 }
-                this.$http.post('/login', form).then(response => {
-                    let $this = response.body;
-                    if ($this.code == 200) {
-                        console.log($this);
-                        //获取UserInfo
-                        this.$http.get(api.info).then(result => {
-                            let _$this = result.body;
-                            //将UserInfo数据存储到浏览器的localStorage中
-                            window.localStorage.setItem("info", JSON.stringify(_$this.data));
-                            if (_$this.code == 200 && window.localStorage.getItem("info") != null) {
-                                window.location.href = "/";
-                            } else {
-                                this._notify('获取用户信息失败', "error")
-                            }
-                        });
-
-                        //登录成功跳转到首页
-                        // window.location.href = '/';
-                    } else {
-                        console.log(response);
-                        this._notify($this.msg, 'error');
-                    }
-                })
-            }
+            })
         },
     }
 

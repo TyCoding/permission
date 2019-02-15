@@ -1,27 +1,3 @@
-//设置全局表单提交格式
-Vue.http.options.emulateJSON = true;
-
-let api = {
-    tree(name) {
-        return '/user/getMenus?username=' + name;
-    },
-    roleList: '/role/list',
-    deptTree: '/dept/tree',
-    localUpload: '/local/upload',
-    getUser(id) {
-        return "/user/findById?id=" + id;
-    },
-    update: '/user/update',
-    avatar: '/file/avatar.json',
-    changeAvatar(url) {
-        return "/user/changeAvatar?url=" + url;
-    },
-    checkName(name, id) {
-        return "/role/checkName?name=" + name + '&id=' + id;
-    }
-};
-
-// Vue实例
 let app = new Vue({
     el: '#app',
     data() {
@@ -29,7 +5,7 @@ let app = new Vue({
             if (!value) {
                 return callback(new Error('名称不能为空'))
             }
-            this.$http.get(api.checkName(value, this.form.id)).then(response => {
+            this.$http.get(api.system.user.checkName(value, this.form.id)).then(response => {
                 if (response.body.code != 200) {
                     callback(new Error(response.body.msg))
                 } else {
@@ -53,7 +29,7 @@ let app = new Vue({
                 description: '',
                 roleIds: [],
             },
-            localUpload: api.localUpload,
+            localUpload: api.system.user.localUpload,
             deptTree: [], //部门Tree数据
             treeProps: {
                 children: 'children',
@@ -73,12 +49,10 @@ let app = new Vue({
     },
     created() {
         window.onload = function () {
-            let $this = app;
-            $this.changeDiv();
+            app.changeDiv();
         }
         window.onresize = function () {
-            let $this = app;
-            $this.changeDiv();
+            app.changeDiv();
         }
         this.init(); //初始化
     },
@@ -97,10 +71,9 @@ let app = new Vue({
          */
         init() {
             //获取Tree
-            this.$http.get(api.tree(this.info.username)).then(response => {
-                let $this = response.body;
-                if ($this.code == 200) {
-                    this.tree = $this.data;
+            this.$http.get(api.common.tree(this.info.username)).then(response => {
+                if (response.body.code == 200) {
+                    this.tree = response.body.data;
                 }
             })
         },
@@ -124,7 +97,7 @@ let app = new Vue({
             this.info.avatar = url;
             window.localStorage.removeItem("info");
             window.localStorage.setItem("info", JSON.stringify(this.info));
-            this.$http.get(api.changeAvatar(url)).then(response => {
+            this.$http.get(api.system.user.changeAvatar(url)).then(response => {
                 this.avatarDialog = false;
                 if (response.body.code == 200) {
                     this._notify('更换头像成功', 'success')
@@ -138,14 +111,14 @@ let app = new Vue({
         handleEditInfo() {
             this.clearForm();
             //获取角色列表
-            this.$http.get(api.roleList).then(response => {
+            this.$http.get(api.system.user.roleList).then(response => {
                 this.roleList = response.body.data.rows;
             })
             //获取部门Tree
-            this.$http.get(api.deptTree).then(response => {
+            this.$http.get(api.system.user.deptTree).then(response => {
                 this.deptTree = response.body.data;
             })
-            this.$http.get(api.getUser(this.info.id)).then(response => {
+            this.$http.get(api.system.user.getUser(this.info.id)).then(response => {
                 this.form = response.body.data;
                 this.form.deptId = [response.body.data.deptId];
             })
@@ -175,7 +148,7 @@ let app = new Vue({
                     this.form.deptId = this.form.deptId[0];
                     this.formDialog = false;
                     //修改
-                    this.$http.post(api.update, JSON.stringify(this.form)).then(response => {
+                    this.$http.post(api.system.user.update, JSON.stringify(this.form)).then(response => {
                         if (response.body.code == 200) {
                             this._notify(response.body.msg, 'success')
                         } else {
@@ -193,9 +166,11 @@ let app = new Vue({
         checkChange(data, node, self) {
             if (node) {
                 this.form.deptId = [data.id];
-                this.$refs.tree.setCheckedKeys(this.form.deptId)
+                this.$refs.tree.setCheckedKeys([data.id])
             } else {
-                this.form.deptId = [];
+                if (this.$refs.tree.getCheckedKeys().length == 0) {
+                    this.form.deptId = [];
+                }
             }
         },
 
@@ -274,7 +249,3 @@ let app = new Vue({
 
     },
 });
-
-let {body} = document;
-let WIDTH = 1024;
-let RATIO = 3;

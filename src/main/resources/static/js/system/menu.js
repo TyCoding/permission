@@ -1,28 +1,3 @@
-//设置全局表单提交格式
-Vue.http.options.emulateJSON = true;
-
-let api = {
-    tree(name) {
-        return '/user/getMenus?username=' + name;
-    },
-    list(pageCode, pageSize) {
-        return '/menu/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
-    },
-    menuButtonTree: '/menu/menuButtonTree',
-    menuTree: '/menu/menuTree',
-    findById(id) {
-        return '/menu/findById?id=' + id;
-    },
-    delete: '/menu/delete',
-    update: '/menu/update',
-    add: '/menu/add',
-    getAllUrl: '/menu/urlList',
-    checkName(name, id) {
-        return "/menu/checkName?name=" + name + '&id=' + id;
-    }
-};
-
-// Vue实例
 let app = new Vue({
     el: '#app',
     data() {
@@ -30,7 +5,7 @@ let app = new Vue({
             if (!value) {
                 return callback(new Error('名称不能为空'))
             }
-            this.$http.get(api.checkName(value, this.form.id)).then(response => {
+            this.$http.get(api.system.menu.checkName(value, this.form.id)).then(response => {
                 if (response.body.code != 200) {
                     callback(new Error(response.body.msg))
                 } else {
@@ -72,14 +47,12 @@ let app = new Vue({
                 label: 'name'
             },
             selectIds: [], //Table选中行ID
-
-            defaultActive: '菜单管理',
-
             checkForm: {
                 name: [{ validator: validateName, trigger: 'blur' }]
             },
-
             urlList: [],
+
+            defaultActive: '菜单管理',
 
             mobileStatus: false, //是否是移动端
             sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
@@ -88,12 +61,10 @@ let app = new Vue({
     },
     created() {
         window.onload = function() {
-            let $this = app;
-            $this.changeDiv();
+            app.changeDiv();
         }
         window.onresize = function() {
-            let $this = app;
-            $this.changeDiv();
+            app.changeDiv();
         }
         this.init(); //初始化
         this.search(this.pageConf.pageCode, this.pageConf.pageSize);
@@ -113,21 +84,20 @@ let app = new Vue({
          */
         init() {
             //获取Tree
-            this.$http.get(api.tree(this.info.username)).then(response => {
-                let $this = response.body;
-                if ($this.code == 200) {
-                    this.tree = $this.data;
+            this.$http.get(api.common.tree(this.info.username)).then(response => {
+                if (response.body.code == 200) {
+                    this.tree = response.body.data;
                 }
             })
             //获取Menu列表
-            this.$http.get(api.menuButtonTree).then(response => {
+            this.$http.get(api.system.menu.menuButtonTree).then(response => {
                 this.menuButtonTree = response.body.data;
             })
         },
 
         //获取菜单列表
         search(pageCode, pageSize) {
-            this.$http.post(api.list(pageCode, pageSize), this.searchEntity).then(response => {
+            this.$http.post(api.system.menu.list(pageCode, pageSize), this.searchEntity).then(response => {
                 let $this = response.body;
                 if ($this.code == 200) {
                     this.list = $this.data.rows;
@@ -155,18 +125,18 @@ let app = new Vue({
         handleSave(id) {
             this.clearForm();
             //获取Menu列表
-            this.$http.get(api.menuTree).then(response => {
+            this.$http.get(api.system.menu.menuTree).then(response => {
                 this.menuTree = response.body.data;
             })
             //获取URL列表
-            this.$http.get(api.getAllUrl).then(response => {
+            this.$http.get(api.system.menu.getAllUrl).then(response => {
                 this.urlList = response.body.data;
             })
             if (id == null) {
                 this.dialogTitle = '新增菜单/按钮'
             } else {
                 this.dialogTitle = '修改菜单/按钮'
-                this.$http.get(api.findById(id)).then(response => {
+                this.$http.get(api.system.menu.findById(id)).then(response => {
                     this.form = response.body.data;
                     this.form.pid = [response.body.data.parentId]
                 })
@@ -192,7 +162,7 @@ let app = new Vue({
                     this.form.parentId = this.form.pid[0];
                     if (this.form.id == null || this.form.id == 0) {
                         //添加
-                        this.$http.post(api.add, JSON.stringify(this.form)).then(response => {
+                        this.$http.post(api.system.menu.add, JSON.stringify(this.form)).then(response => {
                             if (response.body.code == 200) {
                                 this._notify(response.body.msg, 'success')
                             } else {
@@ -204,7 +174,7 @@ let app = new Vue({
                         })
                     } else {
                         //修改
-                        this.$http.post(api.update, JSON.stringify(this.form)).then(response => {
+                        this.$http.post(api.system.menu.update, JSON.stringify(this.form)).then(response => {
                             if (response.body.code == 200) {
                                 this._notify(response.body.msg, 'success')
                             } else {
@@ -228,7 +198,9 @@ let app = new Vue({
                 this.form.pid = [data.id];
                 this.$refs.tree.setCheckedKeys(this.form.pid)
             } else {
-                this.form.pid = [];
+                if (this.$refs.tree.getCheckedKeys().length == 0) {
+                    this.form.pid = [];
+                }
             }
         },
 
@@ -250,7 +222,7 @@ let app = new Vue({
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                this.$http.post(api.delete, JSON.stringify(this.selectIds)).then(response => {
+                this.$http.post(api.system.menu.delete, JSON.stringify(this.selectIds)).then(response => {
                     if (response.body.code == 200) {
                         this._notify('删除成功', 'success')
                     } else {
@@ -314,7 +286,3 @@ let app = new Vue({
 
     },
 });
-
-let {body} = document;
-let WIDTH = 1024;
-let RATIO = 3;

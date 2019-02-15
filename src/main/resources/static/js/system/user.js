@@ -1,32 +1,3 @@
-//设置全局表单提交格式
-Vue.http.options.emulateJSON = true;
-
-let api = {
-    tree(name) {
-        return '/user/getMenus?username=' + name;
-    },
-    list(pageCode, pageSize) {
-        return '/user/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
-    },
-    localUpload: '/local/upload',
-    getUser(id) {
-        return "/user/findById?id=" + id;
-    },
-    avatar: '/file/avatar.json',
-    changeAvatar(url) {
-        return "/user/changeAvatar?url=" + url;
-    },
-    roleList: '/role/list',
-    deptTree: '/dept/tree',
-    add: '/user/add',
-    update: '/user/update',
-    delete: '/user/delete',
-    checkName(name, id) {
-        return "/user/checkName?name=" + name + '&id=' + id;
-    }
-};
-
-// Vue实例
 let app = new Vue({
     el: '#app',
     data() {
@@ -34,7 +5,7 @@ let app = new Vue({
             if (!value) {
                 return callback(new Error('名称不能为空'))
             }
-            this.$http.get(api.checkName(value, this.form.id)).then(response => {
+            this.$http.get(api.system.user.checkName(value, this.form.id)).then(response => {
                 if (response.body.code != 200) {
                     callback(new Error(response.body.msg))
                 } else {
@@ -74,7 +45,7 @@ let app = new Vue({
                 description: '',
                 roleIds: [],
             },
-            localUpload: api.localUpload,
+            localUpload: api.system.user.localUpload,
             roleList: [], //角色列表数据
             deptTree: [], //部门Tree数据
             treeProps: {
@@ -94,12 +65,10 @@ let app = new Vue({
     },
     created() {
         window.onload = function () {
-            let $this = app;
-            $this.changeDiv();
+            app.changeDiv();
         }
         window.onresize = function () {
-            let $this = app;
-            $this.changeDiv();
+            app.changeDiv();
         }
 
         this.init(); //初始化
@@ -120,20 +89,18 @@ let app = new Vue({
          */
         init() {
             //获取Tree
-            this.$http.get(api.tree(this.info.username)).then(response => {
-                let $this = response.body;
-                if ($this.code == 200) {
-                    this.tree = $this.data;
+            this.$http.get(api.common.tree(this.info.username)).then(response => {
+                if (response.body.code == 200) {
+                    this.tree = response.body.data;
                 }
             })
         },
 
         //获取用户列表
         search(pageCode, pageSize) {
-            this.$http.post(api.list(pageCode, pageSize), this.searchEntity).then(response => {
-                let $this = response.body;
-                this.list = $this.data.rows;
-                this.pageConf.totalPage = $this.data.total;
+            this.$http.post(api.system.user.list(pageCode, pageSize), this.searchEntity).then(response => {
+                this.list = response.body.data.rows;
+                this.pageConf.totalPage = response.body.data.total;
             })
         },
 
@@ -154,7 +121,7 @@ let app = new Vue({
 
         //触发修改头像按钮
         handleEditAvatar() {
-            this.$http.get(api.avatar).then(response => {
+            this.$http.get(api.system.user.avatar).then(response => {
                 this.avatarList = response.body;
             });
             this.avatarDialog = true;
@@ -169,18 +136,18 @@ let app = new Vue({
         handleSave(id) {
             this.clearForm();
             //获取角色列表
-            this.$http.get(api.roleList).then(response => {
+            this.$http.get(api.system.user.roleList).then(response => {
                 this.roleList = response.body.data.rows;
             })
             //获取部门Tree
-            this.$http.get(api.deptTree).then(response => {
+            this.$http.get(api.system.user.deptTree).then(response => {
                 this.deptTree = response.body.data;
             })
             if (id == null) {
                 this.dialogTitle = '新增用户'
             } else {
                 this.dialogTitle = '修改用户'
-                this.$http.get(api.getUser(id)).then(response => {
+                this.$http.get(api.system.user.getUser(id)).then(response => {
                     this.form = response.body.data;
                     if (response.body.data.deptId == null) {
                         this.form.deptId = []
@@ -215,7 +182,7 @@ let app = new Vue({
                     this.form.deptId = this.form.deptId[0];
                     this.dialogVisible = false;
                     if (this.form.id == null || this.form.id == 0) {
-                        this.$http.post(api.add, JSON.stringify(this.form)).then(response => {
+                        this.$http.post(api.system.user.add, JSON.stringify(this.form)).then(response => {
                             if (response.body.code == 200) {
                                 this._notify(response.body.msg, 'success')
                             } else {
@@ -226,7 +193,7 @@ let app = new Vue({
                         })
                     } else {
                         //修改
-                        this.$http.post(api.update, JSON.stringify(this.form)).then(response => {
+                        this.$http.post(api.system.user.update, JSON.stringify(this.form)).then(response => {
                             if (response.body.code == 200) {
                                 if (this.form.id == this.info.id) {
                                     window.location.href = "/logout"
@@ -250,9 +217,11 @@ let app = new Vue({
         checkChange(data, node, self) {
             if (node) {
                 this.form.deptId = [data.id];
-                this.$refs.tree.setCheckedKeys(this.form.deptId)
+                this.$refs.tree.setCheckedNodes([data.id])
             } else {
-                this.form.deptId = [];
+                if (this.$refs.tree.getCheckedKeys().length == 0) {
+                    this.form.deptId = [];
+                }
             }
         },
 
@@ -274,7 +243,7 @@ let app = new Vue({
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                this.$http.post(api.delete, JSON.stringify(this.selectIds)).then(response => {
+                this.$http.post(api.system.user.delete, JSON.stringify(this.selectIds)).then(response => {
                     if (response.body.code == 200) {
                         this._notify('删除成功', 'success')
                     } else {
@@ -365,11 +334,5 @@ let app = new Vue({
             this.sidebarStatus = false;
             this.sidebarFlag = ' hideSidebar mobile '
         }
-
     },
 });
-
-let {body} = document;
-let WIDTH = 1024;
-let RATIO = 3;
-
