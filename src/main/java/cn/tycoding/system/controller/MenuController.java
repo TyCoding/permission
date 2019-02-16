@@ -24,31 +24,31 @@ public class MenuController extends BaseController {
 
     @PostMapping("/list")
     public ResponseCode queryList(QueryPage queryPage, Menu menu) {
-        return new ResponseCode(StatusEnums.SUCCESS, super.selectByPageNumSize(queryPage, () -> menuService.queryList(menu)));
+        return ResponseCode.SUCCESS(super.selectByPageNumSize(queryPage, () -> menuService.queryList(menu)));
     }
 
     @GetMapping("/urlList")
     public ResponseCode getAllUrl() {
-        return new ResponseCode(StatusEnums.SUCCESS, menuService.queryList(new Menu()));
+        return ResponseCode.SUCCESS(menuService.queryList(new Menu()));
     }
 
     @GetMapping("/menuButtonTree")
     public ResponseCode getMenuButtonTree() {
         try {
-            return new ResponseCode(StatusEnums.SUCCESS, menuService.getMenuButtonTree());
+            return ResponseCode.SUCCESS(menuService.getMenuButtonTree());
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 
     @GetMapping("/menuTree")
     public ResponseCode getMenuTree() {
         try {
-            return new ResponseCode(StatusEnums.SUCCESS, menuService.getMenuTree());
+            return ResponseCode.SUCCESS(menuService.getMenuTree());
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 
@@ -58,7 +58,7 @@ public class MenuController extends BaseController {
             return new ResponseCode(StatusEnums.SUCCESS, menuService.findById(id));
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 
@@ -66,10 +66,10 @@ public class MenuController extends BaseController {
     public ResponseCode add(@RequestBody Menu menu) {
         try {
             menuService.add(menu);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.SUCCESS();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 
@@ -88,10 +88,10 @@ public class MenuController extends BaseController {
     public ResponseCode update(@RequestBody Menu menu) {
         try {
             menuService.update(menu);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.SUCCESS();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 
@@ -99,10 +99,10 @@ public class MenuController extends BaseController {
     public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
             menuService.delete(ids);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.SUCCESS();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 }

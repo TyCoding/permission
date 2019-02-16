@@ -7,7 +7,6 @@ import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
@@ -66,25 +65,14 @@ public class ShiroConfig {
         return securityManager;
     }
 
-//    //自定义SessionManager
-//    @Bean
-//    public SessionManager sessionManager() {
-//        MySessionManager mySessionManager = new MySessionManager();
-//        mySessionManager.setSessionDAO(redisSessionDAO());
-//        mySessionManager.setCacheManager(cacheManager());
-//        mySessionManager.setSessionIdUrlRewritingEnabled(true);
-//        return mySessionManager;
-//    }
-
+    //自定义SessionManager
     @Bean
     public SessionManager sessionManager() {
-        DefaultWebSessionManager defaultWebSessionManager = new DefaultWebSessionManager();
-        defaultWebSessionManager.setGlobalSessionTimeout(1800000);
-        defaultWebSessionManager.setSessionIdCookieEnabled(true);
-        defaultWebSessionManager.setCacheManager(cacheManager());
-        defaultWebSessionManager.setSessionIdUrlRewritingEnabled(true);
-        defaultWebSessionManager.setSessionDAO(redisSessionDAO());
-        return defaultWebSessionManager;
+        MySessionManager mySessionManager = new MySessionManager();
+        mySessionManager.setSessionDAO(redisSessionDAO());
+        mySessionManager.setCacheManager(cacheManager());
+        mySessionManager.setSessionIdUrlRewritingEnabled(true);
+        return mySessionManager;
     }
 
     /**

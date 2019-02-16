@@ -3,14 +3,11 @@ package cn.tycoding.system.controller;
 import cn.tycoding.common.controller.BaseController;
 import cn.tycoding.common.dto.QueryPage;
 import cn.tycoding.common.dto.ResponseCode;
-import cn.tycoding.system.entity.Dept;
 import cn.tycoding.common.enums.StatusEnums;
+import cn.tycoding.system.entity.Dept;
 import cn.tycoding.system.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,29 +22,29 @@ public class DeptController extends BaseController {
     @Autowired
     private DeptService deptService;
 
-    @RequestMapping("/list")
+    @PostMapping("/list")
     public ResponseCode queryList(QueryPage queryPage, Dept dept) {
-        return new ResponseCode(StatusEnums.SUCCESS, super.selectByPageNumSize(queryPage, () -> deptService.queryList(dept)));
+        return ResponseCode.SUCCESS(super.selectByPageNumSize(queryPage, () -> deptService.queryList(dept)));
     }
 
-    @RequestMapping("/tree")
+    @GetMapping("/tree")
     public ResponseCode tree() {
-        return new ResponseCode(StatusEnums.SUCCESS, deptService.tree());
+        return ResponseCode.SUCCESS(deptService.tree());
     }
 
-    @RequestMapping("/findById")
+    @GetMapping("/findById")
     public ResponseCode findById(Long id) {
-        return new ResponseCode(StatusEnums.SUCCESS, deptService.findById(id));
+        return ResponseCode.SUCCESS(deptService.findById(id));
     }
 
-    @RequestMapping("/add")
+    @PostMapping("/add")
     public ResponseCode add(@RequestBody Dept dept) {
         try {
             deptService.add(dept);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.SUCCESS();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 
@@ -59,28 +56,28 @@ public class DeptController extends BaseController {
         if (!deptService.checkName(name, id)) {
             return new ResponseCode(StatusEnums.PARAM_REPEAT);
         }
-        return new ResponseCode(StatusEnums.SUCCESS);
+        return ResponseCode.SUCCESS();
     }
 
-    @RequestMapping("update")
+    @PostMapping("update")
     public ResponseCode update(@RequestBody Dept dept) {
         try {
             deptService.update(dept);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.SUCCESS();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
             deptService.delete(ids);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.SUCCESS();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 }

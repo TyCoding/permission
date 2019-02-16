@@ -47,13 +47,13 @@ public class LoginController extends BaseController {
             return new ResponseCode(StatusEnums.ACCOUNT_ERROR);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 
     @GetMapping("/logout")
     public ResponseCode logout() {
         getSubject().logout();
-        return new ResponseCode(StatusEnums.SUCCESS);
+        return ResponseCode.SUCCESS();
     }
 }

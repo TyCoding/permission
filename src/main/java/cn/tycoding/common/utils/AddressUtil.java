@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
  * @author tycoding
  * @date 2019-02-15
  */
-public class AddressUtils {
+public class AddressUtil {
 
     /**
      * 代码参考官方：https://github.com/lionsoul2014/ip2region/blob/master/binding/java/src/main/java/org/lionsoul/ip2region/test/TestSearcher.java
@@ -28,7 +28,7 @@ public class AddressUtils {
      */
     public static String getAddress(String ip) {
         //db
-        String dbPath = AddressUtils.class.getResource("/config/ip2region.db").getPath();
+        String dbPath = AddressUtil.class.getResource("/config/ip2region.db").getPath();
 
         File file = new File(dbPath);
 

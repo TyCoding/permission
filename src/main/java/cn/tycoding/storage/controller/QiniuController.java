@@ -71,7 +71,7 @@ public class QiniuController {
      */
     @RequestMapping(value = "/domain", method = RequestMethod.GET)
     public ResponseCode domain() {
-        return new ResponseCode(StatusEnums.SUCCESS, url);
+        return ResponseCode.SUCCESS(url);
     }
 
     /**
@@ -107,10 +107,10 @@ public class QiniuController {
             Map map = new HashMap();
             map.put("total", list.size());
             map.put("rows", list);
-            return new ResponseCode(StatusEnums.SUCCESS, map);
+            return ResponseCode.SUCCESS(map);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR, e.getMessage());
+            return ResponseCode.ERROR();
         }
     }
 

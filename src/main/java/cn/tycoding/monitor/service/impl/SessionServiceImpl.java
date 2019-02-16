@@ -1,6 +1,6 @@
 package cn.tycoding.monitor.service.impl;
 
-import cn.tycoding.common.utils.AddressUtils;
+import cn.tycoding.common.utils.AddressUtil;
 import cn.tycoding.monitor.entity.OnlineUser;
 import cn.tycoding.monitor.service.SessionService;
 import cn.tycoding.system.entity.User;
@@ -50,7 +50,7 @@ public class SessionServiceImpl implements SessionService {
                 }
                 onlineUser.setId(session.getId().toString());
                 onlineUser.setHost(session.getHost());
-                onlineUser.setAddress(AddressUtils.getAddress(session.getHost()));
+                onlineUser.setAddress(AddressUtil.getAddress(session.getHost()));
                 onlineUser.setStartTime(session.getStartTimestamp());
                 onlineUser.setEndTime(session.getLastAccessTime());
                 long timeout = session.getTimeout();

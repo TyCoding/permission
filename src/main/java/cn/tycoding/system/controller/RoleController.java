@@ -3,15 +3,12 @@ package cn.tycoding.system.controller;
 import cn.tycoding.common.controller.BaseController;
 import cn.tycoding.common.dto.QueryPage;
 import cn.tycoding.common.dto.ResponseCode;
+import cn.tycoding.common.enums.StatusEnums;
 import cn.tycoding.system.entity.Role;
 import cn.tycoding.system.entity.RoleWithMenu;
-import cn.tycoding.common.enums.StatusEnums;
 import cn.tycoding.system.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,24 +23,24 @@ public class RoleController extends BaseController {
     @Autowired
     private RoleService roleService;
 
-    @RequestMapping("/list")
+    @PostMapping("/list")
     public ResponseCode queryList(QueryPage queryPage, Role role) {
-        return new ResponseCode(StatusEnums.SUCCESS, super.selectByPageNumSize(queryPage, () -> roleService.queryList(role)));
+        return ResponseCode.SUCCESS(super.selectByPageNumSize(queryPage, () -> roleService.queryList(role)));
     }
 
-    @RequestMapping("/findById")
+    @GetMapping("/findById")
     public ResponseCode findById(Long id) {
-        return new ResponseCode(StatusEnums.SUCCESS, roleService.findById(id));
+        return ResponseCode.SUCCESS(roleService.findById(id));
     }
 
-    @RequestMapping("/add")
+    @PostMapping("/add")
     public ResponseCode add(@RequestBody RoleWithMenu role) {
         try {
             roleService.add(role);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.SUCCESS();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 
@@ -55,28 +52,28 @@ public class RoleController extends BaseController {
         if (!roleService.checkName(name, id)) {
             return new ResponseCode(StatusEnums.PARAM_REPEAT);
         }
-        return new ResponseCode(StatusEnums.SUCCESS);
+        return ResponseCode.SUCCESS();
     }
 
-    @RequestMapping("update")
+    @PostMapping("update")
     public ResponseCode update(@RequestBody RoleWithMenu role) {
         try {
             roleService.update(role);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.SUCCESS();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
             roleService.delete(ids);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.SUCCESS();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 }

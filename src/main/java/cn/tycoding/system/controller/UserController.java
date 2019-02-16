@@ -67,32 +67,32 @@ public class UserController extends BaseController {
         map.put("perms", permSet);
         map.put("dept", dept.getName());
         map.put("description", user.getDescription());
-        return new ResponseCode(StatusEnums.SUCCESS, map);
+        return ResponseCode.SUCCESS(map);
     }
 
     @GetMapping("/getMenus")
     public ResponseCode getMenus(String username) {
-        return new ResponseCode(StatusEnums.SUCCESS, userService.getMenus(username));
+        return ResponseCode.SUCCESS(userService.getMenus(username));
     }
 
     @PostMapping("/list")
     public ResponseCode queryList(QueryPage queryPage, User user) {
-        return new ResponseCode(StatusEnums.SUCCESS, super.selectByPageNumSize(queryPage, () -> userService.queryList(user)));
+        return ResponseCode.SUCCESS(super.selectByPageNumSize(queryPage, () -> userService.queryList(user)));
     }
 
     @GetMapping("findById")
     public ResponseCode findById(Long id) {
-        return new ResponseCode(StatusEnums.SUCCESS, userService.findById(id));
+        return ResponseCode.SUCCESS(userService.findById(id));
     }
 
     @PostMapping("/add")
     public ResponseCode add(@RequestBody UserWithRole user) {
         try {
             userService.add(user);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.SUCCESS();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 
@@ -104,17 +104,17 @@ public class UserController extends BaseController {
         if (!userService.checkName(name, id)) {
             return new ResponseCode(StatusEnums.PARAM_REPEAT);
         }
-        return new ResponseCode(StatusEnums.SUCCESS);
+        return ResponseCode.SUCCESS();
     }
 
     @PostMapping("/update")
     public ResponseCode update(@RequestBody UserWithRole user) {
         try {
             userService.update(user);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.SUCCESS();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 
@@ -122,10 +122,10 @@ public class UserController extends BaseController {
     public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
             userService.delete(ids);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.SUCCESS();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 
@@ -135,10 +135,10 @@ public class UserController extends BaseController {
             User user = getCurrentUser();
             user.setAvatar(url);
             userService.updateNotNull(user);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.SUCCESS();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 }

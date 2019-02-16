@@ -32,4 +32,16 @@ public class ResponseCode {
         this.msg =enums.getInfo();
         this.data = data;
     }
+
+    public static ResponseCode SUCCESS() {
+        return new ResponseCode(StatusEnums.SUCCESS);
+    }
+
+    public static ResponseCode SUCCESS(Object data) {
+        return new ResponseCode(StatusEnums.SUCCESS, data);
+    }
+
+    public static ResponseCode ERROR() {
+        return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+    }
 }

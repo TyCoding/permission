@@ -1,7 +1,6 @@
 package cn.tycoding.storage.controller;
 
 import cn.tycoding.common.dto.ResponseCode;
-import cn.tycoding.common.enums.StatusEnums;
 import cn.tycoding.common.utils.IdWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,10 +70,10 @@ public class UploadController {
             map.put("name", fileName);
             map.put("url", "/upload/" + fileName);
 
-            return new ResponseCode(StatusEnums.SUCCESS, map);
+            return ResponseCode.SUCCESS(map);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR, "上传失败");
+            return ResponseCode.ERROR();
         }
     }
 }

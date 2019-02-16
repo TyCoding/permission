@@ -3,7 +3,7 @@
         <el-form-item prop="name" label="部门名称" label-width="120px" required>
             <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item prop="pid" v-model="form.parentId" label="上级部门" label-width="120px">
+        <el-form-item prop="parentId" v-model="form.parentId" label="上级部门" label-width="120px">
             <el-tree :data="roleTree" ref="tree" highlight-current show-checkbox check-strictly
                      :default-checked-keys="form.parentId"
                      :default-expanded-keys="form.parentId"

@@ -2,7 +2,6 @@ package cn.tycoding.monitor.controller;
 
 import cn.tycoding.common.controller.BaseController;
 import cn.tycoding.common.dto.ResponseCode;
-import cn.tycoding.common.enums.StatusEnums;
 import cn.tycoding.monitor.service.SessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,17 +28,17 @@ public class SessionController extends BaseController {
 
     @GetMapping("/list")
     public ResponseCode list() {
-        return new ResponseCode(StatusEnums.SUCCESS, sessionService.list());
+        return ResponseCode.SUCCESS(sessionService.list());
     }
 
     @GetMapping("/forceLogout")
     public ResponseCode forceLogout(String id) {
         try {
             sessionService.forceLogout(id);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.SUCCESS();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+            return ResponseCode.ERROR();
         }
     }
 }
