@@ -23,7 +23,7 @@
             <el-main class="app-main">
                 <el-card>
                     <!-- 列表 -->
-                    <el-table :data="list" ref="table" stripe size="mini" border tooltip-effect="dark" style="width: 100%">
+                    <el-table :data="list" v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" ref="table" stripe size="mini" border tooltip-effect="dark" style="width: 100%">
                         <el-table-column prop="username" label="用户名" width="130"></el-table-column>
                         <el-table-column prop="id" label="SessionID" width="230" show-overflow-tooltip></el-table-column>
                         <el-table-column prop="startTime" label="登录时间" width="230"></el-table-column>

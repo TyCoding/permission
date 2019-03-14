@@ -8,6 +8,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @author tycoding
  * @date 2019-02-03
  */
-@Mapper
 public interface UserRoleMapper extends MyMapper<UserRole> {
 }

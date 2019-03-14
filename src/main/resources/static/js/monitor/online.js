@@ -6,9 +6,8 @@ let app = new Vue({
             info: JSON.parse(window.localStorage.getItem("info")), //从localStorage中获取登录用户数据
             tree: '', //菜单Tree
             list: [], //列表数据
-
             defaultActive: '在线用户',
-
+            loading: true,
             mobileStatus: false, //是否是移动端
             sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
             sidebarFlag: ' openSidebar ', //侧边栏标志
@@ -21,9 +20,6 @@ let app = new Vue({
         window.onresize = function() {
             app.changeDiv();
         }
-        // window.setInterval(() => {
-        //     setTimeout(this.getList(), 0)
-        // }, 3000)
         this.init(); //初始化
         this.getList();
     },
@@ -51,12 +47,14 @@ let app = new Vue({
         },
 
         getList() {
+            this.loading = true;
             //获取列表
             this.$http.get(api.monitor.online.list).then(response => {
                 let $this = response.body;
                 if ($this.code == 200) {
                     this.list = $this.data;
                 }
+                this.loading = false;
             })
         },
 

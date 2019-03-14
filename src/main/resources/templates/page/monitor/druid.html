@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Druid监控</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <div th:replace="common/css"></div>
+</head>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <div :class="'app-wrapper' + sidebarFlag">
+
+        <!-- aside -->
+        <div th:replace="common/side"></div>
+
+        <!-- container -->
+        <el-container class="main-container">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="common/header"></div>
+
+            <!-- main -->
+            <el-main class="app-main">
+                <el-card>
+                    <iframe th:src="@{/druid/index.html}" width="100%" height="100%" style="height: 100vh;" name="iframe" frameborder="0"></iframe>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+</div>
+<div th:replace="common/js"></div>
+<script type="text/javascript" th:src="@{/js/monitor/druid.js}"></script>
+</body>
+</html>

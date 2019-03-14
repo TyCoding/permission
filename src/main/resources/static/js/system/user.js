@@ -45,7 +45,7 @@ let app = new Vue({
                 description: '',
                 roleIds: [],
             },
-            localUpload: api.system.user.localUpload,
+            qiniuUpload: api.system.user.qiniuUpload,
             roleList: [], //角色列表数据
             deptTree: [], //部门Tree数据
             treeProps: {
@@ -53,11 +53,10 @@ let app = new Vue({
                 label: 'name'
             },
             selectIds: [], //Table选中行ID
-
             checkForm: {
                 username: [{ validator: validateName, trigger: 'blur' }]
             },
-
+            loading: true,
             mobileStatus: false, //是否是移动端
             sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
             sidebarFlag: ' openSidebar ', //侧边栏标志
@@ -98,9 +97,11 @@ let app = new Vue({
 
         //获取用户列表
         search(pageCode, pageSize) {
+            this.loading = true;
             this.$http.post(api.system.user.list(pageCode, pageSize), this.searchEntity).then(response => {
                 this.list = response.body.data.rows;
                 this.pageConf.totalPage = response.body.data.total;
+                this.loading = false;
             })
         },
 
@@ -136,7 +137,7 @@ let app = new Vue({
         handleSave(id) {
             this.clearForm();
             //获取角色列表
-            this.$http.get(api.system.user.roleList).then(response => {
+            this.$http.post(api.system.user.roleList).then(response => {
                 this.roleList = response.body.data.rows;
             })
             //获取部门Tree

@@ -7,6 +7,12 @@ let app = new Vue({
             remember: false,
             code: '',
         },
+        img: {
+            normal: 'http://cdn.tycoding.cn/normal.0447fe9.png',
+            blindfold: 'http://cdn.tycoding.cn/blindfold.58ce423.png',
+            greeting: 'http://cdn.tycoding.cn/greeting.1415c1c.png'
+        },
+        bear: 'http://cdn.tycoding.cn/normal.0447fe9.png',
     },
     created() {
         if (window.localStorage.getItem("info") != null) {
@@ -23,6 +29,15 @@ let app = new Vue({
                 message: message,
                 type: type
             })
+        },
+        blank() {
+            this.bear = this.img.normal;
+        },
+        blindfold() {
+            this.bear = this.img.blindfold;
+        },
+        greeting() {
+            this.bear = this.img.greeting;
         },
 
         //登录

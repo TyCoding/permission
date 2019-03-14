@@ -18,25 +18,27 @@
             </svg>
         </div>
     </div>
-    <div v-if="true" id="login">
+    <div id="login" @click="blank">
         <el-main id="main">
             <el-row type="flex" class="row-bg" justify="center">
                 <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="5">
                     <el-card class="login-card">
-                        <div slot="header" class="header">
-                            <span class="item">登录系统</span>
+                        <div class="bear">
+                            <img :src="bear"/>
                         </div>
                         <div id="form">
+                            <div slot="header" class="header">
+                                <span class="item">登录系统</span>
+                            </div>
                             <!-- 登录表单 -->
                             <el-form :model="form" ref="form" status-icon>
                                 <el-form-item prop="username" :rules="[{ required: true, message: '用户名不能为空'}]">
-                                    <el-input prefix-icon="el-icon-ump-yonghu" v-model="form.username" placeholder="账号" auto-complete="off"></el-input>
+                                    <el-input prefix-icon="el-icon-ump-yonghu" v-model="form.username" @keyup.native.tab="greeting" @click.native.stop="greeting" placeholder="账号" auto-complete="off"></el-input>
                                 </el-form-item>
                                 <el-form-item prop="password" :rules="[{ required: true, message: '密码不能为空'}]">
                                     <el-input prefix-icon="el-icon-ump-mima" type="password" @keyup.enter.native="login('form')"
-                                              v-model="form.password" placeholder="密码" auto-complete="off"></el-input>
+                                              v-model="form.password" @keyup.native.tab="blindfold" @click.native.stop="blindfold" placeholder="密码" auto-complete="off"></el-input>
                                 </el-form-item>
-                                <!--<el-form-item prop="code" :rules="[{ required: true, message: '验证码不能为空'}]">-->
                                 <el-form-item prop="code">
                                     <el-input prefix-icon="el-icon-ump-anquan" type="code" style="width: 45%;float: left;" @keyup.enter.native="login('form')"
                                               v-model="form.code" placeholder="验证码" auto-complete="off"></el-input>

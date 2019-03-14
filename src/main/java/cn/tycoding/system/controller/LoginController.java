@@ -2,10 +2,12 @@ package cn.tycoding.system.controller;
 
 import cn.tycoding.common.controller.BaseController;
 import cn.tycoding.common.dto.ResponseCode;
-import cn.tycoding.common.enums.StatusEnums;
-import cn.tycoding.system.service.UserService;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UnknownAccountException;
+import cn.tycoding.common.exception.GlobalException;
+import cn.tycoding.common.utils.AddressUtil;
+import cn.tycoding.common.utils.HttpContextUtil;
+import cn.tycoding.common.utils.IPUtil;
+import cn.tycoding.monitor.entity.LoginLog;
+import cn.tycoding.monitor.service.LoginLogService;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+
 /**
  * @author tycoding
  * @date 2019-01-20
@@ -25,7 +30,7 @@ public class LoginController extends BaseController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private UserService userService;
+    private LoginLogService loginLogService;
 
     @PostMapping("/login")
     public ResponseCode login(@RequestParam("username") String username,
@@ -38,22 +43,28 @@ public class LoginController extends BaseController {
             }
             super.login(token);
             logger.info("是否登录==>{}", subject.isAuthenticated());
-            return new ResponseCode(StatusEnums.SUCCESS, super.getToken());
-        } catch (UnknownAccountException e) {
-            e.printStackTrace();
-            return new ResponseCode(StatusEnums.ACCOUNT_UNKNOWN);
-        } catch (AuthenticationException e) {
-            e.printStackTrace();
-            return new ResponseCode(StatusEnums.ACCOUNT_ERROR);
+
+            //记录登录日志
+            LoginLog log = new LoginLog();
+            //获取HTTP请求
+            HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
+            String ip = IPUtil.getIpAddr(request);
+            log.setIp(ip);
+            log.setUsername(super.getCurrentUser().getUsername());
+            log.setLocation(AddressUtil.getAddress(ip));
+            log.setCreateTime(new Date());
+            log.setDevice(request.getHeader("User-Agent"));
+            loginLogService.saveLog(log);
+            return ResponseCode.success(super.getToken());
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseCode.ERROR();
+            throw new GlobalException(e.getMessage());
         }
     }
 
     @GetMapping("/logout")
     public ResponseCode logout() {
         getSubject().logout();
-        return ResponseCode.SUCCESS();
+        return ResponseCode.success();
     }
 }

@@ -2,10 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>用户管理</title>
+    <title>系统日志</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <div th:replace="common/css"></div>
-    <link rel="stylesheet" th:href="@{/css/user.css}">
 </head>
 <body>
 <!-- vue入口 -->
@@ -26,59 +25,55 @@
                     <!-- 功能按钮 -->
                     <el-row :gutter="10" type="flex" justify="space-between">
                         <el-col :xs="24" :sm="12" :lg="6" :span="5">
-                            <el-input size="small" v-model="searchEntity.username" placeholder="请输入用户名查询">
+                            <el-input size="small" v-model="searchEntity.username" placeholder="请输入操作用户查询">
                                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
                             </el-input>
                         </el-col>
                         <el-col :xs="24" :sm="12" :lg="6" :span="5">
-                            <el-select size="small" v-model="searchEntity.sex" placeholder="请选择性别查询">
-                                <el-option key="0" label="所有" value=""></el-option>
-                                <el-option key="1" label="男" value="0"></el-option>
-                                <el-option key="2" label="女" value="1"></el-option>
-                            </el-select>
+                            <el-input size="small" v-model="searchEntity.operation" placeholder="请输入操作描述查询">
+                                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                            </el-input>
                         </el-col>
                         <el-col :xs="24" :sm="12" :lg="6" :span="5">
-                            <el-select size="small" v-model="searchEntity.status" placeholder="请选择用户状态查询">
-                                <el-option key="0" label="所有" value=""></el-option>
-                                <el-option key="1" label="有效" value="true"></el-option>
-                                <el-option key="2" label="锁定" value="false"></el-option>
-                            </el-select>
+                            <el-input size="small" v-model="searchEntity.location" placeholder="请输入操作地点查询">
+                                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                            </el-input>
+                        </el-col>
+                        <el-col :xs="24" :sm="12" :lg="6" :span="5">
+                            <el-date-picker size="small" value-format="yyyy-MM-dd HH:mm:ss"
+                                            v-model="searchEntity.timeField"
+                                            type="daterange"
+                                            range-separator="至"
+                                            start-placeholder="开始日期"
+                                            end-placeholder="结束日期">
+                            </el-date-picker>
                         </el-col>
                         <el-button @click="search(pageConf.pageCode, pageConf.pageSize)" plain size="small" icon="el-icon-search"></el-button>
                         <el-col :xs="24" :sm="12" :lg="6" :span="6">
                             <el-button type="primary" plain size="small" @click="search(pageConf.pageCode, pageConf.pageSize)" icon="el-icon-refresh"></el-button>
                             <el-button type="primary" plain size="small" @click="handleExcel()" icon="el-icon-printer"></el-button>
                             <el-button type="primary" plain size="small" @click="handleDelete()" icon="el-icon-delete"></el-button>
-                            <el-button type="primary" plain size="small" @click="handleSave()" icon="el-icon-plus"></el-button>
                         </el-col>
                     </el-row>
                     <br/>
                     <!-- 列表 -->
-                    <el-table ref="table" @selection-change="selectChange" :data="list" stripe size="mini" border tooltip-effect="dark" style="width: 100%">
+                    <el-table ref="table" @selection-change="selectChange" :data="list" v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" stripe size="mini" border tooltip-effect="dark" style="width: 100%">
                         <el-table-column type="selection" width="40" align="center"></el-table-column>
-                        <el-table-column prop="username" label="用户名" width="200" align="center"></el-table-column>
-                        <el-table-column prop="deptName" label="部门" width="200" align="center"></el-table-column>
-                        <el-table-column prop="phone" label="手机" width="200" align="center"></el-table-column>
-                        <el-table-column prop="sex" label="性别" width="100" align="center">
+                        <el-table-column prop="username" label="操作用户" width="150" align="center"></el-table-column>
+                        <el-table-column prop="operation" label="操作描述" width="180" align="center"></el-table-column>
+                        <el-table-column prop="time" label="耗时(毫秒)" width="140" align="center">
                             <template slot-scope="scope">
-                                {{scope.row.sex == 0 ? '男':'女'}}
+                                <el-tag>{{scope.row.time}} ms</el-tag>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="avatar" label="头像" width="130" align="center">
-                            <template slot-scope="scope">
-                                <img :src="scope.row.avatar" width="100" height="100" align="center">
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="createTime" label="创建时间" width="200" align="center"></el-table-column>
-                        <el-table-column prop="status" sortable label="状态" width="120" align="center">
-                            <template slot-scope="scope">
-                                <el-tag>{{scope.row.status == true ? '有效':'无效'}}</el-tag>
-                            </template>
-                        </el-table-column>
-                        <el-table-column label="操作" align="center">
+                        <el-table-column prop="method" label="操作方法" show-overflow-tooltip align="center"></el-table-column>
+                        <el-table-column prop="params" label="操作参数" width="180" show-overflow-tooltip align="center"></el-table-column>
+                        <el-table-column prop="ip" label="IP地址" width="160" align="center"></el-table-column>
+                        <el-table-column prop="location" label="操作地点" width="200" align="center"></el-table-column>
+                        <el-table-column prop="createTime" label="操作时间" width="160" align="center"></el-table-column>
+                        <el-table-column label="操作" align="center" width="80">
                             <template slot-scope="scope">
                                 <el-button @click="handleDelete(scope.row.id)" size="mini" icon="el-icon-delete" type="danger"></el-button>
-                                <el-button @click="handleSave(scope.row.id)" size="mini" icon="el-icon-edit" type="warning"></el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -93,19 +88,13 @@
                                        :total="pageConf.totalPage">
                         </el-pagination>
                     </div>
-                    <br/>
                 </el-card>
+                <br/>
             </el-main>
         </el-container>
     </div>
-
-    <!-- 头像-模态框 -->
-    <div th:replace="page/system/my/avatar"></div>
-
-    <!-- 添加-模态框 -->
-    <div th:replace="page/system/user/save"></div>
 </div>
 <div th:replace="common/js"></div>
-<script type="text/javascript" th:src="@{/js/system/user.js}"></script>
+<script type="text/javascript" th:src="@{/js/monitor/log.js}"></script>
 </body>
 </html>

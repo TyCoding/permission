@@ -1,0 +1,27 @@
+.movie-card .ant-card-body {
+    padding: 0 !important;
+}
+.movie-card .movie-desc {
+    padding: 1rem 0 0 0;
+    text-align: center;
+}
+.movie-card .movie-desc .movie-title {
+    font-size: .9rem;
+}
+.movie-card .movie-desc .movie-title p{
+    margin-bottom: -10px !important;
+}
+.movie-card:hover{
+    cursor: pointer;
+    box-shadow: 4px 0 8px 0 rgba(29, 35, 41, 0.1);
+}
+.movie-detail p{
+    margin-bottom: .4rem;
+}
+.movie-detail .poster {
+    margin-right: -4rem;
+}
+.movie-detail .poster .poster-img {
+    width: 198px;
+    height: 300px;
+}

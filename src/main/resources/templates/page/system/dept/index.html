@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>部门管理</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <div th:replace="common/css"></div>
+</head>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <div :class="'app-wrapper' + sidebarFlag">
+
+        <!-- aside -->
+        <div th:replace="common/side"></div>
+
+        <!-- container -->
+        <el-container class="main-container">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="common/header"></div>
+
+            <!-- main -->
+            <el-main class="app-main">
+                <el-card>
+                    <!-- 功能按钮 -->
+                    <el-row :gutter="10" type="flex" justify="space-between">
+                        <el-col :xs="24" :sm="12" :lg="6" :span="5">
+                            <el-input size="small" v-model="searchEntity.name" @keyup.enter.native="search(pageConf.pageCode, pageConf.pageSize)" placeholder="请输入角色名称查询">
+                                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                                <el-button @click="search(pageConf.pageCode, pageConf.pageSize)" slot="append" size="small" icon="el-icon-search"></el-button>
+                            </el-input>
+                        </el-col>
+                        <el-col :xs="24" :sm="12" :lg="6" :span="6">
+                            <el-button type="primary" plain size="small" @click="search(pageConf.pageCode, pageConf.pageSize)" icon="el-icon-refresh"></el-button>
+                            <el-button type="primary" plain size="small" @click="handleExcel()" icon="el-icon-printer"></el-button>
+                            <el-button type="primary" plain size="small" @click="handleDelete()" icon="el-icon-delete"></el-button>
+                            <el-button type="primary" plain size="small" @click="handleSave()" icon="el-icon-plus"></el-button>
+                        </el-col>
+                    </el-row>
+                    <br/>
+                    <!-- 列表 -->
+                    <el-table :data="list" v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" @selection-change="selectChange" ref="table" stripe size="mini" border tooltip-effect="dark" style="width: 100%">
+                        <el-table-column type="selection" width="40"></el-table-column>
+                        <el-table-column prop="name" label="部门" width="330"></el-table-column>
+                        <el-table-column prop="createTime" label="创建时间" width="330"></el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button @click="handleDelete(scope.row.id)" icon="el-icon-delete" size="mini" type="danger"></el-button>
+                                <el-button @click="handleSave(scope.row.id)" size="mini" icon="el-icon-edit" type="warning"></el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <br/>
+                    <!-- 分页 -->
+                    <div class="pagination">
+                        <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                                       :current-page="pageConf.pageCode"
+                                       :page-sizes="pageConf.pageOption"
+                                       :page-size="pageConf.pageSize"
+                                       layout="total, sizes, prev, pager, next"
+                                       :total="pageConf.totalPage">
+                        </el-pagination>
+                    </div>
+                    <br/>
+                    <br/>
+                    <label>------部门树形结构预览------</label>
+                    <br/>
+                    <el-tree :data="roleTree" highlight-current show-checkbox check-strictly
+                             node-key="id"
+                             :props="treeProps">
+                    </el-tree>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+
+    <div th:replace="page/system/dept/save"></div>
+</div>
+<div th:replace="common/js"></div>
+<script type="text/javascript" th:src="@{/js/system/dept.js}"></script>
+</body>
+</html>

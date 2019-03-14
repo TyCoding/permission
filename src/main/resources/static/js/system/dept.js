@@ -42,9 +42,8 @@ let app = new Vue({
                 label: 'name'
             },
             selectIds: [], //Table选中行ID
-
             defaultActive: '部门管理',
-
+            loading: true,
             checkForm: {
                 name: [{ validator: validateName, trigger: 'blur' }]
             },
@@ -93,12 +92,14 @@ let app = new Vue({
 
         //获取部门列表
         search(pageCode, pageSize) {
+            this.loading = true;
             this.$http.post(api.system.dept.list(pageCode, pageSize), this.searchEntity).then(response => {
                 let $this = response.body;
                 if ($this.code == 200) {
                     this.list = $this.data.rows;
                     this.pageConf.totalPage = $this.data.total;
                 }
+                this.loading = false;
             })
         },
 

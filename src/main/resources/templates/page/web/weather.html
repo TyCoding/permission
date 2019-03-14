@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>天气查询</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <div th:replace="common/css"></div>
+    <link rel="stylesheet" th:href="@{/css/weather.css}"/>
+</head>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <div :class="'app-wrapper' + sidebarFlag">
+
+        <!-- aside -->
+        <div th:replace="common/side"></div>
+
+        <!-- container -->
+        <el-container class="main-container">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="common/header"></div>
+
+            <!-- main -->
+            <el-main class="app-main">
+                <el-card>
+                    <el-row>
+                        <el-col :offset="8">
+                            <el-select style="width:25% !important;"
+                                    v-model="cityIds" filterable remote reserve-keyword placeholder="请输入关键词"
+                                    :remote-method="remoteMethod">
+                                <el-option
+                                        v-for="item in citys"
+                                        :key="item.areaid"
+                                        :label="item.countyname"
+                                        :value="item.areaid">
+                                </el-option>
+                            </el-select>
+                            <el-button @click="search" icon="el-icon-search"></el-button>
+                        </el-col>
+                    </el-row>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <el-row :gutter="80">
+                        <el-col :span="12">
+                            <el-card>
+                                <div id="weather" style="min-width:400px;height:365px"></div>
+                            </el-card>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-card>
+                                <div id="dayWeather" style="min-width:400px;height:365px"></div>
+                            </el-card>
+                        </el-col>
+                    </el-row>
+                    <br/>
+                    <el-card v-if="weather != null">
+                        <div slot="header">
+                            <b v-text="weather.city + ' 当前天气'"></b>
+                        </div>
+                        <el-row>
+                            <el-col :span="8"><p>天气：{{weather.realtime.weather}}</p></el-col>
+                            <el-col :span="8"><p>风向：{{weather.realtime.wD}}</p></el-col>
+                            <el-col :span="8"><p>风力大小：{{weather.realtime.wS}}</p></el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="8"><p>温度：{{weather.realtime.temp}}℃</p></el-col>
+                            <el-col :span="8"><p>体感温度：{{weather.realtime.sendibleTemp}}℃</p></el-col>
+                            <el-col :span="8"><p>空气湿度：{{weather.realtime.sD}}%</p></el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="8"><p>更新时间：{{weather.realtime.time}}</p></el-col>
+                        </el-row>
+                    </el-card>
+                    <el-card v-else>
+                        <div slot="header">
+                            <b v-text="' 当前天气'"></b>
+                        </div>
+                    </el-card>
+                    <br/>
+                    <el-card v-if="weather != null">
+                        <div slot="header">
+                            <b v-text="weather.city + ' 未来天气'"></b>
+                        </div>
+                        <el-row>
+                            <el-col :span="24" v-for="(w, index) in weather.weathers" :key="index">
+                                <template v-if="index !== 6">
+                                    <p>{{w.date}}【{{w.week}}】：日出时间 --- {{w.sun_rise_time}}      日落时间 --- {{w.sun_down_time}}      天气 --- {{w.weather}}</p>
+                                </template>
+                            </el-col>
+                        </el-row>
+                    </el-card>
+                    <el-card v-else>
+                        <div slot="header">
+                            <b v-text="' 未来天气'"></b>
+                        </div>
+                    </el-card>
+                    <br/>
+                    <el-card v-if="weather != null">
+                        <div slot="header">
+                            <b v-text="weather.city + ' 生活指数'"></b>
+                        </div>
+                        <el-row>
+                            <el-col :span="24" v-for="(i, index) in weather.indexes" :key="index">
+                                <p>{{i.name}} --- {{i.content}}</p>
+                            </el-col>
+                        </el-row>
+                    </el-card>
+                    <el-card v-else>
+                        <div slot="header">
+                            <b v-text="' 生活指数'"></b>
+                        </div>
+                    </el-card>
+                    <br/>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+</div>
+<div th:replace="common/js"></div>
+<script data-th-src="@{/js/monitor/redis/lib/highchart/highcharts.js}"></script>
+<script data-th-src="@{/js/monitor/redis/lib/highchart/exporting.js}"></script>
+<script data-th-src="@{/js/monitor/redis/lib/highchart/highcharts-zh_CN.js}"></script>
+<script type="text/javascript" th:src="@{/js/web/weather.js}"></script>
+</body>
+</html>

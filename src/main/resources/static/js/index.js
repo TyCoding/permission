@@ -4,9 +4,7 @@ let app = new Vue({
     data: {
         tree: [], //Menu菜单的Tree集合
         info: JSON.parse(window.localStorage.getItem("info")), //从localStorage中获取登录用户数据
-
         defaultActive: '首页',
-
         mobileStatus: false, //是否是移动端
         sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
         sidebarFlag: ' openSidebar ', //侧边栏标志
@@ -77,6 +75,5 @@ let app = new Vue({
             this.sidebarStatus = false;
             this.sidebarFlag = ' hideSidebar mobile '
         }
-
     },
 });

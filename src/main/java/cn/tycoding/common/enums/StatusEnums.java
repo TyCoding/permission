@@ -1,6 +1,7 @@
 package cn.tycoding.common.enums;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author tycoding
@@ -17,8 +18,10 @@ public enum StatusEnums {
     OTHER(-100, "其他错误");
 
     @Getter
+    @Setter
     private int code;
     @Getter
+    @Setter
     private String info;
 
     StatusEnums(int code, String info) {

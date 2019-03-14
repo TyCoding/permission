@@ -51,9 +51,8 @@ let app = new Vue({
                 name: [{ validator: validateName, trigger: 'blur' }]
             },
             urlList: [],
-
             defaultActive: '菜单管理',
-
+            loading: true,
             mobileStatus: false, //是否是移动端
             sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
             sidebarFlag: ' openSidebar ', //侧边栏标志
@@ -97,12 +96,14 @@ let app = new Vue({
 
         //获取菜单列表
         search(pageCode, pageSize) {
+            this.loading = true;
             this.$http.post(api.system.menu.list(pageCode, pageSize), this.searchEntity).then(response => {
                 let $this = response.body;
                 if ($this.code == 200) {
                     this.list = $this.data.rows;
                     this.pageConf.totalPage = $this.data.total;
                 }
+                this.loading = false;
             })
         },
 

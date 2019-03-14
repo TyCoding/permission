@@ -1,7 +1,7 @@
 package cn.tycoding.common.exception;
 
-import cn.tycoding.common.enums.StatusEnums;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author tycoding
@@ -10,13 +10,10 @@ import lombok.Getter;
 public class GlobalException extends RuntimeException {
 
     @Getter
-    private StatusEnums enums = null;
+    @Setter
+    private String msg;
 
     public GlobalException(String message) {
-        super(message);
-    }
-
-    public GlobalException(StatusEnums enums) {
-        this.enums = enums;
+        this.msg = message;
     }
 }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Redis监控</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <div th:replace="common/css"></div>
+</head>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <div :class="'app-wrapper' + sidebarFlag">
+
+        <!-- aside -->
+        <div th:replace="common/side"></div>
+
+        <!-- container -->
+        <el-container class="main-container">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="common/header"></div>
+
+            <!-- main -->
+            <el-main class="app-main">
+                <el-card>
+                    <div id="memory" style="min-width:400px;height:400px"></div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div id="dbsize" style="min-width:400px;height:400px"></div>
+                    <br/>
+                    <br/>
+                    <h3>Redis详细信息</h3>
+                    <!-- 列表 -->
+                    <el-table :data="list" v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" ref="table" stripe size="mini" border tooltip-effect="dark" style="width: 100%">
+                        <el-table-column prop="key" label="名称" width="270"></el-table-column>
+                        <el-table-column prop="description" label="描述" show-overflow-tooltip></el-table-column>
+                        <el-table-column prop="value" label="参数" width="280"></el-table-column>
+                    </el-table>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+</div>
+<div th:replace="common/js"></div>
+<script data-th-src="@{/js/monitor/redis/lib/highchart/highcharts.js}"></script>
+<script data-th-src="@{/js/monitor/redis/lib/highchart/exporting.js}"></script>
+<script data-th-src="@{/js/monitor/redis/lib/highchart/highcharts-zh_CN.js}"></script>
+<script data-th-src="@{/js/monitor/redis/monitor.js}"></script>
+</body>
+</html>

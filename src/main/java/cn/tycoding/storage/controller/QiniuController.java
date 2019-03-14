@@ -1,9 +1,10 @@
 package cn.tycoding.storage.controller;
 
+import cn.tycoding.common.annotation.Log;
 import cn.tycoding.common.dto.ResponseCode;
-import cn.tycoding.storage.entity.Storage;
-import cn.tycoding.common.enums.StatusEnums;
+import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.common.utils.IdWorker;
+import cn.tycoding.storage.entity.Storage;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -19,10 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +46,7 @@ import java.util.Map;
  * @date 2018/12/16
  */
 @RestController
-@RequestMapping("/qiniu")
+@RequestMapping("/storage/qiniu")
 public class QiniuController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -56,22 +54,26 @@ public class QiniuController {
     IdWorker idWorker = new IdWorker(); //分布式ID生成器，用于设定上传文件的名称
 
     //设置好账号的ACCESS_KEY和SECRET_KEY
-    private static final String ACCESS_KEY = "Access_Key";
-    private static final String SECRET_KEY = "Secret_Key";
+//    private static final String ACCESS_KEY = "Access_Key";
+    private static final String ACCESS_KEY = "ShNkTksRRD57KgoO7ppPo1jfn1Jaj_YqWlj5jWjQ";
+//    private static final String SECRET_KEY = "Secret_Key";
+    private static final String SECRET_KEY = "1YrjBCcEgvsFoVJNcAbrXXQpiOxMMdnPR2PJQ-Z5";
     //要上传的空间
-    private static final String BUCKETNAME = "Bucket_Name";
+//    private static final String BUCKETNAME = "Bucket_Name";
+    private static final String BUCKETNAME = "images";
 
     //个人七牛云对象储存外链域名地址
-    private static final String url = "http://xxx/";
+//    private static final String url = "http://xxx/";
+    private static final String url = "http://img.api.tycoding.cn/";
 
     /**
      * 获取七牛云个人储存空间域名地址
      *
      * @return
      */
-    @RequestMapping(value = "/domain", method = RequestMethod.GET)
+    @GetMapping(value = "/domain")
     public ResponseCode domain() {
-        return ResponseCode.SUCCESS(url);
+        return ResponseCode.success(url);
     }
 
     /**
@@ -79,7 +81,7 @@ public class QiniuController {
      *
      * @return
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @GetMapping(value = "/list")
     public ResponseCode list() {
         try {
             //构造一个带指定Zone对象的配置类
@@ -107,10 +109,10 @@ public class QiniuController {
             Map map = new HashMap();
             map.put("total", list.size());
             map.put("rows", list);
-            return ResponseCode.SUCCESS(map);
+            return ResponseCode.success(map);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseCode.ERROR();
+            throw new GlobalException(e.getMessage());
         }
     }
 
@@ -125,6 +127,7 @@ public class QiniuController {
      * <p>
      * 此部分我后续会写文档讲解
      */
+    @Log("上传七牛云文件")
     @RequestMapping("/upload")
     public ResponseCode upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         if (!file.isEmpty()) {
@@ -171,14 +174,14 @@ public class QiniuController {
                 if (localFile.exists()) {
                     localFile.delete(); //删除本地缓存的文件
                 }
-                return new ResponseCode(StatusEnums.SUCCESS, map);
+                return ResponseCode.success(map);
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.error("文件上传失败============>" + e.getMessage());
-                return new ResponseCode(StatusEnums.SYSTEM_ERROR, e.getMessage());
+                throw new GlobalException(e.getMessage());
             }
         }
-        return new ResponseCode(StatusEnums.SYSTEM_ERROR);
+        return ResponseCode.error();
     }
 
     /**
@@ -187,6 +190,7 @@ public class QiniuController {
      * @param name 文件名称
      * @return 返回文件在七牛云储存的地址：外链/文件名  前端处理下载
      */
+    @Log("下载七牛云文件")
     @RequestMapping(value = "/download")
     public ResponseEntity<byte[]> download(@RequestParam("name") String name, HttpServletResponse response) {
         try {
@@ -219,7 +223,7 @@ public class QiniuController {
             return new ResponseEntity<byte[]>(outputStream.toByteArray(), headers, HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            throw new GlobalException(e.getMessage());
         }
     }
 
@@ -229,6 +233,7 @@ public class QiniuController {
      * @param name 删除的文件名称，在七牛云API中，对应：key
      * @return
      */
+    @Log("删除七牛云文件")
     @RequestMapping("/delete")
     public ResponseCode delete(@RequestParam("name") String name) {
         //构造一个带指定Zone对象的配置类
@@ -237,10 +242,10 @@ public class QiniuController {
         BucketManager bucketManager = new BucketManager(auth, cfg);
         try {
             bucketManager.delete(BUCKETNAME, name);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.success();
         } catch (QiniuException e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR, e.getMessage());
+            throw new GlobalException(e.getMessage());
         }
     }
 
@@ -251,7 +256,8 @@ public class QiniuController {
      * @param newname 文件新名称
      * @return
      */
-    @RequestMapping("/update")
+    @Log("更新七牛云文件名")
+    @GetMapping("/update")
     public ResponseCode update(@RequestParam("oldname") String oldname, @RequestParam("newname") String newname) {
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());
@@ -259,10 +265,10 @@ public class QiniuController {
         BucketManager bucketManager = new BucketManager(auth, cfg);
         try {
             bucketManager.move(BUCKETNAME, oldname, BUCKETNAME, newname);
-            return new ResponseCode(StatusEnums.SUCCESS);
+            return ResponseCode.success();
         } catch (QiniuException e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR, e.getMessage());
+            throw new GlobalException(e.getMessage());
         }
     }
 
@@ -272,7 +278,7 @@ public class QiniuController {
      * @param name 要查询的文件名称
      * @return
      */
-    @RequestMapping("/find")
+    @GetMapping("/find")
     public ResponseCode find(@RequestParam("name") String name) {
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());
@@ -283,10 +289,10 @@ public class QiniuController {
             Storage storage = new Storage(fileInfo.hash, name, fileInfo.mimeType, fileInfo.fsize, url + name);
             List<Storage> list = new ArrayList<>();
             list.add(storage);
-            return new ResponseCode(StatusEnums.SUCCESS, list);
+            return ResponseCode.success(list);
         } catch (QiniuException e) {
             e.printStackTrace();
-            return new ResponseCode(StatusEnums.SYSTEM_ERROR, e.getMessage());
+            throw new GlobalException(e.getMessage());
         }
     }
 

@@ -77,23 +77,39 @@ body {
     }
 }
 
+#app {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: #b8e5f8;
+    background-image: url("http://cdn.tycoding.cn/db29b0fbd2f78dd8c1b7.db29b0f.png");
+}
+
 #login {
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    z-index: -999;
-    content: "";
-    left: 0;
+    position: absolute;
+    max-width: 100%;
     top: 0;
     width: 100%;
     height: 100%;
-    display: flex;
+}
+
+.bear>img{
+    position: absolute;
+    top: 136px;
+    left: 50%;
+    width: 10rem;
+    -webkit-transform: translate(-50%, -83%);
+    transform: translate(-50%, -83%);
+    z-index: 1;
 }
 
 #main {
     font-family: Helvetica, sans-serif;
-    margin-top: 8%;
     text-align: center;
+}
+
+.el-card {
+    margin-top: 35%;
 }
 
 .header {
@@ -106,11 +122,6 @@ body {
 
 .el-card{
     border: none !important;
-}
-
-.el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover {
-    -webkit-box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
-    box-shadow: 0 2px 12px 0 #409eff;
 }
 
 .header > .item {
@@ -138,16 +149,4 @@ body {
 
 .tips:hover {
     color: #3a8ee6;
-}
-
-/*CSS响应式布局*/
-@media screen and (max-device-width: 500px){
-    #main{
-        margin-top: 45% !important;
-    }
-}
-@media only screen and (max-width: 768px){
-    #main{
-        margin-top: 29% !important;
-    }
 }

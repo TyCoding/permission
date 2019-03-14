@@ -8,12 +8,12 @@ Vue.http.options.emulateJSON = true;
 //前端API访问接口
 let api = {
     login: '/login',
-    info: '/user/info',
+    info: '/system/user/info',
 
     //公共接口
     common: {
         tree(name) {
-            return '/user/getMenus?username=' + name;
+            return '/system/user/getMenus?username=' + name;
         },
     },
 
@@ -21,70 +21,71 @@ let api = {
     system: {
         user: {
             list(pageCode, pageSize) {
-                return '/user/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
+                return '/system/user/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
             },
-            localUpload: '/local/upload',
+            localUpload: '/storage/local/upload',
+            qiniuUpload: '/storage/qiniu/upload',
             getUser(id) {
-                return "/user/findById?id=" + id;
+                return "/system/user/findById?id=" + id;
             },
             avatar: '/file/avatar.json',
             changeAvatar(url) {
-                return "/user/changeAvatar?url=" + url;
+                return "/system/user/changeAvatar?url=" + url;
             },
-            roleList: '/role/list',
-            deptTree: '/dept/tree',
-            add: '/user/add',
-            update: '/user/update',
-            delete: '/user/delete',
+            roleList: '/system/role/list',
+            deptTree: '/system/dept/tree',
+            add: '/system/user/add',
+            update: '/system/user/update',
+            delete: '/system/user/delete',
             checkName(name, id) {
-                return "/user/checkName?name=" + name + '&id=' + id;
+                return "/system/user/checkName?name=" + name + '&id=' + id;
             }
         },
         role: {
             list(pageCode, pageSize) {
-                return '/role/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
+                return '/system/role/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
             },
-            menuButtonTree: '/menu/menuButtonTree',
+            menuButtonTree: '/system/menu/menuButtonTree',
             findById(id) {
-                return '/role/findById?id=' + id;
+                return '/system/role/findById?id=' + id;
             },
-            delete: '/role/delete',
-            update: '/role/update',
-            add: '/role/add',
+            delete: '/system/role/delete',
+            update: '/system/role/update',
+            add: '/system/role/add',
             checkName(name, id) {
-                return "/role/checkName?name=" + name + '&id=' + id;
+                return "/system/role/checkName?name=" + name + '&id=' + id;
             }
         },
         menu: {
             list(pageCode, pageSize) {
-                return '/menu/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
+                return '/system/menu/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
             },
-            menuButtonTree: '/menu/menuButtonTree',
-            menuTree: '/menu/menuTree',
+            menuButtonTree: '/system/menu/menuButtonTree',
+            menuTree: '/system/menu/menuTree',
             findById(id) {
-                return '/menu/findById?id=' + id;
+                return '/system/menu/findById?id=' + id;
             },
-            delete: '/menu/delete',
-            update: '/menu/update',
-            add: '/menu/add',
-            getAllUrl: '/menu/urlList',
+            delete: '/system/menu/delete',
+            update: '/system/menu/update',
+            add: '/system/menu/add',
+            getAllUrl: '/system/menu/urlList',
             checkName(name, id) {
-                return "/menu/checkName?name=" + name + '&id=' + id;
+                return "/system/menu/checkName?name=" + name + '&id=' + id;
             }
         },
         dept: {
             list(pageCode, pageSize) {
-                return '/dept/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
+                return '/system/dept/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
             },
-            roleTree: '/dept/tree',
+            roleTree: '/system/dept/tree',
             findById(id) {
-                return '/dept/findById?id=' + id;
+                return '/system/dept/findById?id=' + id;
             },
-            delete: '/dept/delete',
-            update: '/dept/update',
-            add: '/dept/add',
+            delete: '/system/dept/delete',
+            update: '/system/dept/update',
+            add: '/system/dept/add',
             checkName(name, id) {
-                return "/dept/checkName?name=" + name + '&id=' + id;
+                return "/system/dept/checkName?name=" + name + '&id=' + id;
             }
         },
     },
@@ -92,11 +93,63 @@ let api = {
     //系统监控
     monitor: {
         online: {
-            list: "/online/list",
+            list: "/monitor/online/list",
             forceLogout(id) {
-                return "/online/forceLogout?id=" + id
+                return "/monitor/online/forceLogout?id=" + id
             }
-        }
+        },
+        loginlog: {
+            list(pageCode, pageSize) {
+                return '/monitor/loginlog/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
+            },
+            delete: '/monitor/loginlog/delete',
+        },
+        log: {
+            list(pageCode, pageSize) {
+                return '/monitor/log/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
+            },
+            delete: '/monitor/log/delete',
+        },
+        redis: {
+            memory: '/monitor/redis/memory',
+            dbsize: '/monitor/redis/dbsize',
+            info: '/monitor/redis/info',
+        },
     },
+
+    //对象储存
+    storage: {
+        qiniu: {
+            list: '/storage/qiniu/list',
+            domain: '/storage/qiniu',
+            upload: '/storage/qiniu/upload',
+            download() {
+                return '/storgae/qiniu/download?name=' + name;
+            },
+            deleteOne(name) {
+                return '/storage/qiniu/delete?name=' + name;
+            },
+
+            findOne(name) {
+                return '/storage/qiniu/find?name=' + name
+            },
+            updateOne(oldname, newname) {
+                return '/storage/qiniu/update?oldname=' + oldname + '&newname=' + newname;
+            },
+        },
+    },
+
+    //网络资源
+    web: {
+        weather: {
+            citys: '/file/city.json',
+            search(cityIds) {
+                return '/web/weather/search?cityIds=' + cityIds;
+            },
+        },
+        movie: {
+            hot: '/web/movie/hot',
+        },
+    }
 
 }

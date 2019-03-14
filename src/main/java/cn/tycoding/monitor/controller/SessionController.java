@@ -2,6 +2,7 @@ package cn.tycoding.monitor.controller;
 
 import cn.tycoding.common.controller.BaseController;
 import cn.tycoding.common.dto.ResponseCode;
+import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.monitor.service.SessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2019-02-14
  */
 @RestController
-@RequestMapping("/online")
+@RequestMapping("/monitor/online")
 public class SessionController extends BaseController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -28,17 +29,17 @@ public class SessionController extends BaseController {
 
     @GetMapping("/list")
     public ResponseCode list() {
-        return ResponseCode.SUCCESS(sessionService.list());
+        return ResponseCode.success(sessionService.list());
     }
 
     @GetMapping("/forceLogout")
     public ResponseCode forceLogout(String id) {
         try {
             sessionService.forceLogout(id);
-            return ResponseCode.SUCCESS();
+            return ResponseCode.success();
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseCode.ERROR();
+            throw new GlobalException(e.getMessage());
         }
     }
 }

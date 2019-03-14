@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>后台首页</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <div th:replace="common/css"></div>
+    <link rel="stylesheet" th:href="@{/css/movie.css}"/>
+</head>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <div :class="'app-wrapper' + sidebarFlag">
+
+        <!-- aside -->
+        <div th:replace="common/side"></div>
+
+        <!-- container -->
+        <el-container class="main-container">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="common/header"></div>
+
+            <!-- main -->
+            <el-main class="app-main">
+                <el-card>
+                    <el-row :gutter="20" v-loading="loading">
+                        <el-col :span="6" v-for="(movie, index) in movies" :key="index" style="padding: 1rem">
+                            <el-card class="movie-card" style="width: 270px" @click="detail(movie.id)">
+                                <img :src="movie.img" style="width: 230px; height: 320px;" alt="海报"/>
+                                <div class="movie-desc">
+                                    <div class="movie-title" :title="movie.tCn"><p>{{movie.tCn}}</p></div>
+                                    <p style="color: #aaa;margin-bottom: 10px;height: 22px;">{{movie.movieType}}</p>
+                                    <div class="movie-score" style="margin-bottom: .5rem">
+                                        <el-rate show-score disabled v-model="movie.r" score-template="{value}分"></el-rate>
+                                    </div>
+                                </div>
+                            </el-card>
+                        </el-col>
+                    </el-row>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+</div>
+<div th:replace="common/js"></div>
+<script type="text/javascript" th:src="@{/js/web/movie.js}"></script>
+</body>
+</html>

@@ -1,10 +1,12 @@
 package cn.tycoding.system.controller;
 
+import cn.tycoding.common.annotation.Log;
 import cn.tycoding.common.controller.BaseController;
 import cn.tycoding.common.dto.QueryPage;
 import cn.tycoding.common.dto.ResponseCode;
-import cn.tycoding.system.entity.*;
 import cn.tycoding.common.enums.StatusEnums;
+import cn.tycoding.common.exception.GlobalException;
+import cn.tycoding.system.entity.*;
 import cn.tycoding.system.service.DeptService;
 import cn.tycoding.system.service.MenuService;
 import cn.tycoding.system.service.RoleService;
@@ -25,7 +27,7 @@ import java.util.stream.Collectors;
  * @date 2019-01-19
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/system/user")
 public class UserController extends BaseController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -67,32 +69,33 @@ public class UserController extends BaseController {
         map.put("perms", permSet);
         map.put("dept", dept.getName());
         map.put("description", user.getDescription());
-        return ResponseCode.SUCCESS(map);
+        return ResponseCode.success(map);
     }
 
     @GetMapping("/getMenus")
     public ResponseCode getMenus(String username) {
-        return ResponseCode.SUCCESS(userService.getMenus(username));
+        return ResponseCode.success(userService.getMenus(username));
     }
 
     @PostMapping("/list")
     public ResponseCode queryList(QueryPage queryPage, User user) {
-        return ResponseCode.SUCCESS(super.selectByPageNumSize(queryPage, () -> userService.queryList(user)));
+        return ResponseCode.success(super.selectByPageNumSize(queryPage, () -> userService.queryList(user)));
     }
 
     @GetMapping("findById")
     public ResponseCode findById(Long id) {
-        return ResponseCode.SUCCESS(userService.findById(id));
+        return ResponseCode.success(userService.findById(id));
     }
 
+    @Log("添加用户")
     @PostMapping("/add")
     public ResponseCode add(@RequestBody UserWithRole user) {
         try {
             userService.add(user);
-            return ResponseCode.SUCCESS();
+            return ResponseCode.success();
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseCode.ERROR();
+            throw new GlobalException(e.getMessage());
         }
     }
 
@@ -104,28 +107,30 @@ public class UserController extends BaseController {
         if (!userService.checkName(name, id)) {
             return new ResponseCode(StatusEnums.PARAM_REPEAT);
         }
-        return ResponseCode.SUCCESS();
+        return ResponseCode.success();
     }
 
+    @Log("更新用户")
     @PostMapping("/update")
     public ResponseCode update(@RequestBody UserWithRole user) {
         try {
             userService.update(user);
-            return ResponseCode.SUCCESS();
+            return ResponseCode.success();
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseCode.ERROR();
+            throw new GlobalException(e.getMessage());
         }
     }
 
+    @Log("删除用户")
     @PostMapping("/delete")
     public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
             userService.delete(ids);
-            return ResponseCode.SUCCESS();
+            return ResponseCode.success();
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseCode.ERROR();
+            throw new GlobalException(e.getMessage());
         }
     }
 
@@ -135,10 +140,10 @@ public class UserController extends BaseController {
             User user = getCurrentUser();
             user.setAvatar(url);
             userService.updateNotNull(user);
-            return ResponseCode.SUCCESS();
+            return ResponseCode.success();
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseCode.ERROR();
+            throw new GlobalException(e.getMessage());
         }
     }
 }

@@ -41,6 +41,14 @@ spring:
     mode: LEGACYHTML5
     cache: false
 
+  #文件上传相关设置
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 100MB
+
+
 redis:
   shiro:
     host: 127.0.0.1

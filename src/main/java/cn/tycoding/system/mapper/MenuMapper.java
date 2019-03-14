@@ -10,7 +10,6 @@ import java.util.List;
  * @author tycoding
  * @date 2019-01-19
  */
-@Mapper
 public interface MenuMapper extends MyMapper<Menu> {
 
     List<Menu> findUserMenus(String username);

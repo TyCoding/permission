@@ -1,10 +1,12 @@
 package cn.tycoding.system.controller;
 
+import cn.tycoding.common.annotation.Log;
 import cn.tycoding.common.controller.BaseController;
 import cn.tycoding.common.dto.QueryPage;
 import cn.tycoding.common.dto.ResponseCode;
-import cn.tycoding.system.entity.Menu;
 import cn.tycoding.common.enums.StatusEnums;
+import cn.tycoding.common.exception.GlobalException;
+import cn.tycoding.system.entity.Menu;
 import cn.tycoding.system.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,7 @@ import java.util.List;
  * @date 2019-01-31
  */
 @RestController
-@RequestMapping("/menu")
+@RequestMapping("/system/menu")
 public class MenuController extends BaseController {
 
     @Autowired
@@ -24,52 +26,53 @@ public class MenuController extends BaseController {
 
     @PostMapping("/list")
     public ResponseCode queryList(QueryPage queryPage, Menu menu) {
-        return ResponseCode.SUCCESS(super.selectByPageNumSize(queryPage, () -> menuService.queryList(menu)));
+        return ResponseCode.success(super.selectByPageNumSize(queryPage, () -> menuService.queryList(menu)));
     }
 
     @GetMapping("/urlList")
     public ResponseCode getAllUrl() {
-        return ResponseCode.SUCCESS(menuService.queryList(new Menu()));
+        return ResponseCode.success(menuService.queryList(new Menu()));
     }
 
     @GetMapping("/menuButtonTree")
     public ResponseCode getMenuButtonTree() {
         try {
-            return ResponseCode.SUCCESS(menuService.getMenuButtonTree());
+            return ResponseCode.success(menuService.getMenuButtonTree());
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseCode.ERROR();
+            throw new GlobalException(e.getMessage());
         }
     }
 
     @GetMapping("/menuTree")
     public ResponseCode getMenuTree() {
         try {
-            return ResponseCode.SUCCESS(menuService.getMenuTree());
+            return ResponseCode.success(menuService.getMenuTree());
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseCode.ERROR();
+            throw new GlobalException(e.getMessage());
         }
     }
 
     @GetMapping("/findById")
     public ResponseCode findById(Long id) {
         try {
-            return new ResponseCode(StatusEnums.SUCCESS, menuService.findById(id));
+            return ResponseCode.success(menuService.findById(id));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseCode.ERROR();
+            throw new GlobalException(e.getMessage());
         }
     }
 
+    @Log("添加菜单")
     @PostMapping("/add")
     public ResponseCode add(@RequestBody Menu menu) {
         try {
             menuService.add(menu);
-            return ResponseCode.SUCCESS();
+            return ResponseCode.success();
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseCode.ERROR();
+            throw new GlobalException(e.getMessage());
         }
     }
 
@@ -81,28 +84,30 @@ public class MenuController extends BaseController {
         if (!menuService.checkName(name, id)) {
             return new ResponseCode(StatusEnums.PARAM_REPEAT);
         }
-        return new ResponseCode(StatusEnums.SUCCESS);
+        return ResponseCode.success();
     }
 
+    @Log("更新菜单")
     @PostMapping("/update")
     public ResponseCode update(@RequestBody Menu menu) {
         try {
             menuService.update(menu);
-            return ResponseCode.SUCCESS();
+            return ResponseCode.success();
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseCode.ERROR();
+            throw new GlobalException(e.getMessage());
         }
     }
 
+    @Log("删除菜单")
     @PostMapping("/delete")
     public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
             menuService.delete(ids);
-            return ResponseCode.SUCCESS();
+            return ResponseCode.success();
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseCode.ERROR();
+            throw new GlobalException(e.getMessage());
         }
     }
 }

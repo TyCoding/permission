@@ -1,6 +1,8 @@
 package cn.tycoding.storage.controller;
 
+import cn.tycoding.common.annotation.Log;
 import cn.tycoding.common.dto.ResponseCode;
+import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.common.utils.IdWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +23,7 @@ import java.util.Map;
  * @date 2018/10/19
  */
 @RestController
-@RequestMapping("/local")
+@RequestMapping("/storage/local")
 public class UploadController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -34,6 +36,7 @@ public class UploadController {
      * @param request
      * @return
      */
+    @Log("文件上传")
     @RequestMapping("/upload")
     public ResponseCode upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws FileNotFoundException {
         try {
@@ -70,10 +73,10 @@ public class UploadController {
             map.put("name", fileName);
             map.put("url", "/upload/" + fileName);
 
-            return ResponseCode.SUCCESS(map);
+            return ResponseCode.success(map);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseCode.ERROR();
+            throw new GlobalException(e.getMessage());
         }
     }
 }

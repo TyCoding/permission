@@ -1,6 +1,7 @@
 package cn.tycoding.common.dto;
 
 import cn.tycoding.common.enums.StatusEnums;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -8,19 +9,12 @@ import lombok.Data;
  * @date 2019-01-20
  */
 @Data
+@AllArgsConstructor
 public class ResponseCode {
 
     private Integer code;
     private String msg;
     private Object data;
-
-    public ResponseCode() {
-    }
-
-    public ResponseCode(Integer code, String msg) {
-        this.code = code;
-        this.msg = msg;
-    }
 
     public ResponseCode(StatusEnums enums) {
         this.code = enums.getCode();
@@ -29,19 +23,24 @@ public class ResponseCode {
 
     public ResponseCode(StatusEnums enums, Object data) {
         this.code = enums.getCode();
-        this.msg =enums.getInfo();
+        this.msg = enums.getInfo();
         this.data = data;
     }
 
-    public static ResponseCode SUCCESS() {
+    public ResponseCode(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public static ResponseCode success() {
         return new ResponseCode(StatusEnums.SUCCESS);
     }
 
-    public static ResponseCode SUCCESS(Object data) {
+    public static ResponseCode success(Object data) {
         return new ResponseCode(StatusEnums.SUCCESS, data);
     }
 
-    public static ResponseCode ERROR() {
+    public static ResponseCode error() {
         return new ResponseCode(StatusEnums.SYSTEM_ERROR);
     }
 }

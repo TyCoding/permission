@@ -8,7 +8,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 简单处理全局异常信息
@@ -21,14 +21,14 @@ import javax.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandle {
 
     @ExceptionHandler(value = Exception.class)
-    public ResponseCode exception(HttpServletRequest request, Exception e) {
+    public ResponseCode exception(Exception e) {
         e.printStackTrace();
         return new ResponseCode(StatusEnums.SYSTEM_ERROR);
     }
 
     @ExceptionHandler(value = GlobalException.class)
-    public ResponseCode globalExceptionHandle(GlobalException e) {
+    public ResponseCode globalExceptionHandle(GlobalException e, HttpServletResponse response) {
         e.printStackTrace();
-        return new ResponseCode(e.getEnums());
+        return new ResponseCode(response.getStatus(), e.getMsg());
     }
 }

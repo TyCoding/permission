@@ -11,7 +11,6 @@ import java.util.List;
  * @author tycoding
  * @date 2019-01-19
  */
-@Mapper
 public interface UserMapper extends MyMapper<User> {
 
     List<User> queryList(User user);
