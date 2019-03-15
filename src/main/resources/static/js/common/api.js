@@ -8,6 +8,7 @@ Vue.http.options.emulateJSON = true;
 //前端API访问接口
 let api = {
     login: '/login',
+    gifCode: '/gifCode?',
     info: '/system/user/info',
 
     //公共接口

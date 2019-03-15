@@ -13,6 +13,7 @@ let app = new Vue({
             greeting: 'http://cdn.tycoding.cn/greeting.1415c1c.png'
         },
         bear: 'http://cdn.tycoding.cn/normal.0447fe9.png',
+        gifCode: api.gifCode,
     },
     created() {
         if (window.localStorage.getItem("info") != null) {
@@ -40,6 +41,11 @@ let app = new Vue({
             this.bear = this.img.greeting;
         },
 
+        getGifCode() {
+            var time = new Date().getTime();
+            document.getElementById("img").src = api.gifCode + "?d=" + time;
+        },
+
         //登录
         login(form) {
             this.$refs[form].validate(valid => {
@@ -57,6 +63,8 @@ let app = new Vue({
                                 }
                             });
                         } else {
+                            this.gifCode = null;
+                            this.gifCode = api.gifCode;
                             this._notify(response.body.msg, 'error');
                         }
                     })

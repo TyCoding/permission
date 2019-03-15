@@ -11,9 +11,9 @@ let app = new Vue({
         pageConf: {
             //设置一些初始值(会被覆盖)
             pageCode: 1, //当前页
-            pageSize: 6, //每页显示的记录数
+            pageSize: 10, //每页显示的记录数
             totalPage: 12, //总记录数
-            pageOption: [6, 10, 20], //分页选项
+            pageOption: [10, 10, 20], //分页选项
         },
         selectIds: [], //Table选中行ID
 

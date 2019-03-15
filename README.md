@@ -1,10 +1,46 @@
 # 一个权限管理系统
 
+之前有学习了 [张开涛老师](https://jinnianshilongnian.iteye.com/blog/2018936) 老师的作品写的一个简单的 [Shiro入门级权限管理项目](https://github.com/TyCoding/shiro)，但由于一些原因感觉学习的不够深入，最近仔细拜读了 [wuyouzhuguli](https://github.com/wuyouzhuguli) 大神的作品，学习到了很多，顾写下此项目实战练习。 
 
+## 致谢
+
+* [wuyouzhuguli](https://github.com/wuyouzhuguli) 
+
+可以说**本项目**仅是一个学习的项目，非常感谢这位大神的作品：[https://github.com/wuyouzhuguli/FEBS-Shiro](https://github.com/wuyouzhuguli/FEBS-Shiro)，**本项目**就来自学习了大神的项目后把自己理解的部分（加上自己的代码风格、思路）写了出来。欢迎大家学习这个项目，相信对大家的学习很有帮助。
+
+## 功能模块
+
+```
+├─项目文档(Swagger2.0)
+├─系统管理
+│  ├─用户管理
+│  ├─角色管理
+│  ├─菜单管理
+│  └─部门管理
+├─系统监控
+│  ├─在线用户
+│  ├─登录日志
+│  ├─系统日志
+│  ├─Redis监控
+│  └─Druid监控
+├─对象储存
+│  ├─七牛云
+│─网络资源
+│  ├─天气查询
+│  └─影视资讯
+```
 
 ## 文档 
 
-项目正在开发，文档正在完善中...
+* [在基于SpringBoot的前后端分离项目中使用Shiro](https://tycoding.cn/2019/01/25/springboot-shiro/)
+
+* [Shiro在线会话管理](https://tycoding.cn/2019/02/16/54-shiro-session/)
+
+* [Shiro权限管理项目中如何构建权限菜单](https://tycoding.cn/2019/01/30/shiro-tree/)
+
+* [ElementUI - Tree & Shiro](https://tycoding.cn/2019/02/16/53-shiro-tree2-md/)
+
+* 文档正在完善中...
 
 ## 技术选型
 
@@ -37,3 +73,29 @@
 * 依赖管理： Maven
 
 * 数据库： Mysql 5.7.24
+
+## 项目截图
+
+![](doc/1.png)
+
+![](doc/2.png)
+
+![](doc/3.png)
+
+![](doc/4.png)
+
+![](doc/5.png)
+
+![](doc/6.png)
+
+![](doc/7.png)
+
+![](doc/8.png)
+
+![](doc/9.png)
+
+![](doc/10.png)
+
+![](doc/11.png)
+
+

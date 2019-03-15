@@ -1,9 +1,9 @@
 package cn.tycoding.common.realm;
 
+import cn.tycoding.common.enums.StatusEnums;
 import cn.tycoding.system.entity.Menu;
 import cn.tycoding.system.entity.Role;
 import cn.tycoding.system.entity.User;
-import cn.tycoding.common.enums.StatusEnums;
 import cn.tycoding.system.service.MenuService;
 import cn.tycoding.system.service.RoleService;
 import cn.tycoding.system.service.UserService;
@@ -13,6 +13,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -34,7 +35,12 @@ public class AuthRealm extends AuthorizingRealm {
     @Autowired
     private MenuService menuService;
 
-    //权限认证
+    /**
+     * 权限认证
+     *
+     * @param principalCollection
+     * @return
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         /**
@@ -59,7 +65,13 @@ public class AuthRealm extends AuthorizingRealm {
         return simpleAuthorizationInfo;
     }
 
-    //身份校验
+    /**
+     * 身份校验
+     *
+     * @param authenticationToken
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         /**
@@ -75,12 +87,19 @@ public class AuthRealm extends AuthorizingRealm {
         User user = userService.findByName(username);
 
         if (user == null) {
-            throw new UnknownAccountException(String.valueOf(StatusEnums.ACCOUNT_UNKNOWN));
+            throw new UnknownAccountException(String.valueOf(StatusEnums.ACCOUNT_UNKNOWN.getInfo()));
         }
-        if (!password.equals(user.getPassword())) {
-            throw new IncorrectCredentialsException(String.valueOf(StatusEnums.ACCOUNT_ERROR));
-        }
-
-        return new SimpleAuthenticationInfo(user, password, getName());
+        /**
+         * 交给Shiro进行密码的解密校验
+         * 调用SecurityUtils.getSubject().getPrincipal() 遇到类型转换问题，报错 String !=> User
+         * 请参考这篇文章：{@link https://blog.csdn.net/qq_35981283/article/details/78634575}
+         */
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
+                user,
+                user.getPassword(),
+                ByteSource.Util.bytes(user.getSalt()),
+                getName()
+        );
+        return authenticationInfo;
     }
 }

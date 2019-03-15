@@ -1,12 +1,17 @@
 package cn.tycoding.common.config;
 
+import cn.tycoding.common.dto.SysConstant;
 import cn.tycoding.common.realm.AuthRealm;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
@@ -34,6 +39,7 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/gifCode", "anon");
 
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/fonts/**", "anon");
@@ -48,24 +54,43 @@ public class ShiroConfig {
     }
 
     @Bean
-    public Realm realm() {
-        return new AuthRealm();
+    public Realm realm(HashedCredentialsMatcher matcher) {
+        AuthRealm realm = new AuthRealm();
+        realm.setCredentialsMatcher(matcher);
+        return realm;
     }
 
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(realm());
-
-        //自定义sessionManager
+        securityManager.setRealm(realm(hashedCredentialsMatcher()));
         securityManager.setSessionManager(sessionManager());
-        //自定义缓存实现
         securityManager.setCacheManager(cacheManager());
-
         return securityManager;
     }
 
-    //自定义SessionManager
+    @Bean
+    public SimpleCookie rememberCookie() {
+        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+        return simpleCookie;
+    }
+
+    @Bean
+    public CookieRememberMeManager rememberMeManager() {
+        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+        cookieRememberMeManager.setCookie(rememberCookie());
+        cookieRememberMeManager.setCipherKey(Base64.decode("4AvVhmFLUs0KTA3Kprsdag=="));
+        return cookieRememberMeManager;
+    }
+
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher() {
+        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
+        credentialsMatcher.setHashAlgorithmName(SysConstant.ALGORITHNAME);
+        credentialsMatcher.setHashIterations(SysConstant.HASHNUM);
+        return credentialsMatcher;
+    }
+
     @Bean
     public SessionManager sessionManager() {
         MySessionManager mySessionManager = new MySessionManager();
