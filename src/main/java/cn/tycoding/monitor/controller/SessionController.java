@@ -4,6 +4,7 @@ import cn.tycoding.common.controller.BaseController;
 import cn.tycoding.common.dto.ResponseCode;
 import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.monitor.service.SessionService;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/monitor/online")
+@Api(value = "SessionController", tags = {"在线用户模块接口"})
 public class SessionController extends BaseController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

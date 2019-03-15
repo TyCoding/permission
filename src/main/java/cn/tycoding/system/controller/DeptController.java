@@ -8,6 +8,7 @@ import cn.tycoding.common.enums.StatusEnums;
 import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.system.entity.Dept;
 import cn.tycoding.system.service.DeptService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/system/dept")
+@Api(value = "DeptController", tags = {"部门管理模块接口"})
 public class DeptController extends BaseController {
 
     @Autowired

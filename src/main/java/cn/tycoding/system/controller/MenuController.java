@@ -8,6 +8,7 @@ import cn.tycoding.common.enums.StatusEnums;
 import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.system.entity.Menu;
 import cn.tycoding.system.service.MenuService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/system/menu")
+@Api(value = "MenuController", tags = {"菜单管理模块接口"})
 public class MenuController extends BaseController {
 
     @Autowired

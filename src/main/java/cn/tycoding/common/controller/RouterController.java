@@ -28,6 +28,11 @@ public class RouterController {
         return "index";
     }
 
+    @GetMapping("/doc")
+    public String doc() {
+        return "/page/doc";
+    }
+
     /**
      * 系统管理
      */

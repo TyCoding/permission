@@ -7,6 +7,7 @@ import cn.tycoding.common.dto.ResponseCode;
 import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.monitor.entity.SysLog;
 import cn.tycoding.monitor.service.LogService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/monitor/log")
+@Api(value = "LogController", tags = {"系统日志模块接口"})
 public class LogController extends BaseController {
 
     @Autowired

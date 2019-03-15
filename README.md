@@ -1,4 +1,4 @@
-# 一个权限管理系统
+# Permission 一个权限管理系统
 
 之前有学习了 [张开涛老师](https://jinnianshilongnian.iteye.com/blog/2018936) 老师的作品写的一个简单的 [Shiro入门级权限管理项目](https://github.com/TyCoding/shiro)，但由于一些原因感觉学习的不够深入，最近仔细拜读了 [wuyouzhuguli](https://github.com/wuyouzhuguli) 大神的作品，学习到了很多，顾写下此项目实战练习。 
 
@@ -56,7 +56,7 @@
 
 * 缓存框架： Redis 
 
-* 其他： 七牛云、Mybatis通用Mapper、druid、Logback、fastjson、pageHelper
+* 其他： Swagger2、七牛云、Mybatis通用Mapper、druid、Logback、fastjson、pageHelper
 
 ### 前端
 
@@ -73,6 +73,14 @@
 * 依赖管理： Maven
 
 * 数据库： Mysql 5.7.24
+
+## 写在前面
+
+如果你看到技术选型可能会疑问前面完全依赖Vue.js，为何还是HTML页面？没错，前端是完全依赖Vue.js的，整个项目都没有用到JQuery。如果你学过Vue肯定熟悉NPM，Vue官方也推荐使用NPM开发，但为了更方便部署学习，这里使用HTML + Thymeleaf 解析页面。
+
+虽然用了Thymeleaf，但也仅是用来解析页面视图地址，并没有在数据层用到Thymeleaf，所有的数据都依赖vue-resource异步获取，我以一张简单的图来解释项目交互流程：
+
+![](http://cdn.tycoding.cn/20190315204846.png)
 
 ## 项目截图
 
@@ -97,5 +105,9 @@
 ![](doc/10.png)
 
 ![](doc/11.png)
+
+![](doc/12.png)
+
+![](doc/13.png)
 
 

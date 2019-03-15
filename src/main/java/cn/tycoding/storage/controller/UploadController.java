@@ -4,6 +4,7 @@ import cn.tycoding.common.annotation.Log;
 import cn.tycoding.common.dto.ResponseCode;
 import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.common.utils.IdWorker;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ResourceUtils;
@@ -24,6 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/storage/local")
+@Api(value = "UploadController", tags = {"本地上传模块接口"})
 public class UploadController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

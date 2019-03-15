@@ -7,8 +7,12 @@ import cn.tycoding.common.dto.ResponseCode;
 import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.monitor.entity.LoginLog;
 import cn.tycoding.monitor.service.LoginLogService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -18,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/monitor/loginlog")
+@Api(value = "LoginLogController", tags = {"登录日志模块接口"})
 public class LoginLogController extends BaseController {
 
     @Autowired

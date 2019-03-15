@@ -9,6 +9,7 @@ import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.system.entity.Role;
 import cn.tycoding.system.entity.RoleWithMenu;
 import cn.tycoding.system.service.RoleService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/system/role")
+@Api(value = "RoleController", tags = {"角色管理模块接口"})
 public class RoleController extends BaseController {
 
     @Autowired

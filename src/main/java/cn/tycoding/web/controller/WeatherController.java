@@ -6,6 +6,7 @@ import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.common.utils.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/web/weather")
+@Api(value = "WeatherController", tags = {"天气查询模块接口"})
 public class WeatherController {
 
     @GetMapping("/search")

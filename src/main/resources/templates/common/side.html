@@ -18,6 +18,12 @@
                             <span slot="title">首页</span>
                         </el-menu-item>
                     </a>
+                    <a href="/doc">
+                        <el-menu-item index="接口文档">
+                            <i class="fa fa-paper-plane fa-fw"></i>
+                            <span slot="title">接口文档</span>
+                        </el-menu-item>
+                    </a>
                     <el-submenu v-for="(parent, topIndex) in tree" :key="topIndex + 1" :index="'' + topIndex + 1">
                         <template slot="title">
                             <i :class="parent.icon + ' fa-fw'"></i>

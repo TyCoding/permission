@@ -11,6 +11,7 @@ import cn.tycoding.common.utils.vcode.Captcha;
 import cn.tycoding.common.utils.vcode.GifCaptcha;
 import cn.tycoding.monitor.entity.LoginLog;
 import cn.tycoding.monitor.service.LoginLogService;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
@@ -32,6 +33,7 @@ import java.util.Date;
  * @date 2019-01-20
  */
 @RestController
+@Api(value = "LoginController", tags = {"登录模块接口"})
 public class LoginController extends BaseController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

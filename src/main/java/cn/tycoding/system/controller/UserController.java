@@ -11,6 +11,7 @@ import cn.tycoding.system.service.DeptService;
 import cn.tycoding.system.service.MenuService;
 import cn.tycoding.system.service.RoleService;
 import cn.tycoding.system.service.UserService;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/system/user")
+@Api(value = "UserController", tags = {"用户管理模块接口"})
 public class UserController extends BaseController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
