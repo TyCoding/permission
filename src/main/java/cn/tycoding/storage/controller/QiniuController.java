@@ -72,7 +72,7 @@ public class QiniuController {
     private String BUCKETNAME;
 
     //个人七牛云对象储存外链域名地址
-    @Value("qiniu.url")
+    @Value("${qiniu.url}")
     private String url;
 
     /**

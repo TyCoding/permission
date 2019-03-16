@@ -152,4 +152,15 @@ public class UserController extends BaseController {
             throw new GlobalException(e.getMessage());
         }
     }
+
+    @GetMapping("/updatePassword")
+    public ResponseCode updatePassword(String password) {
+        try {
+            userService.updatePassword(password);
+            return ResponseCode.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new GlobalException(e.getMessage());
+        }
+    }
 }

@@ -31,12 +31,12 @@ public class RouterController {
 
     @GetMapping("/doc")
     public String doc() {
-        return "/page/doc";
+        return "page/doc";
     }
 
     @GetMapping("/403")
     public String unAuthorized() {
-        return "/error/403";
+        return "error/403";
     }
 
     /**
@@ -45,30 +45,30 @@ public class RouterController {
     @GetMapping("/system/user")
     @RequiresPermissions("user:list")
     public String user() {
-        return "/page/system/user/index";
+        return "page/system/user/index";
     }
 
     @GetMapping("/system/role")
     @RequiresPermissions("role:list")
     public String role() {
-        return "/page/system/role/index";
+        return "page/system/role/index";
     }
 
     @GetMapping("/system/menu")
     @RequiresPermissions("menu:list")
     public String menu() {
-        return "/page/system/menu/index";
+        return "page/system/menu/index";
     }
 
     @GetMapping("/system/self")
     public String self() {
-        return "/page/system/my/index";
+        return "page/system/my/index";
     }
 
     @GetMapping("/system/dept")
     @RequiresPermissions("dept:list")
     public String dept() {
-        return "/page/system/dept/index";
+        return "page/system/dept/index";
     }
 
     /**
@@ -77,31 +77,31 @@ public class RouterController {
     @GetMapping("/monitor/online")
     @RequiresPermissions("online:list")
     public String online() {
-        return "/page/monitor/online/index";
+        return "page/monitor/online/index";
     }
 
     @GetMapping("/monitor/loginlog")
     @RequiresPermissions("loginlog:list")
     public String loginLog() {
-        return "/page/monitor/loginlog/index";
+        return "page/monitor/loginlog/index";
     }
 
     @GetMapping("/monitor/log")
     @RequiresPermissions("log:list")
     public String log() {
-        return "/page/monitor/log/index";
+        return "page/monitor/log/index";
     }
 
     @GetMapping("/monitor/redis/monitor")
     @RequiresPermissions("redis:list")
     public String monitor() {
-        return "/page/monitor/redis/index";
+        return "page/monitor/redis/index";
     }
 
     @GetMapping("/monitor/druid")
     @RequiresPermissions("druid:list")
     public String druid() {
-        return "/page/monitor/druid";
+        return "page/monitor/druid";
     }
 
     /**
@@ -110,7 +110,7 @@ public class RouterController {
     @GetMapping("/storage/qiniu")
     @RequiresPermissions("qiniu:list")
     public String qiniu() {
-        return "/page/storage/qiniu/index";
+        return "page/storage/qiniu/index";
     }
 
     /**
@@ -119,12 +119,12 @@ public class RouterController {
     @GetMapping("/web/weather")
     @RequiresPermissions("weather:list")
     public String weather() {
-        return "/page/web/weather";
+        return "page/web/weather";
     }
 
     @GetMapping("/web/movie")
     @RequiresPermissions("movie:list")
     public String movie() {
-        return "/page/web/movie";
+        return "page/web/movie";
     }
 }

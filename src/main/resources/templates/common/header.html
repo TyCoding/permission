@@ -11,8 +11,8 @@
             </div>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item disabled>{{info.username}}</el-dropdown-item>
-                <a href="/self"><el-dropdown-item divided>个人信息</el-dropdown-item></a>
-                <el-dropdown-item>修改密码</el-dropdown-item>
+                <a href="/system/self"><el-dropdown-item divided>个人信息</el-dropdown-item></a>
+                <el-dropdown-item @click.native="dialogVisible = true">修改密码</el-dropdown-item>
                 <a href="http://tycoding.cn" target="_blank"><el-dropdown-item divided>Blog</el-dropdown-item></a>
                 <a href="https://github.com/TyCoding" target="_blank"><el-dropdown-item>Github</el-dropdown-item></a>
                 <a href="/logout"><el-dropdown-item divided>Logout</el-dropdown-item></a>
@@ -20,3 +20,14 @@
         </el-dropdown>
     </el-menu>
 </el-header>
+<el-dialog title="修改密码" :visible.sync="dialogVisible" width="30%" :close-on-press-escape="false" :close-on-click-modal="false">
+    <el-form ref="form" :model="newpass">
+        <el-form-item prop="password" label="新密码" label-width="120px" :rules="[{ required: true, message: '请输入密码', trigger: 'blur' }]">
+            <el-input v-model="newpass.password" type="password"></el-input>
+        </el-form-item>
+    </el-form>
+    <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updatePass('form')">确 定</el-button>
+    </span>
+</el-dialog>

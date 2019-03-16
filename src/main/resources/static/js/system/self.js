@@ -29,22 +29,28 @@ let app = new Vue({
                 description: '',
                 roleIds: [],
             },
+            qiniuUpload: api.system.user.qiniuUpload,
             localUpload: api.system.user.localUpload,
             deptTree: [], //部门Tree数据
             treeProps: {
                 children: 'children',
                 label: 'name'
             },
+            checkForm: {
+                username: [{ validator: validateName, trigger: 'blur' }]
+            },
             //模态框状态标识
             formDialog: false,
             avatarDialog: false,
             avatarList: [],
-
             defaultActive: '首页',
-
             mobileStatus: false, //是否是移动端
             sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
             sidebarFlag: ' openSidebar ', //侧边栏标志
+            dialogVisible: false,
+            newpass: {
+                password: ''
+            }
         }
     },
     created() {
@@ -77,6 +83,16 @@ let app = new Vue({
                 }
             })
         },
+        //修改密码
+        updatePass(form) {
+            this.$refs[form].validate((valid) => {
+                if (valid) {
+                    this.$http.get(api.common.updatePassword(this.newpass.password)).then(response => {
+                        window.location.href = '/logout';
+                    })
+                }
+            })
+        },
 
         //触发关闭按钮
         handleClose() {
@@ -86,7 +102,7 @@ let app = new Vue({
 
         //触发修改头像按钮
         handleEditAvatar() {
-            this.$http.get(api.avatar).then(response => {
+            this.$http.get(api.system.user.avatar).then(response => {
                 this.avatarList = response.body;
             });
             this.avatarDialog = true;
@@ -111,7 +127,7 @@ let app = new Vue({
         handleEditInfo() {
             this.clearForm();
             //获取角色列表
-            this.$http.get(api.system.user.roleList).then(response => {
+            this.$http.post(api.system.user.roleList).then(response => {
                 this.roleList = response.body.data.rows;
             })
             //获取部门Tree
@@ -154,8 +170,9 @@ let app = new Vue({
                         } else {
                             this._notify(response.body.msg, 'error')
                         }
-                        window.location.href = "/logout"
+                        this.clearForm();
                     })
+                    this.form.deptId = [];
                 } else {
                     return false;
                 }

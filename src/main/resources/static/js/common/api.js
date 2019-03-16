@@ -13,6 +13,9 @@ let api = {
 
     //公共接口
     common: {
+        updatePassword(password) {
+            return '/system/user/updatePassword?password=' + password
+        },
         tree(name) {
             return '/system/user/getMenus?username=' + name;
         },

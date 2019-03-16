@@ -14,6 +14,10 @@ let app = new Vue({
         mobileStatus: false, //是否是移动端
         sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
         sidebarFlag: ' openSidebar ', //侧边栏标志
+        dialogVisible: false,
+        newpass: {
+            password: ''
+        }
     },
     created() {
         window.onload = function() {
@@ -32,6 +36,16 @@ let app = new Vue({
             this.$message({
                 message: message,
                 type: type
+            })
+        },
+        //修改密码
+        updatePass(form) {
+            this.$refs[form].validate((valid) => {
+                if (valid) {
+                    this.$http.get(api.common.updatePassword(this.newpass.password)).then(response => {
+                        window.location.href = '/logout';
+                    })
+                }
             })
         },
         /**

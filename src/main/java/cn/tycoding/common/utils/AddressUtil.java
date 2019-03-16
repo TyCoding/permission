@@ -1,6 +1,6 @@
 package cn.tycoding.common.utils;
 
-import cn.tycoding.common.exception.GlobalException;
+import org.apache.commons.io.FileUtils;
 import org.lionsoul.ip2region.DataBlock;
 import org.lionsoul.ip2region.DbConfig;
 import org.lionsoul.ip2region.DbSearcher;
@@ -8,6 +8,7 @@ import org.lionsoul.ip2region.Util;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 
@@ -33,7 +34,14 @@ public class AddressUtil {
         File file = new File(dbPath);
 
         if (!file.exists()) {
-            throw new GlobalException("缺少 ip2region.db库");
+            String tmpDir = System.getProperties().getProperty("java.io.tmpdir");
+            dbPath = tmpDir + "ip.db";
+            file = new File(dbPath);
+            try {
+                FileUtils.copyInputStreamToFile(AddressUtil.class.getClassLoader().getResourceAsStream("classpath:config/ip2region.db"), file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         int algorithm = DbSearcher.BTREE_ALGORITHM; //B-tree

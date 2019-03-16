@@ -2,17 +2,18 @@ package cn.tycoding.system.service.impl;
 
 import cn.tycoding.common.dto.Tree;
 import cn.tycoding.common.service.impl.BaseServiceImpl;
+import cn.tycoding.common.utils.PasswordHelper;
+import cn.tycoding.common.utils.TreeUtils;
 import cn.tycoding.system.entity.Menu;
 import cn.tycoding.system.entity.User;
 import cn.tycoding.system.entity.UserRole;
 import cn.tycoding.system.entity.UserWithRole;
 import cn.tycoding.system.mapper.MenuMapper;
-import cn.tycoding.system.mapper.RoleMapper;
 import cn.tycoding.system.mapper.UserMapper;
 import cn.tycoding.system.mapper.UserRoleMapper;
 import cn.tycoding.system.service.UserRoleService;
 import cn.tycoding.system.service.UserService;
-import cn.tycoding.common.utils.TreeUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +38,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     private MenuMapper menuMapper;
 
     @Autowired
-    private RoleMapper roleMapper;
+    private PasswordHelper passwordHelper;
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -99,8 +100,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     @Transactional
     public void add(UserWithRole user) {
         user.setCreateTime(new Date());
-        // @TODO
-        user.setSalt("xxx");
+        passwordHelper.encryptPassword(user);
         this.save(user);
         saveUserRole(user);
     }
@@ -123,6 +123,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         return true;
     }
 
+    @Transactional
     private void saveUserRole(UserWithRole user) {
         user.getRoleIds().forEach(roleId -> {
             UserRole userRole = new UserRole();
@@ -137,8 +138,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     public void update(UserWithRole user) {
         user.setPassword(null);
         user.setModifyTime(new Date());
-        // @TODO
-        user.setSalt("xxx");
         this.updateNotNull(user);
         Example example = new Example(UserRole.class);
         example.createCriteria().andCondition("user_id=", user.getId());
@@ -147,9 +146,21 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     }
 
     @Override
+    @Transactional
     public void delete(List<Long> keys) {
         this.batchDelete(keys, "id", User.class);
         userRoleService.deleteUserRolesByUserId(keys);
+    }
+
+    @Override
+    @Transactional
+    public void updatePassword(String password) {
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        Example example = new Example(User.class);
+        example.createCriteria().andCondition("username=", user.getUsername());
+        user.setPassword(password);
+        passwordHelper.encryptPassword(user);
+        userMapper.updateByExampleSelective(user, example);
     }
 
 
