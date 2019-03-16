@@ -108,15 +108,15 @@
             <version>2.4.2.1-RELEASE</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.apache.shiro</groupId>-->
-            <!--<artifactId>shiro-ehcache</artifactId>-->
-            <!--<version>1.4.0</version>-->
-            <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<groupId>org.apache.shiro</groupId>-->
-                    <!--<artifactId>shiro-core</artifactId>-->
-                <!--</exclusion>-->
-            <!--</exclusions>-->
+        <!--<groupId>org.apache.shiro</groupId>-->
+        <!--<artifactId>shiro-ehcache</artifactId>-->
+        <!--<version>1.4.0</version>-->
+        <!--<exclusions>-->
+        <!--<exclusion>-->
+        <!--<groupId>org.apache.shiro</groupId>-->
+        <!--<artifactId>shiro-core</artifactId>-->
+        <!--</exclusion>-->
+        <!--</exclusions>-->
         <!--</dependency>-->
 
         <!-- Swagger2 -->
@@ -184,6 +184,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
             </plugin>
         </plugins>
     </build>
