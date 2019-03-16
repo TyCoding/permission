@@ -79,3 +79,11 @@ pagehelper:
 logging:
   level:
     cn.tycoding.system.mapper: DEBUG
+
+
+# 七牛云
+qiniu:
+  access_key: Access_Key
+  secret_key: Secret_Key
+  bucket_name: Bucket_Name
+  url: bucket url

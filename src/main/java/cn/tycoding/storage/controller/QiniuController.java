@@ -17,6 +17,7 @@ import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -60,13 +61,19 @@ public class QiniuController {
     IdWorker idWorker = new IdWorker(); //分布式ID生成器，用于设定上传文件的名称
 
     //设置好账号的ACCESS_KEY和SECRET_KEY
-    private static final String ACCESS_KEY = "Access_Key";
-    private static final String SECRET_KEY = "Secret_Key";
+    @Value("${qiniu.access_key}")
+    private String ACCESS_KEY;
+
+    @Value("${qiniu.secret_key}")
+    private String SECRET_KEY;
+
     //要上传的空间
-    private static final String BUCKETNAME = "Bucket_Name";
+    @Value("${qiniu.bucket_name}")
+    private String BUCKETNAME;
 
     //个人七牛云对象储存外链域名地址
-    private static final String url = "http://xxx/";
+    @Value("qiniu.url")
+    private String url;
 
     /**
      * 获取七牛云个人储存空间域名地址

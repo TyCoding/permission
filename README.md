@@ -84,6 +84,24 @@
 
 ![](http://cdn.tycoding.cn/20190315204846.png)
 
+### 部署
+
+1. 克隆
+
+```
+git clone https://github.com/TyCoding/permission.git
+```
+
+2. 使用IDEA打开`permission`项目，创建数据库（执行`db/sys_schema.sql`）。
+
+3. 修改`application.yml`中MySQL、Redis连接信息。（如果需要七牛云另完善七牛云的信息）。
+
+4. 配置好Redis，启动Redis服务。
+
+5. 启动项目，访问`localhost:8080`
+
+6. 更多的文档后续补充...
+
 ## 项目截图
 
 ![](doc/1.png)
