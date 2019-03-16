@@ -2,6 +2,8 @@
 
 之前有学习了 [张开涛老师](https://jinnianshilongnian.iteye.com/blog/2018936) 老师的作品写的一个简单的 [Shiro入门级权限管理项目](https://github.com/TyCoding/shiro)，但由于一些原因感觉学习的不够深入，最近仔细拜读了 [wuyouzhuguli](https://github.com/wuyouzhuguli) 大神的作品，学习到了很多，顾写下此项目实战练习。 
 
+**欢迎大家clone下来学习，如果可以，希望能点亮右上角star, fork，给作者一些鼓励**
+
 ## 致谢
 
 * [wuyouzhuguli](https://github.com/wuyouzhuguli) 
