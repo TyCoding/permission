@@ -1,5 +1,6 @@
 package cn.tycoding.common.controller;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -33,20 +34,28 @@ public class RouterController {
         return "/page/doc";
     }
 
+    @GetMapping("/403")
+    public String unAuthorized() {
+        return "/error/403";
+    }
+
     /**
      * 系统管理
      */
     @GetMapping("/system/user")
+    @RequiresPermissions("user:list")
     public String user() {
         return "/page/system/user/index";
     }
 
     @GetMapping("/system/role")
+    @RequiresPermissions("role:list")
     public String role() {
         return "/page/system/role/index";
     }
 
     @GetMapping("/system/menu")
+    @RequiresPermissions("menu:list")
     public String menu() {
         return "/page/system/menu/index";
     }
@@ -57,6 +66,7 @@ public class RouterController {
     }
 
     @GetMapping("/system/dept")
+    @RequiresPermissions("dept:list")
     public String dept() {
         return "/page/system/dept/index";
     }
@@ -65,26 +75,31 @@ public class RouterController {
      * 系统监控
      */
     @GetMapping("/monitor/online")
+    @RequiresPermissions("online:list")
     public String online() {
         return "/page/monitor/online/index";
     }
 
     @GetMapping("/monitor/loginlog")
+    @RequiresPermissions("loginlog:list")
     public String loginLog() {
         return "/page/monitor/loginlog/index";
     }
 
     @GetMapping("/monitor/log")
+    @RequiresPermissions("log:list")
     public String log() {
         return "/page/monitor/log/index";
     }
 
     @GetMapping("/monitor/redis/monitor")
+    @RequiresPermissions("redis:list")
     public String monitor() {
         return "/page/monitor/redis/index";
     }
 
     @GetMapping("/monitor/druid")
+    @RequiresPermissions("druid:list")
     public String druid() {
         return "/page/monitor/druid";
     }
@@ -93,6 +108,7 @@ public class RouterController {
      * 对象储存
      */
     @GetMapping("/storage/qiniu")
+    @RequiresPermissions("qiniu:list")
     public String qiniu() {
         return "/page/storage/qiniu/index";
     }
@@ -101,11 +117,13 @@ public class RouterController {
      * 网络资源
      */
     @GetMapping("/web/weather")
+    @RequiresPermissions("weather:list")
     public String weather() {
         return "/page/web/weather";
     }
 
     @GetMapping("/web/movie")
+    @RequiresPermissions("movie:list")
     public String movie() {
         return "/page/web/movie";
     }

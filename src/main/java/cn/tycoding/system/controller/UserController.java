@@ -12,6 +12,7 @@ import cn.tycoding.system.service.MenuService;
 import cn.tycoding.system.service.RoleService;
 import cn.tycoding.system.service.UserService;
 import io.swagger.annotations.Api;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,7 @@ public class UserController extends BaseController {
 
     @Log("添加用户")
     @PostMapping("/add")
+    @RequiresPermissions("user:add")
     public ResponseCode add(@RequestBody UserWithRole user) {
         try {
             userService.add(user);
@@ -114,6 +116,7 @@ public class UserController extends BaseController {
 
     @Log("更新用户")
     @PostMapping("/update")
+    @RequiresPermissions("user:update")
     public ResponseCode update(@RequestBody UserWithRole user) {
         try {
             userService.update(user);
@@ -126,6 +129,7 @@ public class UserController extends BaseController {
 
     @Log("删除用户")
     @PostMapping("/delete")
+    @RequiresPermissions("user:delete")
     public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
             userService.delete(ids);

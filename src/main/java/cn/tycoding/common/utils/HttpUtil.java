@@ -4,6 +4,7 @@ import cn.tycoding.common.exception.GlobalException;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.net.ssl.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -161,5 +162,15 @@ public class HttpUtil {
         public boolean verify(String s, SSLSession sslSession) {
             return true;
         }
+    }
+
+    /**
+     * 判断是否是ajax请求，ajax请求头中一定包含了 `X-Requested-With` 头信息
+     *
+     * @param request
+     * @return
+     */
+    public static boolean isAjaxRequest(HttpServletRequest request) {
+        return (request.getHeader("X-Requested-With") != null && "XMLHttpRequest".equals(request.getHeader("X-Requested-With")));
     }
 }

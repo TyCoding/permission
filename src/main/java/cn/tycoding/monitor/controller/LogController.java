@@ -8,6 +8,7 @@ import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.monitor.entity.SysLog;
 import cn.tycoding.monitor.service.LogService;
 import io.swagger.annotations.Api;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +36,7 @@ public class LogController extends BaseController {
 
     @Log("删除系统日志")
     @PostMapping("/delete")
+    @RequiresPermissions("log:delete")
     public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
             logService.deleteLogs(ids);

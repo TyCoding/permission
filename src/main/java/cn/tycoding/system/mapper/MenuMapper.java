@@ -2,7 +2,6 @@ package cn.tycoding.system.mapper;
 
 import cn.tycoding.common.config.MyMapper;
 import cn.tycoding.system.entity.Menu;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -13,6 +12,8 @@ import java.util.List;
 public interface MenuMapper extends MyMapper<Menu> {
 
     List<Menu> findUserMenus(String username);
+
+    List<Menu> findUserPermissions(String username);
 
     void changeTopNode(List<Long> ids);
 }

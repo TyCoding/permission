@@ -14,6 +14,8 @@ public interface MenuService extends BaseService<Menu> {
 
     List<Menu> findUserPerms(String username);
 
+    List<Menu> findUserPermissions(String username);
+
     List<Menu> findUserResources(String username);
 
     List<Menu> findAllResources(Menu menu);

@@ -9,6 +9,7 @@ import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.system.entity.Menu;
 import cn.tycoding.system.service.MenuService;
 import io.swagger.annotations.Api;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,6 +69,7 @@ public class MenuController extends BaseController {
 
     @Log("添加菜单")
     @PostMapping("/add")
+    @RequiresPermissions("menu:add")
     public ResponseCode add(@RequestBody Menu menu) {
         try {
             menuService.add(menu);
@@ -91,6 +93,7 @@ public class MenuController extends BaseController {
 
     @Log("更新菜单")
     @PostMapping("/update")
+    @RequiresPermissions("menu:update")
     public ResponseCode update(@RequestBody Menu menu) {
         try {
             menuService.update(menu);
@@ -103,6 +106,7 @@ public class MenuController extends BaseController {
 
     @Log("删除菜单")
     @PostMapping("/delete")
+    @RequiresPermissions("menu:delete")
     public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
             menuService.delete(ids);

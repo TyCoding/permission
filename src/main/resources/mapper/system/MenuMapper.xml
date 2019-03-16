@@ -11,6 +11,16 @@
                left join tb_role_menu rm on (r.id = rm.role_id)
                left join tb_menu m on (m.id = rm.menu_id)
         where u.username = #{username}
+    </select>
+
+    <select id="findUserPermissions" resultType="cn.tycoding.system.entity.Menu">
+        select m.*
+        from tb_role r
+               left join tb_user_role ur on (r.id = ur.role_id)
+               left join tb_user u on (u.id = ur.user_id)
+               left join tb_role_menu rm on (r.id = rm.role_id)
+               left join tb_menu m on (m.id = rm.menu_id)
+        where u.username = #{username}
           and m.perms is not null
           and m.perms != ''
     </select>

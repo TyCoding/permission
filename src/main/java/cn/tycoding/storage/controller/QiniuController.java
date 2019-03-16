@@ -14,6 +14,7 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.util.Auth;
 import io.swagger.annotations.Api;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -130,6 +131,7 @@ public class QiniuController {
      */
     @Log("上传七牛云文件")
     @RequestMapping("/upload")
+    @RequiresPermissions("qiniu:upload")
     public ResponseCode upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         if (!file.isEmpty()) {
 
@@ -236,6 +238,7 @@ public class QiniuController {
      */
     @Log("删除七牛云文件")
     @RequestMapping("/delete")
+    @RequiresPermissions("qiniu:delete")
     public ResponseCode delete(@RequestParam("name") String name) {
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());

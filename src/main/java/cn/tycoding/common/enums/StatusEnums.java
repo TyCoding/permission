@@ -16,6 +16,7 @@ public enum StatusEnums {
     SYSTEM_ERROR(500, "系统错误"),
     PARAM_ERROR(400, "参数错误"),
     PARAM_REPEAT(400, "参数已存在"),
+    PERMISSION_ERROR(403, "没有操作权限"),
     OTHER(-100, "其他错误");
 
     @Getter

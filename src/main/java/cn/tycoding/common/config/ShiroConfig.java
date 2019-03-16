@@ -7,6 +7,7 @@ import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -34,6 +35,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         shiroFilterFactoryBean.setLoginUrl("/login");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/error/403");
 
         //配置拦截器链，注意顺序
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
@@ -63,9 +65,10 @@ public class ShiroConfig {
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(realm(hashedCredentialsMatcher()));
+        securityManager.setRememberMeManager(rememberMeManager());
         securityManager.setSessionManager(sessionManager());
-        securityManager.setCacheManager(cacheManager());
+//        securityManager.setCacheManager(cacheManager());
+        securityManager.setRealm(realm(hashedCredentialsMatcher()));
         return securityManager;
     }
 
@@ -92,10 +95,29 @@ public class ShiroConfig {
     }
 
     @Bean
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor(){
+        return new LifecycleBeanPostProcessor();
+    }
+
+    /**
+     * 开启Shiro的注解支持
+     * 比如：@RequireRoles @RequireUsers
+     *
+     * @param securityManager
+     * @return
+     */
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        return authorizationAttributeSourceAdvisor;
+    }
+
+    @Bean
     public SessionManager sessionManager() {
         MySessionManager mySessionManager = new MySessionManager();
         mySessionManager.setSessionDAO(redisSessionDAO());
-        mySessionManager.setCacheManager(cacheManager());
+//        mySessionManager.setCacheManager(cacheManager());
         mySessionManager.setSessionIdUrlRewritingEnabled(true);
         return mySessionManager;
     }
@@ -132,20 +154,6 @@ public class ShiroConfig {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(redisManager());
         return redisSessionDAO;
-    }
-
-    /**
-     * 开启Shiro的注解支持
-     * 比如：@RequireRoles @RequireUsers
-     *
-     * @param securityManager
-     * @return
-     */
-    @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
-        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
-        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
-        return authorizationAttributeSourceAdvisor;
     }
 
 //    @Bean

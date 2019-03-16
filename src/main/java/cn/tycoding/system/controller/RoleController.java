@@ -10,6 +10,7 @@ import cn.tycoding.system.entity.Role;
 import cn.tycoding.system.entity.RoleWithMenu;
 import cn.tycoding.system.service.RoleService;
 import io.swagger.annotations.Api;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,7 @@ public class RoleController extends BaseController {
 
     @Log("添加角色")
     @PostMapping("/add")
+    @RequiresPermissions("role:add")
     public ResponseCode add(@RequestBody RoleWithMenu role) {
         try {
             roleService.add(role);
@@ -62,6 +64,7 @@ public class RoleController extends BaseController {
 
     @Log("更新角色")
     @PostMapping("update")
+    @RequiresPermissions("role:update")
     public ResponseCode update(@RequestBody RoleWithMenu role) {
         try {
             roleService.update(role);
@@ -74,6 +77,7 @@ public class RoleController extends BaseController {
 
     @Log("删除角色")
     @PostMapping("/delete")
+    @RequiresPermissions("role:delete")
     public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
             roleService.delete(ids);

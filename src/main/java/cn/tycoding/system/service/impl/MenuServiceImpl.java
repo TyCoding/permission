@@ -40,6 +40,11 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
     }
 
     @Override
+    public List<Menu> findUserPermissions(String username) {
+        return menuMapper.findUserPermissions(username);
+    }
+
+    @Override
     public List<Menu> findUserResources(String username) {
         return menuMapper.findUserMenus(username);
     }

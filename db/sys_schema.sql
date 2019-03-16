@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 15/03/2019 18:37:41
+ Date: 16/03/2019 12:48:05
 */
 
 SET NAMES utf8mb4;
@@ -56,7 +56,7 @@ CREATE TABLE `tb_log` (
   `create_time` datetime DEFAULT NULL COMMENT '操作时间',
   `location` varchar(20) DEFAULT NULL COMMENT '操作地点',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COMMENT='系统日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='系统日志表';
 
 -- ----------------------------
 -- Records of tb_log
@@ -77,6 +77,8 @@ INSERT INTO `tb_log` VALUES (19, 'admin', '文件上传', 7, 'cn.tycoding.storag
 INSERT INTO `tb_log` VALUES (20, 'admin', '更新用户', 19, 'cn.tycoding.system.controller.UserController.update()', ' user\"UserWithRole(roleId=3, roleIds=[3])\"', '127.0.0.1', '2019-03-14 08:28:01', '内网IP|0|0|内网IP|内网IP');
 INSERT INTO `tb_log` VALUES (21, 'admin', '上传七牛云文件', 2087, 'cn.tycoding.storage.controller.QiniuController.upload()', ' file\"org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile@367a9b8b\" request: org.springframework.web.multipart.support.StandardMultipartHttpServletRequest@322fa353', '127.0.0.1', '2019-03-14 08:29:17', '内网IP|0|0|内网IP|内网IP');
 INSERT INTO `tb_log` VALUES (22, 'admin', '更新用户', 19, 'cn.tycoding.system.controller.UserController.update()', ' user\"UserWithRole(roleId=3, roleIds=[3])\"', '127.0.0.1', '2019-03-14 08:29:21', '内网IP|0|0|内网IP|内网IP');
+INSERT INTO `tb_log` VALUES (23, 'tycoding', '添加用户', 22, 'cn.tycoding.system.controller.UserController.add()', ' user\"UserWithRole(roleId=null, roleIds=[2])\"', '127.0.0.1', '2019-03-15 22:54:35', '内网IP|0|0|内网IP|内网IP');
+INSERT INTO `tb_log` VALUES (24, 'tycoding', '更新用户', 22, 'cn.tycoding.system.controller.UserController.update()', ' user\"UserWithRole(roleId=2, roleIds=[2])\"', '127.0.0.1', '2019-03-15 22:56:35', '内网IP|0|0|内网IP|内网IP');
 COMMIT;
 
 -- ----------------------------
@@ -91,14 +93,13 @@ CREATE TABLE `tb_login_log` (
   `create_time` datetime DEFAULT NULL COMMENT '登录时间',
   `device` varchar(255) DEFAULT NULL COMMENT '登录设备',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tb_login_log
 -- ----------------------------
 BEGIN;
 INSERT INTO `tb_login_log` VALUES (1, 'admin', '127.0.0.1', '内网IP|0|0|内网IP|内网IP', '2019-03-13 04:36:13', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36');
-INSERT INTO `tb_login_log` VALUES (2, 'ss', NULL, NULL, NULL, NULL);
 INSERT INTO `tb_login_log` VALUES (4, 'admin', '127.0.0.1', '内网IP|0|0|内网IP|内网IP', '2019-03-13 06:15:56', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36');
 INSERT INTO `tb_login_log` VALUES (5, 'admin', '127.0.0.1', '内网IP|0|0|内网IP|内网IP', '2019-03-13 08:05:34', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36');
 INSERT INTO `tb_login_log` VALUES (6, 'admin', '127.0.0.1', '内网IP|0|0|内网IP|内网IP', '2019-03-13 08:52:32', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36');
@@ -114,6 +115,13 @@ INSERT INTO `tb_login_log` VALUES (15, 'admin', '127.0.0.1', '内网IP|0|0|内�
 INSERT INTO `tb_login_log` VALUES (16, 'admin', '127.0.0.1', '内网IP|0|0|内网IP|内网IP', '2019-03-15 03:08:48', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36');
 INSERT INTO `tb_login_log` VALUES (17, 'admin', '127.0.0.1', '内网IP|0|0|内网IP|内网IP', '2019-03-15 05:31:11', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36');
 INSERT INTO `tb_login_log` VALUES (18, 'admin', '127.0.0.1', '内网IP|0|0|内网IP|内网IP', '2019-03-15 05:35:07', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36');
+INSERT INTO `tb_login_log` VALUES (19, 'admin', '127.0.0.1', '内网IP|0|0|内网IP|内网IP', '2019-03-15 06:09:02', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36');
+INSERT INTO `tb_login_log` VALUES (20, 'admin', '127.0.0.1', '内网IP|0|0|内网IP|内网IP', '2019-03-15 20:18:15', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36');
+INSERT INTO `tb_login_log` VALUES (21, 'admin', '127.0.0.1', '内网IP|0|0|内网IP|内网IP', '2019-03-15 20:54:48', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36');
+INSERT INTO `tb_login_log` VALUES (22, 'tycoding', '127.0.0.1', '内网IP|0|0|内网IP|内网IP', '2019-03-15 21:51:47', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36');
+INSERT INTO `tb_login_log` VALUES (23, 'admin', '127.0.0.1', '内网IP|0|0|内网IP|内网IP', '2019-03-15 22:01:24', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36');
+INSERT INTO `tb_login_log` VALUES (24, 'admin', '127.0.0.1', '内网IP|0|0|内网IP|内网IP', '2019-03-15 22:04:35', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36');
+INSERT INTO `tb_login_log` VALUES (25, 'tycoding', '127.0.0.1', '内网IP|0|0|内网IP|内网IP', '2019-03-15 22:49:37', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36');
 COMMIT;
 
 -- ----------------------------
@@ -132,34 +140,48 @@ CREATE TABLE `tb_menu` (
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `status` tinyint(1) DEFAULT '0' COMMENT '状态 0锁定 1有效',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=447 DEFAULT CHARSET=utf8 COMMENT='资源表';
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COMMENT='资源表';
 
 -- ----------------------------
 -- Records of tb_menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `tb_menu` VALUES (1, '系统管理', 0, '', 'system', 'menu', 'fa fa-gear', 0, '2019-01-01 00:00:00', 1);
+INSERT INTO `tb_menu` VALUES (1, '系统管理', 0, NULL, NULL, 'menu', 'fa fa-gear', 0, '2019-01-01 00:00:00', 1);
 INSERT INTO `tb_menu` VALUES (2, '用户管理', 1, '/system/user', 'user:list', 'menu', NULL, 1, '2019-01-01 00:00:00', 1);
 INSERT INTO `tb_menu` VALUES (3, '角色管理', 1, '/system/role', 'role:list', 'menu', NULL, 2, '2019-01-01 00:00:00', 1);
 INSERT INTO `tb_menu` VALUES (4, '菜单管理', 1, '/system/menu', 'menu:list', 'menu', NULL, 3, '2019-01-01 00:00:00', 1);
-INSERT INTO `tb_menu` VALUES (5, '部门管理', 1, '/system/dept', 'dept:list', 'menu', '', NULL, '2019-02-14 13:19:56', 1);
-INSERT INTO `tb_menu` VALUES (10, '新增用户', 2, '', 'user:add', 'button', NULL, 1, '2019-01-01 00:00:00', 1);
-INSERT INTO `tb_menu` VALUES (11, '修改用户', 2, '', 'user:update', 'button', NULL, 2, '2019-01-01 00:00:00', 1);
-INSERT INTO `tb_menu` VALUES (12, '新增角色', 3, '', 'role:add', 'button', '', 1, '2019-01-01 00:00:00', 1);
-INSERT INTO `tb_menu` VALUES (13, '修改角色', 3, '', 'role:update', 'button', NULL, 2, '2019-01-01 00:00:00', 1);
-INSERT INTO `tb_menu` VALUES (111, '系统监控', 0, NULL, 'monitor', 'menu', 'fa fa-shield', 0, '2019-02-05 09:07:39', 1);
-INSERT INTO `tb_menu` VALUES (112, '在线用户', 111, '/monitor/online', 'online:list', 'menu', NULL, NULL, '2019-02-14 14:29:53', 1);
-INSERT INTO `tb_menu` VALUES (113, '登录日志', 111, '/monitor/loginlog', 'log:list', 'menu', NULL, NULL, '2019-02-14 14:31:54', 0);
-INSERT INTO `tb_menu` VALUES (114, '系统日志', 111, '/monitor/log', 'log:list', 'menu', NULL, 1, '2019-02-05 09:09:36', 1);
-INSERT INTO `tb_menu` VALUES (115, 'Redis监控', 111, '/monitor/redis/monitor', 'redis:info', 'menu', NULL, 1, '2019-02-05 09:10:28', 1);
-INSERT INTO `tb_menu` VALUES (116, 'Druid监控', 111, '/monitor/druid', 'druid:view', 'menu', NULL, NULL, '2019-03-14 13:07:56', 1);
-INSERT INTO `tb_menu` VALUES (222, '任务调度', 0, '', 'task', 'menu', 'fa fa-bell', 2, '2019-01-01 00:00:00', 1);
-INSERT INTO `tb_menu` VALUES (223, '定时任务', 222, '/task', 'task', 'menu', NULL, 1, '2019-02-05 09:23:28', 1);
-INSERT INTO `tb_menu` VALUES (333, '对象储存', 0, NULL, 'storage', 'menu', 'fa fa-cloud', 1, '2019-02-05 08:49:45', 1);
-INSERT INTO `tb_menu` VALUES (334, '七牛云', 333, '/storage/qiniu', 'qiniu:list', 'menu', '', 2, '2019-02-05 08:51:30', 1);
-INSERT INTO `tb_menu` VALUES (444, '网络资源', 0, NULL, 'network', 'menu', 'fa fa-support', 1, '2019-02-05 09:23:24', 1);
-INSERT INTO `tb_menu` VALUES (445, '天气查询', 444, '/web/weather', 'weather', 'menu', NULL, 1, '2019-02-05 09:25:06', 1);
-INSERT INTO `tb_menu` VALUES (446, '影视资讯', 444, '/web/movie', 'movie:view', 'menu', NULL, NULL, '2019-03-14 11:38:01', 1);
+INSERT INTO `tb_menu` VALUES (5, '部门管理', 1, '/system/dept', 'dept:list', 'menu', NULL, NULL, '2019-02-14 13:19:56', 1);
+INSERT INTO `tb_menu` VALUES (6, '新增用户', 2, NULL, 'user:add', 'button', NULL, 1, '2019-01-01 00:00:00', 1);
+INSERT INTO `tb_menu` VALUES (7, '修改用户', 2, NULL, 'user:update', 'button', NULL, 2, '2019-01-01 00:00:00', 1);
+INSERT INTO `tb_menu` VALUES (8, '删除用户', 2, NULL, 'user:delete', 'button', NULL, 1, '2019-01-01 00:00:00', 1);
+INSERT INTO `tb_menu` VALUES (9, '新增角色', 3, NULL, 'role:add', 'button', NULL, 2, '2019-01-01 00:00:00', 1);
+INSERT INTO `tb_menu` VALUES (10, '修改角色', 3, NULL, 'role:update', 'button', NULL, NULL, '2019-03-15 13:46:26', 0);
+INSERT INTO `tb_menu` VALUES (11, '删除用户', 3, NULL, 'role:delete', 'button', NULL, NULL, '2019-03-15 13:47:14', 0);
+INSERT INTO `tb_menu` VALUES (12, '新增菜单', 4, NULL, 'menu:add', 'button', NULL, NULL, '2019-03-15 13:47:55', 0);
+INSERT INTO `tb_menu` VALUES (13, '修改菜单', 4, NULL, 'menu:update', 'button', NULL, NULL, '2019-03-15 13:47:55', 0);
+INSERT INTO `tb_menu` VALUES (14, '删除菜单', 4, NULL, 'menu:delete', 'button', NULL, NULL, '2019-03-15 13:47:14', 0);
+INSERT INTO `tb_menu` VALUES (15, '新增部门', 5, NULL, 'dept:add', 'button', NULL, NULL, '2019-03-15 13:47:14', 0);
+INSERT INTO `tb_menu` VALUES (16, '修改部门', 5, NULL, 'dept:update', 'button', NULL, NULL, '2019-03-15 13:47:14', 0);
+INSERT INTO `tb_menu` VALUES (17, '删除部门', 5, NULL, 'dept:delete', 'button', NULL, NULL, '2019-03-15 13:47:14', 0);
+INSERT INTO `tb_menu` VALUES (18, '系统监控', 0, NULL, NULL, 'menu', 'fa fa-shield', 0, '2019-02-05 09:07:39', 1);
+INSERT INTO `tb_menu` VALUES (19, '在线用户', 18, '/monitor/online', 'online:list', 'menu', NULL, NULL, '2019-02-14 14:29:53', 1);
+INSERT INTO `tb_menu` VALUES (20, '登录日志', 18, '/monitor/loginlog', 'loginlog:list', 'menu', NULL, NULL, '2019-02-14 14:31:54', 0);
+INSERT INTO `tb_menu` VALUES (21, '系统日志', 18, '/monitor/log', 'log:list', 'menu', NULL, 1, '2019-02-05 09:09:36', 1);
+INSERT INTO `tb_menu` VALUES (22, 'Redis监控', 18, '/monitor/redis/monitor', 'redis:list', 'menu', NULL, 1, '2019-02-05 09:10:28', 1);
+INSERT INTO `tb_menu` VALUES (23, 'Druid监控', 18, '/monitor/druid', 'druid:list', 'menu', NULL, NULL, '2019-03-14 13:07:56', 1);
+INSERT INTO `tb_menu` VALUES (24, '踢出用户', 19, NULL, 'online:delete', 'button', NULL, NULL, '2019-02-05 09:23:24', 0);
+INSERT INTO `tb_menu` VALUES (25, '删除日志', 20, NULL, 'loginlog:delete', 'button', NULL, NULL, '2019-02-05 09:23:24', 0);
+INSERT INTO `tb_menu` VALUES (26, '删除日志', 21, NULL, 'log:delete', 'button', NULL, NULL, '2019-02-05 09:23:24', 0);
+INSERT INTO `tb_menu` VALUES (27, '任务调度', 0, NULL, NULL, 'menu', 'fa fa-bell', 2, '2019-01-01 00:00:00', 1);
+INSERT INTO `tb_menu` VALUES (28, '定时任务', 27, '/task', 'task', 'menu', NULL, 1, '2019-02-05 09:23:28', 1);
+INSERT INTO `tb_menu` VALUES (29, '对象储存', 0, NULL, NULL, 'menu', 'fa fa-cloud', 1, '2019-02-05 08:49:45', 1);
+INSERT INTO `tb_menu` VALUES (30, '七牛云', 29, '/storage/qiniu', 'qiniu:list', 'menu', '', 2, '2019-02-05 08:51:30', 1);
+INSERT INTO `tb_menu` VALUES (31, '上传文件', 30, NULL, 'qiniu:upload', 'button', NULL, NULL, '2019-03-14 11:38:01', 0);
+INSERT INTO `tb_menu` VALUES (32, '修改文件', 30, NULL, 'qiniu:update', 'button', NULL, NULL, '2019-03-14 11:38:01', 0);
+INSERT INTO `tb_menu` VALUES (33, '删除文件', 30, NULL, 'qiniu:delete', 'button', NULL, NULL, '2019-03-14 11:38:01', 0);
+INSERT INTO `tb_menu` VALUES (34, '网络资源', 0, NULL, NULL, 'menu', 'fa fa-support', 1, '2019-02-05 09:23:24', 1);
+INSERT INTO `tb_menu` VALUES (35, '天气查询', 34, '/web/weather', 'weather:list', 'menu', NULL, 1, '2019-02-05 09:25:06', 1);
+INSERT INTO `tb_menu` VALUES (36, '影视资讯', 34, '/web/movie', 'movie:list', 'menu', NULL, NULL, '2019-03-14 11:38:01', 1);
 COMMIT;
 
 -- ----------------------------
@@ -179,12 +201,12 @@ CREATE TABLE `tb_role` (
 -- Records of tb_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `tb_role` VALUES (1, '经理', '2019-01-01 00:00:00', '项目经理', 1);
-INSERT INTO `tb_role` VALUES (2, '组长', '2019-01-01 00:00:00', '项目开发组长', 1);
-INSERT INTO `tb_role` VALUES (3, '测试员啊', '2019-01-01 00:00:00', '项目开发测试啊', 1);
-INSERT INTO `tb_role` VALUES (4, '测试', '2019-02-14 08:51:48', '测试', 1);
-INSERT INTO `tb_role` VALUES (5, '测试呀', '2019-02-14 02:54:56', '123', NULL);
-INSERT INTO `tb_role` VALUES (6, '测试是', '2019-02-14 02:59:17', '', NULL);
+INSERT INTO `tb_role` VALUES (1, '管理员', '2019-01-01 00:00:00', '管理员', 1);
+INSERT INTO `tb_role` VALUES (2, '测试账号', '2019-01-01 00:00:00', '测试，可查看所有页面，但无操作权限', 1);
+INSERT INTO `tb_role` VALUES (3, '用户管理员', '2019-01-01 00:00:00', '负责用户的增删改查操作', 1);
+INSERT INTO `tb_role` VALUES (4, '系统监控员', '2019-02-14 08:51:48', '可查看系统监控信息', 1);
+INSERT INTO `tb_role` VALUES (5, '天气预报员', '2019-02-14 02:54:56', '可查看天气预报信息', 1);
+INSERT INTO `tb_role` VALUES (6, '用户查看', '2019-02-14 02:59:17', '查看用户，但无操作权限', 1);
 COMMIT;
 
 -- ----------------------------
@@ -206,27 +228,68 @@ INSERT INTO `tb_role_menu` VALUES (1, 2);
 INSERT INTO `tb_role_menu` VALUES (1, 3);
 INSERT INTO `tb_role_menu` VALUES (1, 4);
 INSERT INTO `tb_role_menu` VALUES (1, 5);
-INSERT INTO `tb_role_menu` VALUES (1, 111);
-INSERT INTO `tb_role_menu` VALUES (1, 112);
-INSERT INTO `tb_role_menu` VALUES (1, 113);
-INSERT INTO `tb_role_menu` VALUES (1, 114);
-INSERT INTO `tb_role_menu` VALUES (1, 115);
-INSERT INTO `tb_role_menu` VALUES (1, 116);
-INSERT INTO `tb_role_menu` VALUES (1, 222);
-INSERT INTO `tb_role_menu` VALUES (1, 223);
-INSERT INTO `tb_role_menu` VALUES (1, 333);
-INSERT INTO `tb_role_menu` VALUES (1, 334);
-INSERT INTO `tb_role_menu` VALUES (1, 444);
-INSERT INTO `tb_role_menu` VALUES (1, 445);
-INSERT INTO `tb_role_menu` VALUES (1, 446);
+INSERT INTO `tb_role_menu` VALUES (1, 6);
+INSERT INTO `tb_role_menu` VALUES (1, 7);
+INSERT INTO `tb_role_menu` VALUES (1, 8);
+INSERT INTO `tb_role_menu` VALUES (1, 9);
+INSERT INTO `tb_role_menu` VALUES (1, 10);
+INSERT INTO `tb_role_menu` VALUES (1, 11);
+INSERT INTO `tb_role_menu` VALUES (1, 12);
+INSERT INTO `tb_role_menu` VALUES (1, 13);
+INSERT INTO `tb_role_menu` VALUES (1, 14);
+INSERT INTO `tb_role_menu` VALUES (1, 15);
+INSERT INTO `tb_role_menu` VALUES (1, 16);
+INSERT INTO `tb_role_menu` VALUES (1, 17);
+INSERT INTO `tb_role_menu` VALUES (1, 18);
+INSERT INTO `tb_role_menu` VALUES (1, 19);
+INSERT INTO `tb_role_menu` VALUES (1, 20);
+INSERT INTO `tb_role_menu` VALUES (1, 21);
+INSERT INTO `tb_role_menu` VALUES (1, 22);
+INSERT INTO `tb_role_menu` VALUES (1, 23);
+INSERT INTO `tb_role_menu` VALUES (1, 24);
+INSERT INTO `tb_role_menu` VALUES (1, 25);
+INSERT INTO `tb_role_menu` VALUES (1, 26);
+INSERT INTO `tb_role_menu` VALUES (1, 27);
+INSERT INTO `tb_role_menu` VALUES (1, 28);
+INSERT INTO `tb_role_menu` VALUES (1, 29);
+INSERT INTO `tb_role_menu` VALUES (1, 30);
+INSERT INTO `tb_role_menu` VALUES (1, 31);
+INSERT INTO `tb_role_menu` VALUES (1, 32);
+INSERT INTO `tb_role_menu` VALUES (1, 33);
+INSERT INTO `tb_role_menu` VALUES (1, 34);
+INSERT INTO `tb_role_menu` VALUES (1, 35);
+INSERT INTO `tb_role_menu` VALUES (1, 36);
+INSERT INTO `tb_role_menu` VALUES (2, 1);
 INSERT INTO `tb_role_menu` VALUES (2, 2);
-INSERT INTO `tb_role_menu` VALUES (2, 10);
-INSERT INTO `tb_role_menu` VALUES (2, 11);
-INSERT INTO `tb_role_menu` VALUES (2, 12);
-INSERT INTO `tb_role_menu` VALUES (2, 13);
-INSERT INTO `tb_role_menu` VALUES (3, 10);
-INSERT INTO `tb_role_menu` VALUES (4, 446);
-INSERT INTO `tb_role_menu` VALUES (6, 446);
+INSERT INTO `tb_role_menu` VALUES (2, 3);
+INSERT INTO `tb_role_menu` VALUES (2, 4);
+INSERT INTO `tb_role_menu` VALUES (2, 5);
+INSERT INTO `tb_role_menu` VALUES (2, 18);
+INSERT INTO `tb_role_menu` VALUES (2, 19);
+INSERT INTO `tb_role_menu` VALUES (2, 20);
+INSERT INTO `tb_role_menu` VALUES (2, 21);
+INSERT INTO `tb_role_menu` VALUES (2, 22);
+INSERT INTO `tb_role_menu` VALUES (2, 23);
+INSERT INTO `tb_role_menu` VALUES (2, 27);
+INSERT INTO `tb_role_menu` VALUES (2, 28);
+INSERT INTO `tb_role_menu` VALUES (2, 29);
+INSERT INTO `tb_role_menu` VALUES (2, 30);
+INSERT INTO `tb_role_menu` VALUES (2, 34);
+INSERT INTO `tb_role_menu` VALUES (2, 35);
+INSERT INTO `tb_role_menu` VALUES (2, 36);
+INSERT INTO `tb_role_menu` VALUES (3, 2);
+INSERT INTO `tb_role_menu` VALUES (3, 6);
+INSERT INTO `tb_role_menu` VALUES (3, 7);
+INSERT INTO `tb_role_menu` VALUES (3, 8);
+INSERT INTO `tb_role_menu` VALUES (4, 18);
+INSERT INTO `tb_role_menu` VALUES (4, 19);
+INSERT INTO `tb_role_menu` VALUES (4, 20);
+INSERT INTO `tb_role_menu` VALUES (4, 21);
+INSERT INTO `tb_role_menu` VALUES (4, 22);
+INSERT INTO `tb_role_menu` VALUES (4, 23);
+INSERT INTO `tb_role_menu` VALUES (5, 34);
+INSERT INTO `tb_role_menu` VALUES (5, 35);
+INSERT INTO `tb_role_menu` VALUES (6, 2);
 COMMIT;
 
 -- ----------------------------
@@ -253,11 +316,13 @@ CREATE TABLE `tb_user` (
 -- Records of tb_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `tb_user` VALUES (1, 'admin', 'e66118cc37a2d48679d2125786da4e32', '4bb248295857990678f15b9410e78e4d', 3, '2019-01-01 00:00:00', '2019-02-05 02:46:38', '/img/avatar/default.jpg', '19809587839', '0', '暂时没有', 1);
-INSERT INTO `tb_user` VALUES (2, 'tycoding', '18caf8ff1512ad84f46053ac0f4561cf', 'ab2874470d60b14ed8f1248ab0e527ad', 5, '2019-01-01 00:00:00', '2019-02-05 02:47:26', '/img/avatar/20180414165754.jpg', '18798797687', '0', '暂时没有', 1);
-INSERT INTO `tb_user` VALUES (5, 'tumo', '4416ceb6e10bf309149358e90a6ce6bb', 'a9d14a4b3c80b20c3042842393623384', 6, '2019-02-03 03:37:34', '2019-02-03 07:37:12', '/img/avatar/20180414165827.jpg', '781797907', '1', '测试账户', 1);
-INSERT INTO `tb_user` VALUES (6, 'test', '', 'xxx', 6, '2019-02-05 02:38:31', '2019-03-13 01:21:48', '/img/avatar/20180414165815.jpg', '1892178297', '0', '测试账户', 1);
-INSERT INTO `tb_user` VALUES (7, 'xxx', '', 'xxx', 6, '2019-03-14 08:27:07', '2019-03-14 08:29:21', 'http://img.api.tycoding.cn/1106185519820857344.png', '13173173701', '0', 'ss', 0);
+INSERT INTO `tb_user` VALUES (1, 'admin', 'e66118cc37a2d48679d2125786da4e32', '4bb248295857990678f15b9410e78e4d', 3, '2019-01-01 00:00:00', '2019-02-05 02:46:38', '/img/avatar/default.jpg', '19809587839', '0', '管理员', 1);
+INSERT INTO `tb_user` VALUES (2, 'tycoding', '18caf8ff1512ad84f46053ac0f4561cf', 'ab2874470d60b14ed8f1248ab0e527ad', 5, '2019-01-01 00:00:00', '2019-02-05 02:47:26', '/img/avatar/20180414165754.jpg', '18798797687', '0', '测试账号，可查看所有页面', 1);
+INSERT INTO `tb_user` VALUES (3, 'tumo', '4416ceb6e10bf309149358e90a6ce6bb', 'a9d14a4b3c80b20c3042842393623384', 6, '2019-02-03 03:37:34', '2019-02-03 07:37:12', '/img/avatar/20180414165827.jpg', '781797907', '1', '用户管理员，负责用户增删改查操作', 1);
+INSERT INTO `tb_user` VALUES (4, 'monitor', 'dbdb4ec62a5b3782a040e0df86dee6a5', '9be3bd45b443283cc63ebc6a0b0c0cc9', 1, '2019-02-03 03:37:34', '2019-02-03 07:37:12', '/img/avatar/20180414165827.jpg', '18798797687', '1', '系统监控员，查看系统监控', 1);
+INSERT INTO `tb_user` VALUES (5, 'synoptic', '23384e9d6e4bbab9b8b07096c3afbe4e', '850ff5eb7d00cdd36a0e1f98d4a11553', 1, '2019-02-03 03:37:34', '2019-02-03 07:37:12', '/img/avatar/20180414165827.jpg', '18798797687', '1', '天气预报员，查看天气预报信息', 0);
+INSERT INTO `tb_user` VALUES (6, 'user', 'e315802c9a5c617cd6fad4a951417455', 'aa8d31f90f27ef28fe16f0b0c670540d', 1, '2019-02-03 03:37:34', '2019-02-03 07:37:12', '/img/avatar/20180414165827.jpg', '18798797687', '1', '用户查看，尽可查看用户信息', 0);
+INSERT INTO `tb_user` VALUES (7, '121ewfd', '', 'xxx', 6, '2019-03-15 22:54:35', '2019-03-15 22:56:35', '', '232324', '', '', 0);
 COMMIT;
 
 -- ----------------------------
@@ -275,12 +340,14 @@ CREATE TABLE `tb_user_role` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `tb_user_role` VALUES (1, 1);
-INSERT INTO `tb_user_role` VALUES (1, 3);
 INSERT INTO `tb_user_role` VALUES (2, 2);
-INSERT INTO `tb_user_role` VALUES (5, 2);
-INSERT INTO `tb_user_role` VALUES (5, 3);
-INSERT INTO `tb_user_role` VALUES (6, 1);
-INSERT INTO `tb_user_role` VALUES (7, 3);
+INSERT INTO `tb_user_role` VALUES (3, 3);
+INSERT INTO `tb_user_role` VALUES (3, 4);
+INSERT INTO `tb_user_role` VALUES (4, 4);
+INSERT INTO `tb_user_role` VALUES (4, 5);
+INSERT INTO `tb_user_role` VALUES (5, 5);
+INSERT INTO `tb_user_role` VALUES (6, 6);
+INSERT INTO `tb_user_role` VALUES (7, 2);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

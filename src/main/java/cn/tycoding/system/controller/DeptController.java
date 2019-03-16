@@ -9,6 +9,7 @@ import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.system.entity.Dept;
 import cn.tycoding.system.service.DeptService;
 import io.swagger.annotations.Api;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,7 @@ public class DeptController extends BaseController {
 
     @Log("添加部门")
     @PostMapping("/add")
+    @RequiresPermissions("dept:add")
     public ResponseCode add(@RequestBody Dept dept) {
         try {
             deptService.add(dept);
@@ -66,6 +68,7 @@ public class DeptController extends BaseController {
 
     @Log("更新部门")
     @PostMapping("update")
+    @RequiresPermissions("dept:update")
     public ResponseCode update(@RequestBody Dept dept) {
         try {
             deptService.update(dept);
@@ -78,6 +81,7 @@ public class DeptController extends BaseController {
 
     @Log("删除部门")
     @PostMapping("/delete")
+    @RequiresPermissions("dept:delete")
     public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
             deptService.delete(ids);

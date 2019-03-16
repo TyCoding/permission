@@ -15,6 +15,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * @author tycoding
  * @date 2019-01-19
  */
+@Component
 public class AuthRealm extends AuthorizingRealm {
 
     @Autowired
@@ -58,8 +60,8 @@ public class AuthRealm extends AuthorizingRealm {
         simpleAuthorizationInfo.setRoles(roleSet);
 
         //获取用户权限
-        List<Menu> menuList = menuService.findUserPerms(user.getUsername());
-        Set<String> permSet = menuList.stream().map(Menu::getName).collect(Collectors.toSet());
+        List<Menu> menuList = menuService.findUserPermissions(user.getUsername());
+        Set<String> permSet = menuList.stream().map(Menu::getPerms).collect(Collectors.toSet());
         simpleAuthorizationInfo.setStringPermissions(permSet);
 
         return simpleAuthorizationInfo;
@@ -82,7 +84,6 @@ public class AuthRealm extends AuthorizingRealm {
 
         //获取用户名和密码
         String username = (String) authenticationToken.getPrincipal();
-        String password = new String((char[]) authenticationToken.getCredentials());
 
         User user = userService.findByName(username);
 
