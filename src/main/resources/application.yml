@@ -1,5 +1,7 @@
 server:
   port: 8080
+  tomcat:
+    uri-encoding: utf-8
 
 spring:
   datasource:
@@ -83,7 +85,7 @@ logging:
 
 # 七牛云
 qiniu:
-  access_key: Access_Key
-  secret_key: Secret_Key
-  bucket_name: Bucket_Name
-  url: bucket url
+  access_key: ACCESS_KEY
+  secret_key: SECRET_KEY
+  bucket_name: BUCKETNAME
+  url: http://xxx/
