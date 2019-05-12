@@ -94,7 +94,7 @@
 
 ### 部署
 
-由于一些原因，**线上地址**部署的项目不太完美，请clone到本地运行。
+由于一些原因，**线上地址**部署的项目不太完美，推荐大家clone到本地运行。
 
 1. 克隆
 
@@ -110,7 +110,19 @@ git clone https://github.com/TyCoding/permission.git
 
 5. 启动项目，访问`localhost:8080`
 
-6. 更多的文档后续补充...
+#### 服务器部署：
+
+直接将项目打包为jar即可：
+
+```
+mvn package
+```
+
+将`target`文件夹下出现的`permission-0.0.1-SNAPSHOT.jar`（重命名为`permission.jar`）丢到服务器的任意位置，执行如下命令其中项目：
+
+```
+java -jar permission.jar &
+```
 
 ## 项目截图
 

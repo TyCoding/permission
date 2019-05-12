@@ -14,7 +14,7 @@ spring:
       #mysql驱动
       driver-class-name: com.mysql.cj.jdbc.Driver
       #基本属性
-      url: jdbc:mysql://127.0.0.1:3306/shiro?useUnicode=true&characterEncoding=UTF-8
+      url: jdbc:mysql://127.0.0.1:3306/permission?useUnicode=true&characterEncoding=UTF-8
       username: root
       password: root
       #配置初始化大小/最小/最大
