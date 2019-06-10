@@ -124,6 +124,12 @@ mvn package
 java -jar permission.jar &
 ```
 
+## 请喝果汁
+
+如果觉得这篇文章、Demo对你的学习有所帮助，可以请作者喝一杯果汁~~
+
+![](https://www.tycoding.cn/images/wechat.png)
+
 ## 项目截图
 
 ![](doc/1.png)
