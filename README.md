@@ -42,13 +42,13 @@
 
 ## 文档 
 
-* [在基于SpringBoot的前后端分离项目中使用Shiro](https://tycoding.cn/2019/01/25/springboot-shiro/)
+* [在基于SpringBoot的前后端分离项目中使用Shiro](https://tycoding.cn/2019/01/25/boot/springboot-shiro/)
 
-* [Shiro在线会话管理](https://tycoding.cn/2019/02/16/54-shiro-session/)
+* [Shiro在线会话管理](https://tycoding.cn/2019/02/16/ssm/shiro/54-shiro-session/)
 
-* [Shiro权限管理项目中如何构建权限菜单](https://tycoding.cn/2019/01/30/shiro-tree/)
+* [Shiro权限管理项目中如何构建权限菜单](https://tycoding.cn/2019/01/30/ssm/shiro/shiro-tree/)
 
-* [ElementUI - Tree & Shiro](https://tycoding.cn/2019/02/16/53-shiro-tree2-md/)
+* [ElementUI - Tree & Shiro](https://tycoding.cn/2019/02/16/ssm/shiro/53-shiro-tree2-md/)
 
 * 文档正在完善中...
 
