@@ -2,8 +2,8 @@ let app = new Vue({
     el: '#app',
     data: {
         form: {
-            username: '',
-            password: '',
+            username: 'tycoding',
+            password: '123456',
             remember: false,
             code: '',
         },
@@ -59,10 +59,12 @@ let app = new Vue({
                                 if (result.body.code == 200 && window.localStorage.getItem("info") != null) {
                                     window.location.href = "/";
                                 } else {
+                                    this.getGifCode();
                                     this._notify('获取用户信息失败', "error")
                                 }
                             });
                         } else {
+                            this.getGifCode();
                             this.gifCode = null;
                             this.gifCode = api.gifCode;
                             this._notify(response.body.msg, 'error');

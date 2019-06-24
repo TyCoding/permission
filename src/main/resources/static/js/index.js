@@ -2,6 +2,7 @@
 let app = new Vue({
     el: '#app',
     data: {
+        activeNames: ['1', '2', '3'],
         tree: [], //Menu菜单的Tree集合
         info: JSON.parse(window.localStorage.getItem("info")), //从localStorage中获取登录用户数据
         defaultActive: '首页',

@@ -26,7 +26,6 @@ public class MySessionManager extends DefaultWebSessionManager {
 
     @Override
     protected Serializable getSessionId(ServletRequest request, ServletResponse response) {
-        logger.info("==> already to MySessionManager");
         //获取请求头中X-Token中保存的sessionId
         String id = WebUtils.toHttp(request).getHeader(AUTHORIZATION);
         if (!StringUtils.isEmpty(id)) {
