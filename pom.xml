@@ -30,7 +30,7 @@
         <swagger-module.version>1.5.21</swagger-module.version>
         <druid.version>1.1.9</druid.version>
         <pagehelper.version>1.2.5</pagehelper.version>
-        <fastjson.version>1.2.46</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <qiniu-sdk.version>7.2.17</qiniu-sdk.version>
         <ip2region.version>1.7.2</ip2region.version>
     </properties>
